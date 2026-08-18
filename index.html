@@ -7,6 +7,7 @@
 <meta name="description" content="Suivi de collection Wikimaster : drapeaux nationaux et théogonie grecque.">
 <meta name="theme-color" content="#0C1130">
 <link rel="manifest" href="./manifest.webmanifest">
+<script src="./config.js"></script>
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -282,6 +283,51 @@ h1 em{font-style:normal;color:var(--bronze)}
   border-color:transparent var(--verdigris) transparent transparent;opacity:0;transition:opacity .25s;border-top-right-radius:3px}
 .regne.got .tick3{opacity:1}
 
+
+#bandeau{background:var(--bronze);color:#171003;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  padding:9px 18px;text-align:center;position:sticky;top:0;z-index:60}
+#bandeau[hidden]{display:none}
+#bandeau .lien{color:#171003;font-weight:700}
+.listem{display:flex;flex-direction:column;gap:6px;margin-top:11px}
+.mrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:rgba(255,255,255,.04);
+  border:1px solid var(--ligne);border-radius:3px;padding:9px 11px;cursor:pointer;color:inherit;font:inherit;transition:.18s}
+.mrow:hover{border-color:var(--bronze-dim);background:rgba(255,255,255,.07)}
+.mrow.actif{border-color:var(--verdigris);background:rgba(79,191,160,.09)}
+.mrow .mn{font-family:var(--disp);font-size:19px;font-weight:500;flex:0 0 auto}
+.mrow .mn i{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--verdigris)}
+.mrow .mc{font-family:var(--mono);font-size:10px;color:var(--marbre-dim);letter-spacing:.04em;flex:1;min-width:0}
+.mrow .ma{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze)}
+.mrow.actif .ma{color:var(--verdigris)}
+.champs input[readonly]{font-family:var(--mono);font-size:11px;color:var(--marbre-dim)}
+@media (max-width:560px){.mrow{flex-wrap:wrap;gap:3px 10px}.mrow .mc{flex:1 0 100%}}
+
+/* ---------- Groupe ---------- */
+.bloc{border:1px solid var(--ligne);border-radius:4px;padding:17px 18px 15px;margin-top:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015))}
+.bloc h3{font-family:var(--disp);font-weight:500;font-size:23px;margin:0 0 6px;line-height:1.15}
+.bloc p{margin:0 0 9px;font-size:13.5px;color:#CDD2E6;max-width:62ch}
+.bloc p.note{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--marbre-dim);margin:0}
+.bloc code{font-family:var(--mono);font-size:12px;background:rgba(0,0,0,.3);padding:1px 5px;border-radius:2px;color:var(--bronze)}
+.champs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 9px}
+.champs input{flex:1 1 190px;min-width:150px;background:rgba(0,0,0,.25);border:1px solid var(--ligne);border-radius:3px;
+  color:var(--marbre);font-family:var(--body);font-size:14px;padding:9px 11px}
+.champs input:focus{outline:none;border-color:var(--bronze-dim)}
+.lien{background:none;border:0;color:var(--bronze);font:inherit;cursor:pointer;padding:0;text-decoration:underline}
+.membre details{border-top:1px solid var(--ligne);padding-top:9px;margin-top:9px}
+.membre summary{cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--bronze);list-style:none}
+.membre summary::-webkit-details-marker{display:none}
+.membre summary::before{content:"▸ ";display:inline-block;transition:transform .2s}
+.membre details[open] summary::before{content:"▾ "}
+.membre h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--marbre-dim);margin:11px 0 6px}
+ul.ech{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:5px;max-height:210px;overflow:auto}
+ul.ech li{font-size:12px;background:rgba(208,165,72,.12);border:1px solid rgba(208,165,72,.28);
+  border-radius:2px;padding:2px 8px}
+.rien{font-size:12.5px;color:var(--marbre-dim);font-style:italic}
+#sync{color:var(--marbre-dim);margin-left:6px}
+
 /* ---------- Divers ---------- */
 .vide{text-align:center;color:var(--marbre-dim);padding:50px 20px;font-family:var(--disp);font-size:22px}
 .panneau[hidden]{display:none}
@@ -301,6 +347,7 @@ footer .sp{flex:1}
 </style>
 </head>
 <body>
+<div id="bandeau" hidden></div>
 <div class="wrap">
 
 <header>
@@ -330,6 +377,7 @@ footer .sp{flex:1}
   <button class="tab" role="tab" id="tab-flag" aria-controls="p-flag" aria-selected="true">Drapeaux <i id="t1">0</i></button>
   <button class="tab" role="tab" id="tab-myth" aria-controls="p-myth" aria-selected="false">Théogonie <i id="t2">0</i></button>
   <button class="tab" role="tab" id="tab-roi" aria-controls="p-roi" aria-selected="false">Souverains <i id="t3">0</i></button>
+  <button class="tab" role="tab" id="tab-grp" aria-controls="p-grp" aria-selected="false">Groupe</button>
 </div>
 
 <!-- ============ DRAPEAUX ============ -->
@@ -405,8 +453,13 @@ footer .sp{flex:1}
   <div id="rois"></div>
 </section>
 
+<!-- ============ GROUPE ============ -->
+<section class="panneau" id="p-grp" role="tabpanel" aria-labelledby="tab-grp" hidden>
+  <div id="grp"></div>
+</section>
+
 <footer>
-  <span id="etat">Prêt</span>
+  <span id="etat">Prêt</span><span id="sync"></span>
   <span class="sp"></span>
   <button class="primaire" id="col">Coller une liste</button>
   <button class="ghost" id="exp">Exporter</button>
@@ -848,18 +901,28 @@ async function charger(){
     const brut = await STORE.lire(KEY);
     const v = JSON.parse(brut);
     flags = new Set(v.flags || []); myth = new Set(v.myth || []); rois = new Set(v.rois || []);
+    journal = v.journal || {};
     etat.textContent = "Collection chargée";
   }catch(e){
     etat.textContent = STORE.durable ? "Nouvelle collection" : "Session uniquement";
   }
 }
+let pushT = null;
 function sauver(){
+  journaliser();
+  sauverLocal();
+  clearTimeout(pushT);
+  pushT = setTimeout(()=>synchroniser(true), 1600);
+}
+function sauverLocal(){
   clearTimeout(saveT);
   etat.textContent = "Enregistrement…";
   saveT = setTimeout(async ()=>{
     if(!STORE.durable){ etat.textContent = "Session uniquement — pensez à exporter"; return; }
     try{
-      await STORE.ecrire(KEY, JSON.stringify({flags:[...flags], myth:[...myth], rois:[...rois]}));
+      await STORE.ecrire(KEY, JSON.stringify({
+        flags:[...flags], myth:[...myth], rois:[...rois], journal: journal
+      }));
       etat.textContent = "Enregistré";
     }catch(e){ etat.textContent = "Enregistrement impossible"; }
   }, 400);
@@ -1389,6 +1452,320 @@ document.getElementById("f-roi").addEventListener("click", e=>{
 });
 
 
+/* ============ PARTAGE SANS CONNEXION ============
+   Aucun compte, aucun mot de passe. Un code de guilde partagé entre amis
+   sert à la fois d'adresse et de clé : il voyage dans l'en-tête x-guilde
+   de chaque requête, et la politique de sécurité Postgres n'accorde
+   l'accès qu'aux lignes qui portent ce code.
+
+   Le code n'est jamais dans le dépôt : il vit dans le lien d'invitation
+   et dans le stockage local de chaque appareil. */
+
+const CFG = window.CONFIG || {};
+const SYNC_ACTIF = !!(CFG.url && CFG.cle);
+const CLE_GROUPE = "wikimaster-groupe";
+const PERIODE = 20000;
+
+let guilde = null, pseudo = null, monPseudo = null;
+let membres = [], syncT = null, enCours = false;
+const grpBox = document.getElementById("grp");
+
+/* ---------- registre horodaté ---------- */
+let journal = {}, instantane = {f:new Set(), m:new Set(), r:new Set()};
+
+function journaliser(){
+  const t = Date.now();
+  const comparer = (p, actuel, ancien) => {
+    actuel.forEach(id=>{ if(!ancien.has(id)) journal[p+":"+id] = [1, t]; });
+    ancien.forEach(id=>{ if(!actuel.has(id)) journal[p+":"+id] = [0, t]; });
+  };
+  comparer("f", flags, instantane.f);
+  comparer("m", myth,  instantane.m);
+  comparer("r", rois,  instantane.r);
+  figer();
+}
+function figer(){ instantane = {f:new Set(flags), m:new Set(myth), r:new Set(rois)}; }
+
+function ensembleDe(etat, prefixe){
+  const s = new Set();
+  Object.keys(etat || {}).forEach(k=>{
+    if(k.slice(0,2) === prefixe + ":" && etat[k][0] === 1) s.add(k.slice(2));
+  });
+  return s;
+}
+function ensembleCible(k){ return k[0] === "f" ? flags : k[0] === "m" ? myth : rois; }
+
+/* Fusion : pour chaque carte, l'inscription la plus récente l'emporte. */
+function fusionner(distant){
+  let change = false;
+  Object.keys(distant || {}).forEach(k=>{
+    const d = distant[k], local = journal[k];
+    if(local && local[1] >= d[1]) return;
+    journal[k] = d; change = true;
+    if(d[0] === 1) ensembleCible(k).add(k.slice(2)); else ensembleCible(k).delete(k.slice(2));
+  });
+  if(change) redessiner();
+  return change;
+}
+/* Remplacement complet : quand on ouvre la collection de quelqu'un d'autre. */
+function appliquerEtat(etat){
+  journal = Object.assign({}, etat || {});
+  flags.clear(); myth.clear(); rois.clear();
+  Object.keys(journal).forEach(k=>{ if(journal[k][0] === 1) ensembleCible(k).add(k.slice(2)); });
+  redessiner();
+}
+function redessiner(){
+  figer(); buildFlags(); buildTree(); buildRois();
+  if(typeof majEtatsGraphe === "function") majEtatsGraphe();
+}
+
+/* ---------- appels réseau ---------- */
+async function sbFetch(chemin, opts){
+  opts = opts || {};
+  const h = Object.assign({
+    "apikey": CFG.cle,
+    "Authorization": "Bearer " + CFG.cle,
+    "Content-Type": "application/json",
+    "x-guilde": guilde || ""
+  }, opts.headers || {});
+  const rep = await fetch(CFG.url.replace(/\/$/,"") + chemin, Object.assign({}, opts, {headers:h}));
+  if(!rep.ok){
+    const txt = await rep.text().catch(()=>"" );
+    throw new Error(rep.status + " " + txt.slice(0,140));
+  }
+  if(rep.status === 204) return null;
+  const ct = rep.headers.get("content-type") || "";
+  return ct.indexOf("json") === -1 ? null : rep.json();
+}
+async function tirer(){
+  membres = await sbFetch("/rest/v1/collections?select=pseudo,etat,maj&guilde=eq."
+    + encodeURIComponent(guilde) + "&order=pseudo") || [];
+  const moi = membres.find(m=>m.pseudo === pseudo);
+  return moi ? moi.etat : null;
+}
+async function pousser(){
+  await sbFetch("/rest/v1/collections", {
+    method:"POST",
+    headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},
+    body: JSON.stringify({guilde:guilde, pseudo:pseudo, etat:journal})
+  });
+}
+
+/* ---------- cycle : tirer, fusionner, pousser ---------- */
+async function synchroniser(force){
+  if(!SYNC_ACTIF || !guilde || !pseudo || enCours) return;
+  if(!navigator.onLine){ etatSync("hors ligne"); return; }
+  enCours = true;
+  try{
+    etatSync("synchronisation…");
+    const distant = await tirer();
+    const change = fusionner(distant);
+    if(force || change || distant === null || JSON.stringify(distant) !== JSON.stringify(journal)){
+      await pousser();
+      const e = membres.find(m=>m.pseudo === pseudo);
+      if(e) e.etat = journal; else membres.push({pseudo:pseudo, etat:journal, maj:null});
+    }
+    sauverLocal();
+    etatSync("synchronisé");
+    rendreGroupe();
+  }catch(e){
+    etatSync("erreur : " + e.message.slice(0, 60));
+  }
+  enCours = false;
+}
+function etatSync(t){ const e = document.getElementById("sync"); if(e) e.textContent = "· " + t; }
+function planifier(){
+  clearTimeout(syncT);
+  syncT = setTimeout(()=>{ synchroniser(); planifier(); }, PERIODE);
+}
+addEventListener("focus", ()=>synchroniser());
+addEventListener("online", ()=>synchroniser());
+
+/* ---------- mémoire locale du groupe ---------- */
+function lireGroupe(){
+  try{ return JSON.parse(localStorage.getItem(CLE_GROUPE)); }catch(e){ return null; }
+}
+function ecrireGroupe(){
+  try{
+    if(guilde) localStorage.setItem(CLE_GROUPE, JSON.stringify({guilde:guilde, pseudo:pseudo, mien:monPseudo}));
+    else localStorage.removeItem(CLE_GROUPE);
+  }catch(e){}
+}
+function codeAuHasard(){
+  const mots = "arvernes eduens sequanes carnutes senons parisii nerviens allobroges".split(" ");
+  return mots[Math.floor(Math.random()*mots.length)] + "-" + Math.random().toString(36).slice(2, 8);
+}
+
+/* ---------- changer de collection ---------- */
+async function basculer(nouveau){
+  if(nouveau === pseudo) return;
+  try{
+    if(pseudo){
+      await pousser();
+      const e = membres.find(m=>m.pseudo === pseudo);
+      if(e) e.etat = journal;
+    }
+  }catch(e){}
+  pseudo = nouveau;
+  ecrireGroupe();
+  const m = membres.find(x=>x.pseudo === nouveau);
+  appliquerEtat(m ? m.etat : {});
+  sauverLocal();
+  rendreGroupe();
+  synchroniser(true);
+}
+
+/* ---------- panneau Groupe ---------- */
+function bandeau(){
+  const b = document.getElementById("bandeau");
+  if(!b) return;
+  const ailleurs = !!(guilde && monPseudo && pseudo && pseudo !== monPseudo);
+  b.hidden = !ailleurs;
+  if(ailleurs) b.innerHTML = 'Vous modifiez la collection de <b>'+pseudo+'</b> · '
+    + '<button class="lien" id="retour">revenir à la vôtre</button>';
+}
+
+function rendreGroupe(){
+  if(!SYNC_ACTIF){
+    grpBox.innerHTML = '<div class="bloc"><h3>Partage non configuré</h3>'
+      + '<p>Le fichier <code>config.js</code> du dépôt est vide. Renseignez-y l\'adresse '
+      + 'et la clé publique de votre projet Supabase, puis rechargez la page. La marche à '
+      + 'suivre tient en quatre étapes dans <code>COLLABORATIF.md</code>.</p>'
+      + '<p class="note">Tant qu\'il est vide, la collection reste enregistrée sur cet '
+      + 'appareil uniquement — rien n\'est cassé.</p></div>';
+    bandeau(); return;
+  }
+  if(!guilde || !pseudo){
+    const code = (window.__invite || "") || codeAuHasard();
+    grpBox.innerHTML = '<div class="bloc"><h3>Rejoindre un groupe</h3>'
+      + '<p>Pas de compte, pas de mot de passe, pas d\'e-mail. Un code de guilde partagé '
+      + 'entre vous suffit : tapé à l\'identique, il vous réunit. Si un ami vous a envoyé '
+      + 'un lien d\'invitation, le code est déjà rempli ci-dessous.</p>'
+      + '<div class="champs"><input id="g-code" placeholder="Code de guilde" value="'+code+'" maxlength="60">'
+      + '<input id="g-nom" placeholder="Votre pseudo" maxlength="24"></div>'
+      + '<div class="champs"><button class="primaire" id="g-go">Rejoindre</button></div>'
+      + '<p class="note" id="msg">Au moins 8 signes pour le code : c\'est lui qui tient lieu de clé.</p></div>';
+    bandeau(); return;
+  }
+
+  const lien = location.origin + location.pathname + "#g=" + encodeURIComponent(guilde);
+  let html = '<div class="bloc"><h3>Guilde</h3>'
+    + '<p class="note">Code : <code>'+guilde+'</code> · '+membres.length+' collection(s)</p>'
+    + '<div class="champs"><input id="lien" readonly value="'+lien+'"></div>'
+    + '<div class="champs"><button class="primaire" id="copier">Copier l\'invitation</button>'
+    + '<button class="ghost" id="quitter">Quitter le groupe</button></div>'
+    + '<p class="note">Envoyez ce lien à vos amis : ils n\'auront qu\'à choisir un pseudo.</p></div>';
+
+  html += '<div class="bloc"><h3>Collections du groupe</h3>'
+    + '<p class="note">Tout le monde peut modifier tout le monde. Touchez un nom pour ouvrir '
+    + 'sa collection et cocher à sa place.</p><div class="listem">';
+  membres.forEach(m=>{
+    const s = {f:ensembleDe(m.etat,"f"), m:ensembleDe(m.etat,"m"), r:ensembleDe(m.etat,"r")};
+    const actif = m.pseudo === pseudo;
+    html += '<button class="mrow'+(actif?" actif":"")+'" data-p="'+m.pseudo+'">'
+      + '<span class="mn">'+m.pseudo+(m.pseudo===monPseudo?' <i>· vous</i>':'')+'</span>'
+      + '<span class="mc">'+(s.f.size+s.m.size+s.r.size)+' cartes · '+s.f.size+' drapeaux, '
+      + s.m.size+' divinités, '+s.r.size+' souverains</span>'
+      + '<span class="ma">'+(actif?"ouverte":"ouvrir")+'</span></button>';
+  });
+  html += '</div><div class="champs" style="margin-top:12px">'
+    + '<input id="n-nom" placeholder="Ajouter quelqu\'un" maxlength="24">'
+    + '<button class="ghost" id="n-go">Créer</button></div>'
+    + '<p class="note" id="msg"></p></div>';
+
+  const mien = {f:ensembleDe(journal,"f"), m:ensembleDe(journal,"m"), r:ensembleDe(journal,"r")};
+  const autres = membres.filter(m=>m.pseudo !== pseudo);
+  if(autres.length){
+    html += '<div class="bloc membre"><h3>Comparaison</h3>'
+      + '<p class="note">Accessoire, mais ça évite de chercher.</p>';
+    autres.forEach(a=>{
+      const s = {f:ensembleDe(a.etat,"f"), m:ensembleDe(a.etat,"m"), r:ensembleDe(a.etat,"r")};
+      const ilA = [], jAi = [];
+      ["f","m","r"].forEach(p=>{
+        s[p].forEach(id=>{ if(!mien[p].has(id)) ilA.push(p+":"+id); });
+        mien[p].forEach(id=>{ if(!s[p].has(id)) jAi.push(p+":"+id); });
+      });
+      html += '<details><summary>'+a.pseudo+' — '+ilA.length+' de plus, '+jAi.length+' de moins</summary>'
+        + (ilA.length ? '<h4>Chez '+a.pseudo+' et pas ici</h4><ul class="ech">'
+            + ilA.slice(0,400).map(k=>'<li>'+(NOMS[k]||k)+'</li>').join("")+'</ul>' : '')
+        + (jAi.length ? '<h4>Ici et pas chez '+a.pseudo+'</h4><ul class="ech">'
+            + jAi.slice(0,400).map(k=>'<li>'+(NOMS[k]||k)+'</li>').join("")+'</ul>' : '')
+        + (!ilA.length && !jAi.length ? '<p class="rien">Collections identiques.</p>' : '')
+        + '</details>';
+    });
+    html += '</div>';
+  }
+  grpBox.innerHTML = html;
+  bandeau();
+}
+
+/* ---------- interactions ---------- */
+document.addEventListener("click", e=>{
+  if(e.target.id === "retour") basculer(monPseudo);
+});
+
+grpBox.addEventListener("click", async e=>{
+  const msg = ()=>document.getElementById("msg") || {textContent:""};
+
+  if(e.target.id === "g-go"){
+    const g = document.getElementById("g-code").value.trim();
+    const p = document.getElementById("g-nom").value.trim();
+    if(g.length < 8){ msg().textContent = "Code trop court : au moins 8 signes."; return; }
+    if(p.length < 2){ msg().textContent = "Il faut un pseudo d'au moins 2 signes."; return; }
+    guilde = g; pseudo = p; monPseudo = p; window.__invite = ""; ecrireGroupe();
+    e.target.disabled = true; msg().textContent = "Connexion…";
+    await synchroniser(true); planifier();
+    return;
+  }
+  if(e.target.id === "copier"){
+    const champ = document.getElementById("lien");
+    try{ await navigator.clipboard.writeText(champ.value); e.target.textContent = "Copié"; }
+    catch(err){ champ.select(); e.target.textContent = "Sélectionné"; }
+    setTimeout(()=>{ e.target.textContent = "Copier l'invitation"; }, 1800);
+    return;
+  }
+  if(e.target.id === "quitter"){
+    guilde = null; pseudo = null; monPseudo = null; membres = [];
+    ecrireGroupe(); clearTimeout(syncT); etatSync("hors groupe"); rendreGroupe();
+    return;
+  }
+  if(e.target.id === "n-go"){
+    const p = document.getElementById("n-nom").value.trim();
+    if(p.length < 2){ msg().textContent = "Pseudo d'au moins 2 signes."; return; }
+    if(membres.some(m=>m.pseudo === p)){ msg().textContent = "Ce pseudo existe déjà."; return; }
+    const memo = pseudo, memoJ = journal;
+    try{
+      pseudo = p; journal = {}; await pousser();
+      pseudo = memo; journal = memoJ;
+      await synchroniser(true);
+    }catch(err){
+      pseudo = memo; journal = memoJ;
+      msg().textContent = "Échec : " + err.message;
+    }
+    return;
+  }
+  const row = e.target.closest(".mrow");
+  if(row) basculer(row.dataset.p);
+});
+
+/* ---------- démarrage ---------- */
+async function demarrerSync(){
+  if(!SYNC_ACTIF){ rendreGroupe(); return; }
+  const memo = lireGroupe();
+  if(memo){ guilde = memo.guilde; pseudo = memo.pseudo; monPseudo = memo.mien || memo.pseudo; }
+
+  const h = new URLSearchParams((location.hash || "").slice(1));
+  const invite = h.get("g");
+  if(invite){
+    history.replaceState(null, "", location.pathname + location.search);
+    if(invite !== guilde){ guilde = invite; pseudo = null; monPseudo = null; window.__invite = invite; ecrireGroupe(); }
+  }
+
+  rendreGroupe();
+  if(guilde && pseudo){ await synchroniser(true); planifier(); }
+}
+
+
 /* ============ VIGNETTES WIKIPÉDIA ============ */
 const WIKI = {
 "Chaos":"Chaos (mythologie)","Tartare":"Tartare (mythologie)","Éther":"Éther (mythologie)",
@@ -1732,7 +2109,7 @@ document.getElementById("q-myth").addEventListener("input", e=>{
 document.getElementById("f-myth").addEventListener("click", ()=>{ setTimeout(filtrerGraphe, 0); });
 
 /* ---------- démarrage ---------- */
-(async ()=>{ await charger(); buildFlags(); buildTree(); buildRois(); chargerVignettes(); })();
+(async ()=>{ await charger(); figer(); buildFlags(); buildTree(); buildRois(); chargerVignettes(); demarrerSync(); })();
 
 /* ---------- mode hors-ligne (ignoré en file:// et dans Claude) ---------- */
 if("serviceWorker" in navigator && location.protocol.indexOf("http") === 0){
