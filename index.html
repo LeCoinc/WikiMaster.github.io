@@ -64,7 +64,7 @@ header{padding:38px 0 0}
 h1{font-family:var(--disp);font-weight:300;font-size:clamp(38px,8.5vw,72px);line-height:.98;letter-spacing:.01em;margin:0 0 6px}
 h1 em{font-style:normal;color:var(--bronze)}
 .sub{color:var(--marbre-dim);max-width:46ch;margin:0 0 26px;font-size:14px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px}
 .stat{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--ligne);border-radius:3px;padding:14px 16px 12px}
 .stat b{display:block;font-family:var(--mono);font-weight:500;font-size:clamp(22px,5vw,30px);letter-spacing:-.02em}
 .stat b span{color:var(--marbre-dim);font-size:.55em}
@@ -252,6 +252,36 @@ h1 em{font-style:normal;color:var(--bronze)}
 .gaide{position:absolute;left:12px;top:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
   text-transform:uppercase;color:#5C6489;pointer-events:none;z-index:5}
 
+
+/* ---------- Souverains ---------- */
+.dyn{margin-top:32px}
+.dyn-head{display:flex;align-items:baseline;gap:12px;margin-bottom:2px;flex-wrap:wrap}
+.dyn-head h2{font-family:var(--disp);font-weight:500;font-size:26px;margin:0}
+.dyn-head .cnt{font-family:var(--mono);font-size:11px;color:var(--marbre-dim);letter-spacing:.1em;margin-left:auto;white-space:nowrap}
+.dyn .peri{width:100%;font-size:12.5px;color:var(--marbre-dim);margin:2px 0 0}
+.dyn .jauge{margin:9px 0 14px}
+.regnes{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:8px}
+.regne{display:flex;align-items:center;gap:11px;padding:8px 9px;border:1px solid var(--ligne);border-radius:3px;
+  background:rgba(255,255,255,.032);cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+.regne:hover{border-color:var(--bronze-dim);background:rgba(255,255,255,.055)}
+.regne.got{background:rgba(79,191,160,.07);border-color:rgba(79,191,160,.38)}
+.regne .por{flex:0 0 46px;width:46px;height:46px;border-radius:2px;overflow:hidden;background:rgba(255,255,255,.05);
+  border:1px solid var(--ligne);display:flex;align-items:center;justify-content:center}
+.regne .por img{width:100%;height:100%;object-fit:cover;object-position:center 22%;filter:grayscale(.55) contrast(1.05) brightness(.9);transition:filter .45s}
+.regne.got .por img{filter:none}
+.regne .por b{font-family:var(--disp);font-size:19px;font-weight:500;color:var(--marbre-dim)}
+.regne .txt{flex:1;min-width:0}
+.regne .nom{display:block;font-family:var(--disp);font-size:19px;font-weight:500;line-height:1.14;overflow-wrap:anywhere}
+.regne.got .nom{color:var(--verdigris)}
+.regne .ep{display:block;font-size:11.5px;color:var(--marbre-dim);line-height:1.35;margin-top:1px}
+.regne .an{display:block;font-family:var(--mono);font-size:10.5px;color:var(--bronze);letter-spacing:.05em;margin-top:3px}
+.regne .info{flex:0 0 22px;width:22px;height:22px;border-radius:50%;border:1px solid var(--ligne);background:none;
+  color:var(--marbre-dim);font-family:var(--disp);font-size:13px;cursor:pointer;padding:0;line-height:1}
+.regne .info:hover{color:var(--bronze);border-color:var(--bronze-dim)}
+.regne .tick3{position:absolute;top:-1px;right:-1px;width:0;height:0;border-style:solid;border-width:0 22px 22px 0;
+  border-color:transparent var(--verdigris) transparent transparent;opacity:0;transition:opacity .25s;border-top-right-radius:3px}
+.regne.got .tick3{opacity:1}
+
 /* ---------- Divers ---------- */
 .vide{text-align:center;color:var(--marbre-dim);padding:50px 20px;font-family:var(--disp);font-size:22px}
 .panneau[hidden]{display:none}
@@ -264,7 +294,8 @@ footer .sp{flex:1}
   .label .nm{font-size:17px}
   .kids{margin-left:7px;padding-left:11px}
   .node::before,.union::before{left:-11px;width:8px}
-  .stats{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .regnes{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -287,12 +318,18 @@ footer .sp{flex:1}
       <b id="s-myth">0<span>/0</span></b>
       <div class="jauge"><i id="j-myth"></i></div>
     </div>
+    <div class="stat">
+      <small>Souverains</small>
+      <b id="s-roi">0<span>/0</span></b>
+      <div class="jauge"><i id="j-roi"></i></div>
+    </div>
   </div>
 </header>
 
 <div class="tabs" role="tablist">
   <button class="tab" role="tab" id="tab-flag" aria-controls="p-flag" aria-selected="true">Drapeaux <i id="t1">0</i></button>
   <button class="tab" role="tab" id="tab-myth" aria-controls="p-myth" aria-selected="false">Théogonie <i id="t2">0</i></button>
+  <button class="tab" role="tab" id="tab-roi" aria-controls="p-roi" aria-selected="false">Souverains <i id="t3">0</i></button>
 </div>
 
 <!-- ============ DRAPEAUX ============ -->
@@ -349,6 +386,23 @@ footer .sp{flex:1}
       <button id="g-fit" aria-label="Tout afficher">⤢</button>
     </div>
   </div>
+</section>
+
+
+<!-- ============ SOUVERAINS ============ -->
+<section class="panneau" id="p-roi" role="tabpanel" aria-labelledby="tab-roi" hidden>
+  <div class="tools">
+    <label class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="q-roi" placeholder="Chercher un souverain…" autocomplete="off">
+    </label>
+    <div class="seg" id="f-roi">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+  </div>
+  <div id="rois"></div>
 </section>
 
 <footer>
@@ -612,6 +666,143 @@ c:[
    ]}
   ]}
 ]};
+const ROIS = [
+{d:"Gaule indépendante", p:"Rois et chefs des peuples gaulois, avant la conquête romaine", r:[
+ {n:"Ambigat", e:"roi des Bituriges", a:"VIe s. av. J.-C.", t:"Souverain légendaire dont l'abondance du royaume aurait poussé les Gaulois à essaimer vers l'Italie et la Germanie."},
+ {n:"Brennos", e:"chef sénon", a:"390 av. J.-C.", w:"Brennos (chef sénon)", t:"Vainqueur des Romains à l'Allia, il prend Rome et lance au vaincu le fameux « Malheur aux vaincus »."},
+ {n:"Luernios", e:"roi des Arvernes", a:"IIe s. av. J.-C.", t:"Sa générosité fastueuse est restée proverbiale : il faisait distribuer or et vin depuis un char lancé au galop."},
+ {n:"Bituit", e:"roi des Arvernes", a:"v. 121 av. J.-C.", t:"Écrasé par les légions près du confluent du Rhône et de l'Isère, il ouvre la voie à la province romaine."},
+ {n:"Celtill", e:"chef arverne", a:"v. 80 av. J.-C.", t:"Père de Vercingétorix, mis à mort par les siens pour avoir voulu restaurer la royauté."},
+ {n:"Diviciacos", e:"chef éduen", a:"v. 60 av. J.-C.", t:"Druide et diplomate, allié de Rome, il plaide la cause de son peuple jusque devant le Sénat."},
+ {n:"Dumnorix", e:"chef éduen", a:"v. 54 av. J.-C.", t:"Frère de Diviciacos et son contraire : hostile à César, il meurt en criant qu'il est un homme libre."},
+ {n:"Ambiorix", e:"roi des Éburons", a:"54–53 av. J.-C.", t:"Il anéantit une légion et demie près d'Aduatuca, puis échappe à toutes les poursuites de César."},
+ {n:"Commios", e:"roi des Atrébates", a:"57–50 av. J.-C.", t:"D'abord auxiliaire de César en Bretagne, il se retourne contre lui et finit par passer la mer."},
+ {n:"Vercingétorix", e:"roi des Arvernes", a:"52 av. J.-C.", t:"Vainqueur à Gergovie, assiégé puis pris à Alésia. Six ans de captivité avant le triomphe et l'exécution."}
+]},
+{d:"Mérovingiens", p:"Rois des Francs, de Clodion au dernier roi fainéant", r:[
+ {n:"Clodion le Chevelu", e:"roi des Francs saliens", a:"v. 428–448", t:"Premier roi franc attesté, il pousse depuis la Toxandrie jusqu'à la Somme."},
+ {n:"Mérovée", e:"roi des Francs saliens", a:"v. 448–457", t:"Éponyme de la dynastie, présent aux champs Catalauniques contre Attila ; son existence même reste discutée."},
+ {n:"Childéric Ier", e:"roi des Francs saliens", a:"457–481", t:"Père de Clovis. Sa tombe, retrouvée à Tournai en 1653, a livré un trésor d'orfèvrerie exceptionnel."},
+ {n:"Clovis Ier", e:"roi des Francs", a:"481–511", t:"Vainqueur de Syagrius, des Alamans et des Wisigoths. Son baptême à Reims lie durablement la royauté franque à l'Église."},
+ {n:"Thierry Ier", e:"roi de Reims", a:"511–534", w:"Thierry Ier (roi d'Austrasie)", t:"Fils aîné de Clovis, il reçoit la part orientale du royaume et soumet la Thuringe."},
+ {n:"Clodomir", e:"roi d'Orléans", a:"511–524", t:"Tué en Burgondie à Vézeronce ; ses fils seront égorgés par leurs oncles pour leur héritage."},
+ {n:"Childebert Ier", e:"roi de Paris", a:"511–558", t:"Il rapporte d'Espagne la tunique de saint Vincent et fonde l'abbaye de Saint-Germain-des-Prés."},
+ {n:"Clotaire Ier", e:"roi des Francs", a:"511–561", t:"Survivant de tous ses frères, il reconstitue l'unité du royaume trois ans avant sa mort."},
+ {n:"Thibert Ier", e:"roi d'Austrasie", a:"534–548", w:"Thibert Ier", t:"Le seul roi franc à frapper monnaie d'or à son effigie, défiant l'empereur de Constantinople."},
+ {n:"Thibaut", e:"roi d'Austrasie", a:"548–555", w:"Thibaut (roi d'Austrasie)", t:"Monté sur le trône enfant, malade toute sa courte vie, il meurt sans postérité."},
+ {n:"Caribert Ier", e:"roi de Paris", a:"561–567", t:"Excommunié pour ses mariages successifs, il laisse une fille qui deviendra reine du Kent."},
+ {n:"Gontran", e:"roi de Burgondie", a:"561–592", t:"Arbitre entre ses neveux ennemis, réputé bon roi et vénéré comme saint."},
+ {n:"Sigebert Ier", e:"roi d'Austrasie", a:"561–575", t:"Époux de Brunehaut, assassiné sur ordre de Frédégonde au moment où il triomphait de son frère."},
+ {n:"Chilpéric Ier", e:"roi de Neustrie", a:"561–584", t:"Époux de Frédégonde, poète et théologien à ses heures, poignardé au retour d'une chasse."},
+ {n:"Childebert II", e:"roi d'Austrasie", a:"575–596", t:"Roi à cinq ans sous la tutelle de Brunehaut, il hérite aussi de la Burgondie."},
+ {n:"Thibert II", e:"roi d'Austrasie", a:"595–612", t:"Battu par son frère Thierry II à Toul et Tolbiac, il est tonsuré puis mis à mort."},
+ {n:"Thierry II", e:"roi de Burgondie", a:"595–613", t:"Vainqueur de son frère, il meurt de dysenterie quelques mois plus tard, à vingt-six ans."},
+ {n:"Sigebert II", e:"roi d'Austrasie", a:"613", t:"Règne de quelques mois : l'aristocratie le livre à Clotaire II, qui le fait exécuter avec Brunehaut."},
+ {n:"Clotaire II", e:"roi des Francs", a:"584–629", t:"Il réunifie le royaume en 613 et publie l'édit de Paris, concession majeure aux grands."},
+ {n:"Dagobert Ier", e:"roi des Francs", a:"629–639", t:"Dernier Mérovingien vraiment souverain. Il fait de Saint-Denis la nécropole royale."},
+ {n:"Caribert II", e:"roi d'Aquitaine", a:"629–632", t:"Doté d'un royaume périphérique par son frère Dagobert, il meurt trois ans plus tard."},
+ {n:"Sigebert III", e:"roi d'Austrasie", a:"634–656", t:"Roi pieux gouverné par le maire du palais Grimoald, il est le premier « roi fainéant »."},
+ {n:"Clovis II", e:"roi de Neustrie et de Burgondie", a:"639–657", t:"Époux de sainte Bathilde, ancienne esclave anglo-saxonne devenue régente."},
+ {n:"Clotaire III", e:"roi de Neustrie", a:"657–673", t:"Règne entièrement dominé par sa mère Bathilde puis par le maire Ébroïn."},
+ {n:"Childéric II", e:"roi des Francs", a:"662–675", t:"Réunit brièvement les trois royaumes avant d'être assassiné en forêt avec sa femme enceinte."},
+ {n:"Thierry III", e:"roi des Francs", a:"675–691", t:"Vaincu à Tertry en 687 par Pépin de Herstal : le pouvoir réel passe aux Pippinides."},
+ {n:"Dagobert II", e:"roi d'Austrasie", a:"676–679", t:"Exilé en Irlande dans son enfance, rappelé, puis tué à la chasse dans des circonstances obscures."},
+ {n:"Clovis III", e:"roi des Francs", a:"691–695", t:"Enfant-roi sans pouvoir, mort vers douze ans."},
+ {n:"Childebert III", e:"roi des Francs", a:"695–711", t:"Les chroniques le disent juste, mais ses diplômes sont tous rédigés par le maire du palais."},
+ {n:"Dagobert III", e:"roi des Francs", a:"711–715", t:"Monté sur le trône adolescent, il meurt à l'aube de la crise de succession de Pépin de Herstal."},
+ {n:"Chilpéric II", e:"roi des Francs", a:"715–721", t:"Tiré d'un monastère par les Neustriens pour faire pièce à Charles Martel, il est battu à Vinchy."},
+ {n:"Clotaire IV", e:"roi d'Austrasie", a:"718–719", t:"Roi de circonstance installé par Charles Martel, disparu au bout d'un an."},
+ {n:"Thierry IV", e:"roi des Francs", a:"721–737", t:"À sa mort, Charles Martel gouverne huit ans sans prendre la peine de lui donner un successeur."},
+ {n:"Childéric III", e:"roi des Francs", a:"743–751", t:"Dernier Mérovingien : déposé, tondu et enfermé à Saint-Bertin sur avis du pape."}
+]},
+{d:"Carolingiens", p:"De Pépin le Bref à Louis V, avec les intermèdes robertien et bosonide", r:[
+ {n:"Pépin le Bref", e:"roi des Francs", a:"751–768", t:"Premier roi sacré de la dynastie, il fonde l'alliance avec la papauté et l'État pontifical."},
+ {n:"Carloman Ier", e:"roi des Francs", a:"768–771", t:"Il partage le royaume avec son frère Charles trois ans durant, puis meurt à vingt ans."},
+ {n:"Charlemagne", e:"roi des Francs, empereur d'Occident", a:"768–814", t:"Cinquante campagnes, un empire de l'Èbre à l'Elbe, et la couronne impériale à Rome en l'an 800."},
+ {n:"Louis le Pieux", e:"empereur d'Occident", a:"814–840", t:"Héritier unique d'un empire trop vaste, il passe son règne à en organiser puis rejouer le partage."},
+ {n:"Charles II le Chauve", e:"roi de Francie occidentale, empereur", a:"840–877", t:"Le traité de Verdun lui donne en 843 le territoire d'où sortira la France."},
+ {n:"Louis II le Bègue", e:"roi de Francie occidentale", a:"877–879", t:"Dix-huit mois de règne, entièrement consacrés à acheter la fidélité des grands."},
+ {n:"Louis III", e:"roi de Francie occidentale", a:"879–882", w:"Louis III de France", t:"Vainqueur des Normands à Saucourt-en-Vimeu, tué en poursuivant une jeune fille à cheval."},
+ {n:"Carloman II", e:"roi de Francie occidentale", a:"879–884", t:"Il règne avec son frère puis seul, et meurt à dix-huit ans d'une blessure de chasse."},
+ {n:"Charles III le Gros", e:"empereur d'Occident", a:"884–888", t:"Il réunit une dernière fois l'empire de Charlemagne, puis est déposé pour incapacité."},
+ {n:"Eudes", e:"roi de Francie occidentale", a:"888–898", w:"Eudes (roi des Francs)", t:"Robertien élu pour avoir défendu Paris contre les Normands en 885."},
+ {n:"Charles III le Simple", e:"roi de Francie occidentale", a:"898–922", t:"Il cède la Normandie à Rollon en 911, puis meurt captif à Péronne."},
+ {n:"Robert Ier", e:"roi de Francie occidentale", a:"922–923", w:"Robert Ier (roi des Francs)", t:"Frère d'Eudes, tué à la bataille de Soissons l'année même de son élection."},
+ {n:"Raoul", e:"roi de Francie occidentale", a:"923–936", w:"Raoul (roi des Francs)", t:"Duc de Bourgogne porté au trône par les grands, il repousse Hongrois et Normands."},
+ {n:"Louis IV d'Outremer", e:"roi de Francie occidentale", a:"936–954", t:"Rappelé d'Angleterre où sa mère l'avait mis à l'abri, il lutte toute sa vie contre Hugues le Grand."},
+ {n:"Lothaire", e:"roi de Francie occidentale", a:"954–986", w:"Lothaire (roi des Francs)", t:"Il tente de reprendre la Lorraine et surprend l'empereur Otton II jusqu'à Aix."},
+ {n:"Louis V le Fainéant", e:"roi de Francie occidentale", a:"986–987", t:"Un an de règne, une chute de cheval, et la dynastie s'éteint faute d'héritier."}
+]},
+{d:"Capétiens directs", p:"Trois siècles et demi de transmission ininterrompue de père en fils", r:[
+ {n:"Hugues Capet", e:"roi des Francs", a:"987–996", t:"Élu à Senlis, il fait aussitôt sacrer son fils : l'hérédité s'installe sans jamais être proclamée."},
+ {n:"Robert II le Pieux", e:"roi des Francs", a:"996–1031", t:"Excommunié pour son mariage avec sa cousine Berthe, réputé guérir les écrouelles."},
+ {n:"Henri Ier", e:"roi des Francs", a:"1031–1060", w:"Henri Ier (roi des Francs)", t:"Il épouse Anne de Kiev et doit céder la Bourgogne à son frère pour régner."},
+ {n:"Philippe Ier", e:"roi des Francs", a:"1060–1108", w:"Philippe Ier (roi des Francs)", t:"Excommunié pour avoir enlevé Bertrade de Montfort, il manque la première croisade."},
+ {n:"Louis VI le Gros", e:"roi de France", a:"1108–1137", t:"Il passe son règne à mater les seigneurs pillards de l'Île-de-France, château après château."},
+ {n:"Louis VII le Jeune", e:"roi de France", a:"1137–1180", t:"La deuxième croisade et le divorce d'Aliénor, qui emporte l'Aquitaine chez les Plantagenêts."},
+ {n:"Philippe II Auguste", e:"roi de France", a:"1180–1223", t:"Bouvines, la conquête de la Normandie, et un domaine royal quadruplé."},
+ {n:"Louis VIII le Lion", e:"roi de France", a:"1223–1226", t:"Trois ans de règne : la croisade contre les albigeois et une dysenterie à Montpensier."},
+ {n:"Louis IX", e:"roi de France, saint", a:"1226–1270", w:"Louis IX", t:"La Sainte-Chapelle, la justice sous le chêne de Vincennes, deux croisades et la mort à Tunis."},
+ {n:"Philippe III le Hardi", e:"roi de France", a:"1270–1285", t:"Il ramène d'Afrique les ossements de son père et échoue devant l'Aragon."},
+ {n:"Philippe IV le Bel", e:"roi de France", a:"1285–1314", t:"L'attentat d'Anagni, la fin des Templiers, les premiers États généraux : l'État moderne s'esquisse."},
+ {n:"Louis X le Hutin", e:"roi de France et de Navarre", a:"1314–1316", t:"Il affranchit les serfs du domaine royal et meurt après une partie de jeu de paume."},
+ {n:"Jean Ier le Posthume", e:"roi de France", a:"1316", t:"Roi cinq jours, mort au berceau : le plus bref règne de l'histoire de France."},
+ {n:"Philippe V le Long", e:"roi de France", a:"1316–1322", t:"Son avènement fixe l'exclusion des femmes de la couronne, plus tard nommée loi salique."},
+ {n:"Charles IV le Bel", e:"roi de France", a:"1322–1328", t:"Dernier Capétien direct : il meurt sans fils, ouvrant la crise dont sortira la guerre de Cent Ans."}
+]},
+{d:"Valois", p:"De la guerre de Cent Ans aux guerres de Religion", r:[
+ {n:"Philippe VI", e:"roi de France", a:"1328–1350", w:"Philippe VI de France", t:"Crécy, la peste noire, et l'achat du Dauphiné : le premier Valois hérite surtout des désastres."},
+ {n:"Jean II le Bon", e:"roi de France", a:"1350–1364", t:"Prisonnier des Anglais à Poitiers, il retourne volontairement se constituer otage à Londres."},
+ {n:"Charles V le Sage", e:"roi de France", a:"1364–1380", t:"Avec Du Guesclin, il reprend presque tout le terrain perdu et fonde la Bibliothèque royale."},
+ {n:"Charles VI le Fou", e:"roi de France", a:"1380–1422", w:"Charles VI de France", t:"Ses crises de démence livrent le royaume à la guerre des Armagnacs et des Bourguignons."},
+ {n:"Charles VII le Victorieux", e:"roi de France", a:"1422–1461", w:"Charles VII de France", t:"Le « petit roi de Bourges » que Jeanne d'Arc mène à Reims, et qui achève de bouter les Anglais."},
+ {n:"Louis XI", e:"roi de France", a:"1461–1483", t:"L'araignée universelle : il abat Charles le Téméraire par la diplomatie plus que par les armes."},
+ {n:"Charles VIII", e:"roi de France", a:"1483–1498", t:"Il ouvre les guerres d'Italie et meurt d'avoir heurté du front un linteau de porte à Amboise."},
+ {n:"Louis XII", e:"roi de France", a:"1498–1515", t:"Le « Père du peuple », qui allège l'impôt et s'épuise à revendiquer Milan et Naples."},
+ {n:"François Ier", e:"roi de France", a:"1515–1547", w:"François Ier (roi de France)", t:"Marignan, Pavie, Villers-Cotterêts et Léonard de Vinci à Amboise : la Renaissance faite roi."},
+ {n:"Henri II", e:"roi de France", a:"1547–1559", w:"Henri II (roi de France)", t:"Il reprend Calais et meurt d'un éclat de lance dans l'œil, lors d'un tournoi."},
+ {n:"François II", e:"roi de France", a:"1559–1560", w:"François II (roi de France)", t:"Époux de Marie Stuart à quatorze ans, mort d'une otite à dix-sept."},
+ {n:"Charles IX", e:"roi de France", a:"1560–1574", w:"Charles IX (roi de France)", t:"Son nom reste attaché au massacre de la Saint-Barthélemy, voulu par sa mère Catherine."},
+ {n:"Henri III", e:"roi de France et de Pologne", a:"1574–1589", t:"Dernier Valois, assassiné par Jacques Clément après avoir fait tuer le duc de Guise."}
+]},
+{d:"Bourbons", p:"De l'Édit de Nantes à la Révolution", r:[
+ {n:"Henri IV", e:"roi de France et de Navarre", a:"1589–1610", w:"Henri IV (roi de France)", t:"Converti pour Paris, il donne l'Édit de Nantes et tombe sous le couteau de Ravaillac."},
+ {n:"Louis XIII", e:"roi de France et de Navarre", a:"1610–1643", t:"Roi taciturne servi par Richelieu : La Rochelle tombe, la noblesse plie, l'Espagne recule."},
+ {n:"Louis XIV", e:"roi de France et de Navarre", a:"1643–1715", t:"Soixante-douze ans de règne, Versailles, quatre grandes guerres et la révocation de l'Édit de Nantes."},
+ {n:"Louis XV", e:"roi de France et de Navarre", a:"1715–1774", t:"Le Bien-Aimé devenu impopulaire : Fontenoy, puis la perte de la Nouvelle-France."},
+ {n:"Louis XVI", e:"roi de France et de Navarre", a:"1774–1792", t:"Convoque les États généraux, devient roi des Français, et meurt sur l'échafaud place de la Révolution."},
+ {n:"Louis XVII", e:"roi titulaire", a:"1793–1795", t:"L'enfant du Temple, jamais couronné, mort à dix ans en captivité."}
+]},
+{d:"Empires et Restauration", p:"De Napoléon Ier à la chute du Second Empire", r:[
+ {n:"Napoléon Ier", e:"empereur des Français", a:"1804–1814, 1815", t:"Austerlitz, le Code civil, la Russie, Waterloo et Sainte-Hélène en quinze ans."},
+ {n:"Napoléon II", e:"empereur titulaire", a:"1815", t:"L'Aiglon, proclamé empereur quinze jours après Waterloo, élevé à Vienne, mort à vingt et un ans."},
+ {n:"Louis XVIII", e:"roi de France et de Navarre", a:"1814–1824", t:"Il rentre dans les fourgons de l'étranger et octroie la Charte, compromis entre trône et Révolution."},
+ {n:"Charles X", e:"roi de France et de Navarre", a:"1824–1830", t:"Sacré à Reims comme sous l'Ancien Régime, chassé par les Trois Glorieuses."},
+ {n:"Louis-Philippe Ier", e:"roi des Français", a:"1830–1848", t:"Le roi-citoyen et son parapluie, emporté par la révolution de Février."},
+ {n:"Napoléon III", e:"empereur des Français", a:"1852–1870", t:"Le coup d'État, Haussmann, l'Italie, le Mexique, et la capitulation de Sedan."}
+]}
+];
+const ALIAS_R = {
+ "vercingetorix":["vercingétorix"], "louis-ix":["saint louis"], "napoleon-ier":["napoleon bonaparte","bonaparte","napoleon"],
+ "louis-xiv":["roi soleil","le roi soleil"], "charlemagne":["charles ier le grand","carolus magnus"],
+ "philippe-ii-auguste":["philippe auguste"], "hugues-capet":["hugues ier capet"],
+ "louis-philippe-ier":["louis philippe"], "napoleon-iii":["louis napoleon bonaparte"],
+ "clovis-ier":["clovis"], "charles-v-le-sage":["charles v"], "charles-vii-le-victorieux":["charles vii"],
+ "charles-vi-le-fou":["charles vi"], "philippe-iv-le-bel":["philippe le bel"], "louis-vi-le-gros":["louis vi"],
+ "louis-vii-le-jeune":["louis vii"], "louis-viii-le-lion":["louis viii"], "philippe-iii-le-hardi":["philippe iii"],
+ "louis-x-le-hutin":["louis x"], "philippe-v-le-long":["philippe v"], "charles-iv-le-bel":["charles iv"],
+ "jean-ii-le-bon":["jean ii"], "jean-ier-le-posthume":["jean ier"], "louis-v-le-faineant":["louis v"],
+ "robert-ii-le-pieux":["robert ii"], "charles-ii-le-chauve":["charles ii","charles le chauve"],
+ "charles-iii-le-simple":["charles le simple"], "charles-iii-le-gros":["charles le gros"],
+ "louis-ii-le-begue":["louis ii"], "pepin-le-bref":["pepin iii"], "louis-le-pieux":["louis ier le pieux","louis ier"],
+ "clodion-le-chevelu":["clodion"], "childeric-iii":["childeric iii"], "napoleon-ii":["l aiglon"]
+};
+
+ROIS.forEach(d => d.r.forEach(k => {
+  k.dyn = d.d;
+  k.i = k.n.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}));
 
 const PAYS = [{"c": "za", "n": "Afrique du Sud", "z": "AF"}, {"c": "dz", "n": "Algérie", "z": "AF"}, {"c": "ao", "n": "Angola", "z": "AF"}, {"c": "bw", "n": "Botswana", "z": "AF"}, {"c": "bf", "n": "Burkina Faso", "z": "AF"}, {"c": "bi", "n": "Burundi", "z": "AF"}, {"c": "bj", "n": "Bénin", "z": "AF"}, {"c": "cm", "n": "Cameroun", "z": "AF"}, {"c": "cv", "n": "Cap-Vert", "z": "AF"}, {"c": "km", "n": "Comores", "z": "AF"}, {"c": "ci", "n": "Côte d'Ivoire", "z": "AF"}, {"c": "dj", "n": "Djibouti", "z": "AF"}, {"c": "sz", "n": "Eswatini", "z": "AF"}, {"c": "ga", "n": "Gabon", "z": "AF"}, {"c": "gm", "n": "Gambie", "z": "AF"}, {"c": "gh", "n": "Ghana", "z": "AF"}, {"c": "gn", "n": "Guinée", "z": "AF"}, {"c": "gq", "n": "Guinée équatoriale", "z": "AF"}, {"c": "gw", "n": "Guinée-Bissau", "z": "AF"}, {"c": "ke", "n": "Kenya", "z": "AF"}, {"c": "ls", "n": "Lesotho", "z": "AF"}, {"c": "ly", "n": "Libye", "z": "AF"}, {"c": "lr", "n": "Libéria", "z": "AF"}, {"c": "mg", "n": "Madagascar", "z": "AF"}, {"c": "mw", "n": "Malawi", "z": "AF"}, {"c": "ml", "n": "Mali", "z": "AF"}, {"c": "ma", "n": "Maroc", "z": "AF"}, {"c": "mu", "n": "Maurice", "z": "AF"}, {"c": "mr", "n": "Mauritanie", "z": "AF"}, {"c": "mz", "n": "Mozambique", "z": "AF"}, {"c": "na", "n": "Namibie", "z": "AF"}, {"c": "ne", "n": "Niger", "z": "AF"}, {"c": "ng", "n": "Nigeria", "z": "AF"}, {"c": "ug", "n": "Ouganda", "z": "AF"}, {"c": "rw", "n": "Rwanda", "z": "AF"}, {"c": "cf", "n": "République centrafricaine", "z": "AF"}, {"c": "cg", "n": "République du Congo", "z": "AF"}, {"c": "cd", "n": "République démocratique du Congo", "z": "AF"}, {"c": "st", "n": "Sao Tomé-et-Principe", "z": "AF"}, {"c": "sc", "n": "Seychelles", "z": "AF"}, {"c": "sl", "n": "Sierra Leone", "z": "AF"}, {"c": "so", "n": "Somalie", "z": "AF"}, {"c": "sd", "n": "Soudan", "z": "AF"}, {"c": "ss", "n": "Soudan du Sud", "z": "AF"}, {"c": "sn", "n": "Sénégal", "z": "AF"}, {"c": "tz", "n": "Tanzanie", "z": "AF"}, {"c": "td", "n": "Tchad", "z": "AF"}, {"c": "tg", "n": "Togo", "z": "AF"}, {"c": "tn", "n": "Tunisie", "z": "AF"}, {"c": "zm", "n": "Zambie", "z": "AF"}, {"c": "zw", "n": "Zimbabwe", "z": "AF"}, {"c": "eg", "n": "Égypte", "z": "AF"}, {"c": "er", "n": "Érythrée", "z": "AF"}, {"c": "et", "n": "Éthiopie", "z": "AF"}, {"c": "af", "n": "Afghanistan", "z": "AS"}, {"c": "sa", "n": "Arabie saoudite", "z": "AS"}, {"c": "am", "n": "Arménie", "z": "AS"}, {"c": "az", "n": "Azerbaïdjan", "z": "AS"}, {"c": "bh", "n": "Bahreïn", "z": "AS"}, {"c": "bd", "n": "Bangladesh", "z": "AS"}, {"c": "bt", "n": "Bhoutan", "z": "AS"}, {"c": "mm", "n": "Birmanie (Myanmar)", "z": "AS"}, {"c": "bn", "n": "Brunei", "z": "AS"}, {"c": "kh", "n": "Cambodge", "z": "AS"}, {"c": "cn", "n": "Chine", "z": "AS"}, {"c": "kp", "n": "Corée du Nord", "z": "AS"}, {"c": "kr", "n": "Corée du Sud", "z": "AS"}, {"c": "ge", "n": "Géorgie", "z": "AS"}, {"c": "in", "n": "Inde", "z": "AS"}, {"c": "id", "n": "Indonésie", "z": "AS"}, {"c": "iq", "n": "Irak", "z": "AS"}, {"c": "ir", "n": "Iran", "z": "AS"}, {"c": "il", "n": "Israël", "z": "AS"}, {"c": "jp", "n": "Japon", "z": "AS"}, {"c": "jo", "n": "Jordanie", "z": "AS"}, {"c": "kz", "n": "Kazakhstan", "z": "AS"}, {"c": "kg", "n": "Kirghizistan", "z": "AS"}, {"c": "kw", "n": "Koweït", "z": "AS"}, {"c": "la", "n": "Laos", "z": "AS"}, {"c": "lb", "n": "Liban", "z": "AS"}, {"c": "my", "n": "Malaisie", "z": "AS"}, {"c": "mv", "n": "Maldives", "z": "AS"}, {"c": "mn", "n": "Mongolie", "z": "AS"}, {"c": "np", "n": "Népal", "z": "AS"}, {"c": "om", "n": "Oman", "z": "AS"}, {"c": "uz", "n": "Ouzbékistan", "z": "AS"}, {"c": "pk", "n": "Pakistan", "z": "AS"}, {"c": "ps", "n": "Palestine", "z": "AS"}, {"c": "ph", "n": "Philippines", "z": "AS"}, {"c": "qa", "n": "Qatar", "z": "AS"}, {"c": "sg", "n": "Singapour", "z": "AS"}, {"c": "lk", "n": "Sri Lanka", "z": "AS"}, {"c": "sy", "n": "Syrie", "z": "AS"}, {"c": "tj", "n": "Tadjikistan", "z": "AS"}, {"c": "tw", "n": "Taïwan", "z": "AS"}, {"c": "th", "n": "Thaïlande", "z": "AS"}, {"c": "tl", "n": "Timor oriental", "z": "AS"}, {"c": "tm", "n": "Turkménistan", "z": "AS"}, {"c": "tr", "n": "Turquie", "z": "AS"}, {"c": "vn", "n": "Viêt Nam", "z": "AS"}, {"c": "ye", "n": "Yémen", "z": "AS"}, {"c": "ae", "n": "Émirats arabes unis", "z": "AS"}, {"c": "al", "n": "Albanie", "z": "EU"}, {"c": "de", "n": "Allemagne", "z": "EU"}, {"c": "ad", "n": "Andorre", "z": "EU"}, {"c": "at", "n": "Autriche", "z": "EU"}, {"c": "be", "n": "Belgique", "z": "EU"}, {"c": "by", "n": "Biélorussie", "z": "EU"}, {"c": "ba", "n": "Bosnie-Herzégovine", "z": "EU"}, {"c": "bg", "n": "Bulgarie", "z": "EU"}, {"c": "cy", "n": "Chypre", "z": "EU"}, {"c": "hr", "n": "Croatie", "z": "EU"}, {"c": "dk", "n": "Danemark", "z": "EU"}, {"c": "es", "n": "Espagne", "z": "EU"}, {"c": "ee", "n": "Estonie", "z": "EU"}, {"c": "fi", "n": "Finlande", "z": "EU"}, {"c": "fr", "n": "France", "z": "EU"}, {"c": "gr", "n": "Grèce", "z": "EU"}, {"c": "hu", "n": "Hongrie", "z": "EU"}, {"c": "ie", "n": "Irlande", "z": "EU"}, {"c": "is", "n": "Islande", "z": "EU"}, {"c": "it", "n": "Italie", "z": "EU"}, {"c": "xk", "n": "Kosovo", "z": "EU"}, {"c": "lv", "n": "Lettonie", "z": "EU"}, {"c": "li", "n": "Liechtenstein", "z": "EU"}, {"c": "lt", "n": "Lituanie", "z": "EU"}, {"c": "lu", "n": "Luxembourg", "z": "EU"}, {"c": "mk", "n": "Macédoine du Nord", "z": "EU"}, {"c": "mt", "n": "Malte", "z": "EU"}, {"c": "md", "n": "Moldavie", "z": "EU"}, {"c": "mc", "n": "Monaco", "z": "EU"}, {"c": "me", "n": "Monténégro", "z": "EU"}, {"c": "no", "n": "Norvège", "z": "EU"}, {"c": "nl", "n": "Pays-Bas", "z": "EU"}, {"c": "pl", "n": "Pologne", "z": "EU"}, {"c": "pt", "n": "Portugal", "z": "EU"}, {"c": "ro", "n": "Roumanie", "z": "EU"}, {"c": "gb", "n": "Royaume-Uni", "z": "EU"}, {"c": "ru", "n": "Russie", "z": "EU"}, {"c": "sm", "n": "Saint-Marin", "z": "EU"}, {"c": "rs", "n": "Serbie", "z": "EU"}, {"c": "sk", "n": "Slovaquie", "z": "EU"}, {"c": "si", "n": "Slovénie", "z": "EU"}, {"c": "ch", "n": "Suisse", "z": "EU"}, {"c": "se", "n": "Suède", "z": "EU"}, {"c": "cz", "n": "Tchéquie", "z": "EU"}, {"c": "ua", "n": "Ukraine", "z": "EU"}, {"c": "va", "n": "Vatican", "z": "EU"}, {"c": "ag", "n": "Antigua-et-Barbuda", "z": "NA"}, {"c": "bs", "n": "Bahamas", "z": "NA"}, {"c": "bb", "n": "Barbade", "z": "NA"}, {"c": "bz", "n": "Belize", "z": "NA"}, {"c": "ca", "n": "Canada", "z": "NA"}, {"c": "cr", "n": "Costa Rica", "z": "NA"}, {"c": "cu", "n": "Cuba", "z": "NA"}, {"c": "dm", "n": "Dominique", "z": "NA"}, {"c": "gd", "n": "Grenade", "z": "NA"}, {"c": "gt", "n": "Guatemala", "z": "NA"}, {"c": "ht", "n": "Haïti", "z": "NA"}, {"c": "hn", "n": "Honduras", "z": "NA"}, {"c": "jm", "n": "Jamaïque", "z": "NA"}, {"c": "mx", "n": "Mexique", "z": "NA"}, {"c": "ni", "n": "Nicaragua", "z": "NA"}, {"c": "pa", "n": "Panama", "z": "NA"}, {"c": "do", "n": "République dominicaine", "z": "NA"}, {"c": "kn", "n": "Saint-Christophe-et-Niévès", "z": "NA"}, {"c": "vc", "n": "Saint-Vincent-et-les-Grenadines", "z": "NA"}, {"c": "lc", "n": "Sainte-Lucie", "z": "NA"}, {"c": "sv", "n": "Salvador", "z": "NA"}, {"c": "tt", "n": "Trinité-et-Tobago", "z": "NA"}, {"c": "us", "n": "États-Unis", "z": "NA"}, {"c": "au", "n": "Australie", "z": "OC"}, {"c": "fj", "n": "Fidji", "z": "OC"}, {"c": "ki", "n": "Kiribati", "z": "OC"}, {"c": "fm", "n": "Micronésie", "z": "OC"}, {"c": "nr", "n": "Nauru", "z": "OC"}, {"c": "nz", "n": "Nouvelle-Zélande", "z": "OC"}, {"c": "pw", "n": "Palaos", "z": "OC"}, {"c": "pg", "n": "Papouasie-Nouvelle-Guinée", "z": "OC"}, {"c": "ws", "n": "Samoa", "z": "OC"}, {"c": "to", "n": "Tonga", "z": "OC"}, {"c": "tv", "n": "Tuvalu", "z": "OC"}, {"c": "vu", "n": "Vanuatu", "z": "OC"}, {"c": "mh", "n": "Îles Marshall", "z": "OC"}, {"c": "sb", "n": "Îles Salomon", "z": "OC"}, {"c": "ar", "n": "Argentine", "z": "SA"}, {"c": "bo", "n": "Bolivie", "z": "SA"}, {"c": "br", "n": "Brésil", "z": "SA"}, {"c": "cl", "n": "Chili", "z": "SA"}, {"c": "co", "n": "Colombie", "z": "SA"}, {"c": "gy", "n": "Guyana", "z": "SA"}, {"c": "py", "n": "Paraguay", "z": "SA"}, {"c": "pe", "n": "Pérou", "z": "SA"}, {"c": "sr", "n": "Suriname", "z": "SA"}, {"c": "uy", "n": "Uruguay", "z": "SA"}, {"c": "ve", "n": "Venezuela", "z": "SA"}, {"c": "ec", "n": "Équateur", "z": "SA"}];
 const ZONES = {AF:"Afrique", AS:"Asie", EU:"Europe", NA:"Amérique du Nord", SA:"Amérique du Sud", OC:"Océanie"};
@@ -649,14 +840,14 @@ const STORE = (function(){
 })();
 
 /* ---------- état + sauvegarde ---------- */
-let flags = new Set(), myth = new Set(), saveT = null;
+let flags = new Set(), myth = new Set(), rois = new Set(), saveT = null;
 const etat = document.getElementById("etat");
 
 async function charger(){
   try{
     const brut = await STORE.lire(KEY);
     const v = JSON.parse(brut);
-    flags = new Set(v.flags || []); myth = new Set(v.myth || []);
+    flags = new Set(v.flags || []); myth = new Set(v.myth || []); rois = new Set(v.rois || []);
     etat.textContent = "Collection chargée";
   }catch(e){
     etat.textContent = STORE.durable ? "Nouvelle collection" : "Session uniquement";
@@ -668,7 +859,7 @@ function sauver(){
   saveT = setTimeout(async ()=>{
     if(!STORE.durable){ etat.textContent = "Session uniquement — pensez à exporter"; return; }
     try{
-      await STORE.ecrire(KEY, JSON.stringify({flags:[...flags], myth:[...myth]}));
+      await STORE.ecrire(KEY, JSON.stringify({flags:[...flags], myth:[...myth], rois:[...rois]}));
       etat.textContent = "Enregistré";
     }catch(e){ etat.textContent = "Enregistrement impossible"; }
   }, 400);
@@ -695,6 +886,17 @@ function maj(){
   document.getElementById("j-myth").style.width = (myth.size/TOTAL_M*100).toFixed(1) + "%";
   document.getElementById("t1").textContent = flags.size + "/" + TOTAL_F;
   document.getElementById("t2").textContent = myth.size + "/" + TOTAL_M;
+  if(typeof TOTAL_R !== "undefined"){
+    document.getElementById("s-roi").innerHTML = rois.size + "<span>/" + TOTAL_R + "</span>";
+    document.getElementById("j-roi").style.width = (rois.size/TOTAL_R*100).toFixed(1) + "%";
+    document.getElementById("t3").textContent = rois.size + "/" + TOTAL_R;
+    document.querySelectorAll("[data-dyn]").forEach(el=>{
+      const d = ROIS.find(x=>x.d === el.dataset.dyn); if(!d) return;
+      const g = d.r.filter(k=>rois.has(k.i)).length;
+      el.querySelector(".cnt").textContent = g + " / " + d.r.length;
+      el.querySelector(".jauge > i").style.width = (g/d.r.length*100).toFixed(1) + "%";
+    });
+  }
   document.querySelectorAll("[data-zone]").forEach(el=>{
     const z = el.dataset.zone, l = PAYS.filter(p=>p.z===z), g = l.filter(p=>flags.has(p.c)).length;
     el.querySelector(".cnt").textContent = g + " / " + l.length;
@@ -907,14 +1109,15 @@ function ouvrirFiche(el, pin){
   else if(prev && prev.classList.contains("node")) orig = "Enfant de " + prev.querySelector(".nm").textContent;
   rendreFiche(n, el, pin, orig);
 }
-function rendreFiche(n, el, pin, orig){
+function rendreFiche(n, el, pin, orig, ens){
+  const dans = (ens || myth).has(n.i);
   const img = (typeof vign === "object" && vign[n.i]) ? '<img class="vign" alt="" src="'+vign[n.i]+'">' : "";
   ficheIn.innerHTML = img +
     '<h3>'+n.n+'</h3><p class="gk">'+n.g+'</p>'+
-    '<span class="kd k-'+n.k+'">'+KINDS[n.k]+'</span>'+
+    '<span class="kd k-'+n.k+'">'+(n.kl || KINDS[n.k])+'</span>'+
     '<p>'+n.d+'</p>'+
     (orig?'<p class="par">'+orig+'</p>':'')+
-    '<p class="par" style="margin-top:6px">'+(myth.has(n.i)?"✓ Dans votre collection":"Pas encore obtenu")+'</p>';
+    '<p class="par" style="margin-top:6px">'+(dans?"✓ Dans votre collection":"Pas encore obtenu")+'</p>';
   const r = el.getBoundingClientRect();
   fiche.style.visibility = "hidden"; fiche.classList.add("on");
   const h = fiche.offsetHeight, w = fiche.offsetWidth;
@@ -1028,12 +1231,14 @@ Object.keys(ALIAS_P).forEach(c => ALIAS_P[c].forEach(a => ajout(a, "f", c)));
   (n.c||[]).forEach(bal);
 })(MYTH);
 Object.keys(ALIAS_M).forEach(id => { if(IDS.has(id)) ALIAS_M[id].forEach(a => ajout(a, "m", id)); });
+ROIS.forEach(d=>d.r.forEach(k=>{ NOMS["r:"+k.i] = k.n; ajout(k.n, "r", k.i); }));
+Object.keys(ALIAS_R).forEach(id => ALIAS_R[id].forEach(a => ajout(a, "r", id)));
 LISTE.sort((a,b)=>b.length-a.length);
 
 function reconnaitre(txt){
   const t = " " + nk(txt) + " ";
   const pris = new Array(t.length).fill(false);
-  const res = {f:[], m:[]};
+  const res = {f:[], m:[], r:[]};
   for(const k of LISTE){
     let i = t.indexOf(" "+k+" ");
     while(i !== -1){
@@ -1043,7 +1248,7 @@ function reconnaitre(txt){
       if(libre){
         for(let j=a; j<b; j++) pris[j] = true;
         const [type, id] = CLEFS[k];
-        const tab = type==="f" ? res.f : res.m;
+        const tab = res[type];
         if(!tab.includes(id)) tab.push(id);
       }
       i = t.indexOf(" "+k+" ", i+1);
@@ -1065,7 +1270,8 @@ boite.addEventListener("click", e=>{ if(e.target===boite) fermerColler(); });
 
 document.getElementById("cv-go").addEventListener("click", ()=>{
   trouve = reconnaitre(champ.value);
-  const nf = trouve.f.filter(c=>!flags.has(c)).length, nm = trouve.m.filter(i=>!myth.has(i)).length;
+  const nf = trouve.f.filter(c=>!flags.has(c)).length, nm = trouve.m.filter(i=>!myth.has(i)).length,
+        nr = trouve.r.filter(i=>!rois.has(i)).length;
   const bloc = (titre, ids, type, dejaSet) => {
     if(!ids.length) return "";
     const li = ids.map(id=>{
@@ -1074,14 +1280,16 @@ document.getElementById("cv-go").addEventListener("click", ()=>{
     }).join("");
     return '<h4>'+titre+' — '+ids.length+'</h4><ul>'+li+'</ul>';
   };
-  if(!trouve.f.length && !trouve.m.length){
+  if(!trouve.f.length && !trouve.m.length && !trouve.r.length){
     resu.innerHTML = '<p class="bilan">Aucun nom reconnu. Vérifie que le texte contient bien des noms de pays ou de divinités.</p>';
     btnApp.hidden = true;
   }else{
+    const tot = trouve.f.length + trouve.m.length + trouve.r.length;
     resu.innerHTML =
-      '<p class="bilan"><b>'+(nf+nm)+' nouvelle(s) case(s)</b> à cocher · '+
-      (trouve.f.length+trouve.m.length-nf-nm)+' déjà dans la collection</p>' +
-      bloc("Drapeaux", trouve.f, "f", flags) + bloc("Théogonie", trouve.m, "m", myth);
+      '<p class="bilan"><b>'+(nf+nm+nr)+' nouvelle(s) case(s)</b> à cocher · '+
+      (tot-nf-nm-nr)+' déjà dans la collection</p>' +
+      bloc("Drapeaux", trouve.f, "f", flags) + bloc("Théogonie", trouve.m, "m", myth) +
+      bloc("Souverains", trouve.r, "r", rois);
     btnApp.hidden = false;
   }
   resu.hidden = false;
@@ -1089,12 +1297,96 @@ document.getElementById("cv-go").addEventListener("click", ()=>{
 
 btnApp.addEventListener("click", ()=>{
   if(!trouve) return;
-  const n = trouve.f.filter(c=>!flags.has(c)).length + trouve.m.filter(i=>!myth.has(i)).length;
-  trouve.f.forEach(c=>flags.add(c)); trouve.m.forEach(i=>myth.add(i));
-  buildFlags(); buildTree(); sauver(); fermerColler();
+  const n = trouve.f.filter(c=>!flags.has(c)).length + trouve.m.filter(i=>!myth.has(i)).length
+          + trouve.r.filter(i=>!rois.has(i)).length;
+  trouve.f.forEach(c=>flags.add(c)); trouve.m.forEach(i=>myth.add(i)); trouve.r.forEach(i=>rois.add(i));
+  buildFlags(); buildTree(); buildRois(); sauver(); fermerColler();
   etat.textContent = n + " case(s) cochée(s)";
 });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !boite.hidden) fermerColler(); });
+
+
+/* ============ SOUVERAINS ============ */
+const TOTAL_R = ROIS.reduce((n,d)=>n+d.r.length, 0);
+let rFilter = "all", rQuery = "";
+const roiBox = document.getElementById("rois");
+
+function buildRois(){
+  roiBox.innerHTML = "";
+  let vus = 0;
+  ROIS.forEach(d=>{
+    const sec = document.createElement("section");
+    sec.className = "dyn"; sec.dataset.dyn = d.d;
+    sec.innerHTML = '<div class="dyn-head"><h2>'+d.d+'</h2><span class="cnt"></span>'
+      + '<p class="peri">'+d.p+'</p></div><div class="jauge"><i></i></div><div class="regnes"></div>';
+    const liste = sec.querySelector(".regnes");
+    let n = 0;
+    d.r.forEach(k=>{
+      const got = rois.has(k.i);
+      if(rFilter==="got" && !got) return;
+      if(rFilter==="miss" && got) return;
+      if(rQuery && !norm(k.n+" "+k.e+" "+k.a+" "+k.t).includes(rQuery)) return;
+      n++; vus++;
+      const el = document.createElement("div");
+      el.className = "regne" + (got?" got":"");
+      el.dataset.id = k.i;
+      el.setAttribute("role","checkbox"); el.setAttribute("aria-checked", got); el.tabIndex = 0;
+      el.innerHTML =
+        '<span class="tick3"></span>'+
+        '<span class="por" data-id="'+k.i+'"><b>'+k.n.charAt(0)+'</b></span>'+
+        '<span class="txt"><span class="nom">'+k.n+'</span><span class="ep">'+k.e+'</span>'+
+        '<span class="an">'+k.a+'</span></span>'+
+        '<button class="info" aria-label="Notice">i</button>';
+      liste.appendChild(el);
+    });
+    if(n) roiBox.appendChild(sec);
+  });
+  if(!vus) roiBox.innerHTML = '<p class="vide">'+(rFilter==="miss"?"Série complète. Aucun souverain ne manque.":"Aucun souverain ne correspond.")+'</p>';
+  maj();
+  if(typeof poserVignettes === "function") poserVignettes();
+}
+
+function roiParId(id){
+  for(const d of ROIS){ const k = d.r.find(x=>x.i===id); if(k) return k; }
+  return null;
+}
+
+roiBox.addEventListener("click", e=>{
+  const el = e.target.closest(".regne"); if(!el) return;
+  const k = roiParId(el.dataset.id); if(!k) return;
+  if(e.target.closest(".info")){
+    rendreFiche({n:k.n, g:k.a, k:"mortel", kl:"Souverain", d:k.t, i:k.i}, el, true, k.dyn + " · " + k.e, rois);
+    return;
+  }
+  if(rois.has(k.i)) rois.delete(k.i); else rois.add(k.i);
+  const got = rois.has(k.i);
+  el.classList.toggle("got", got); el.setAttribute("aria-checked", got);
+  sauver();
+  if(rFilter!=="all") setTimeout(buildRois, 260); else maj();
+});
+roiBox.addEventListener("keydown", e=>{
+  if(e.key !== " " && e.key !== "Enter") return;
+  const el = e.target.closest(".regne"); if(!el) return;
+  e.preventDefault(); el.click();
+});
+if(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches){
+  roiBox.addEventListener("mouseover", e=>{
+    const el = e.target.closest(".regne"); if(!el || fiche.classList.contains("pin")) return;
+    const k = roiParId(el.dataset.id); if(!k) return;
+    rendreFiche({n:k.n, g:k.a, k:"mortel", kl:"Souverain", d:k.t, i:k.i}, el, false, k.dyn + " · " + k.e, rois);
+  });
+  roiBox.addEventListener("mouseout", e=>{
+    if(e.target.closest(".regne") && !fiche.classList.contains("pin")) fermerFiche();
+  });
+}
+
+document.getElementById("q-roi").addEventListener("input", e=>{ rQuery = norm(e.target.value.trim()); buildRois(); });
+document.getElementById("f-roi").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  rFilter = b.dataset.f;
+  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+  buildRois();
+});
 
 
 /* ============ VIGNETTES WIKIPÉDIA ============ */
@@ -1122,31 +1414,52 @@ let vign = {}, vignPret = false;
 
 const titreWiki = n => WIKI[n] || n.replace(/^(Les|Le|La)\s+/,"").replace(/^L['’]/,"");
 
+function registreVignettes(){
+  const reg = {};
+  (function bal(n){
+    if(!n.u && !reg[n.i]) reg[n.i] = {t: titreWiki(n.n), q: n.n + " mythologie grecque"};
+    (n.c||[]).forEach(bal);
+  })(MYTH);
+  ROIS.forEach(d=>d.r.forEach(k=>{
+    if(!reg[k.i]) reg[k.i] = {t: k.w || k.n, q: k.n + " " + k.e};
+  }));
+  return reg;
+}
+
+async function viaRecherche(requete){
+  const url = "https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*"
+    + "&generator=search&gsrlimit=1&gsrsearch=" + encodeURIComponent(requete)
+    + "&prop=pageimages&piprop=thumbnail&pithumbsize=240";
+  try{
+    const js = await (await fetch(url)).json();
+    const p = Object.values((js.query || {}).pages || {})[0];
+    return p && p.thumbnail ? p.thumbnail.source : "";
+  }catch(e){ return ""; }
+}
+
 async function chargerVignettes(){
   try{ vign = JSON.parse(await STORE.lire(CACHE_V)) || {}; }catch(e){ vign = {}; }
-  const manquants = [];
-  IDS.forEach(id=>{ if(!(id in vign)) manquants.push(id); });
+  const reg = registreVignettes();
+  const ids = Object.keys(reg).filter(id=>!(id in vign));
   poserVignettes();
-  if(!manquants.length){ vignPret = true; return; }
-  const titres = {};
-  (function bal(n){ if(!n.u && manquants.includes(n.i) && !titres[n.i]) titres[n.i] = titreWiki(n.n); (n.c||[]).forEach(bal); })(MYTH);
-  const ids = Object.keys(titres);
+  if(!ids.length){ vignPret = true; return; }
+
+  /* Première passe : un appel groupé par lot de 40 titres, redirections résolues. */
   let ok = false;
   for(let i=0; i<ids.length; i+=40){
     const lot = ids.slice(i, i+40);
     const url = "https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1"
       + "&prop=pageimages&piprop=thumbnail&pithumbsize=240&titles="
-      + encodeURIComponent(lot.map(id=>titres[id]).join("|"));
+      + encodeURIComponent(lot.map(id=>reg[id].t).join("|"));
     try{
-      const rep = await fetch(url);
-      const js = await rep.json();
-      const q = js.query || {};
+      const js = await (await fetch(url)).json();
+      const rq = js.query || {};
       const parTitre = {};
-      Object.values(q.pages || {}).forEach(p=>{ parTitre[p.title] = p.thumbnail ? p.thumbnail.source : ""; });
-      const redir = {}; (q.redirects||[]).forEach(r=>redir[r.from] = r.to);
-      const norml = {}; (q.normalized||[]).forEach(r=>norml[r.from] = r.to);
+      Object.values(rq.pages || {}).forEach(p=>{ parTitre[p.title] = p.thumbnail ? p.thumbnail.source : ""; });
+      const redir = {}; (rq.redirects || []).forEach(x=>redir[x.from] = x.to);
+      const norml = {}; (rq.normalized || []).forEach(x=>norml[x.from] = x.to);
       lot.forEach(id=>{
-        let t = titres[id];
+        let t = reg[id].t;
         if(norml[t]) t = norml[t];
         if(redir[t]) t = redir[t];
         vign[id] = parTitre[t] || "";
@@ -1155,12 +1468,25 @@ async function chargerVignettes(){
     }catch(e){ lot.forEach(id=>{ if(!(id in vign)) vign[id] = ""; }); }
     poserVignettes();
   }
+
+  /* Seconde passe : pour les titres restés sans image, on repasse par la recherche
+     plein texte de Wikipédia. Cela rattrape les titres mal devinés. */
+  if(ok){
+    const restants = ids.filter(id=>!vign[id]).slice(0, 60);
+    for(let i=0; i<restants.length; i+=4){
+      const lot = restants.slice(i, i+4);
+      const urls = await Promise.all(lot.map(id=>viaRecherche(reg[id].q)));
+      lot.forEach((id, j)=>{ if(urls[j]) vign[id] = urls[j]; });
+      poserVignettes();
+    }
+  }
+
   vignPret = true;
   if(ok){ try{ await STORE.ecrire(CACHE_V, JSON.stringify(vign)); }catch(e){} }
 }
 
 function poserVignettes(){
-  document.querySelectorAll(".av[data-id]").forEach(a=>{
+  document.querySelectorAll(".av[data-id], .por[data-id]").forEach(a=>{
     const u = vign[a.dataset.id];
     if(u && !a.querySelector("img")) a.innerHTML = '<img loading="lazy" alt="" src="'+u+'">';
   });
@@ -1406,7 +1732,7 @@ document.getElementById("q-myth").addEventListener("input", e=>{
 document.getElementById("f-myth").addEventListener("click", ()=>{ setTimeout(filtrerGraphe, 0); });
 
 /* ---------- démarrage ---------- */
-(async ()=>{ await charger(); buildFlags(); buildTree(); chargerVignettes(); })();
+(async ()=>{ await charger(); buildFlags(); buildTree(); buildRois(); chargerVignettes(); })();
 
 /* ---------- mode hors-ligne (ignoré en file:// et dans Claude) ---------- */
 if("serviceWorker" in navigator && location.protocol.indexOf("http") === 0){
