@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cabinet de collection — Wikimaster</title>
+<meta name="description" content="Suivi de collection Wikimaster : drapeaux nationaux et théogonie grecque.">
+<meta name="theme-color" content="#0C1130">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Collection">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500;600&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nuit:#0C1130;
+  --nuit-2:#141A3E;
+  --nuit-3:#1C2450;
+  --marbre:#EAE4D6;
+  --marbre-dim:#9AA0BE;
+  --bronze:#D0A548;
+  --bronze-dim:#7A6533;
+  --verdigris:#4FBFA0;
+  --pourpre:#B0607F;
+  --terre:#C97A6D;
+  --ligne:rgba(234,228,214,.13);
+  --meander:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cpath d='M1 11V1h14v8H7V5h4v2' fill='none' stroke='%23D0A548' stroke-width='1.2'/%3E%3C/svg%3E");
+  --meander-dim:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cpath d='M1 11V1h14v8H7V5h4v2' fill='none' stroke='%232A3163' stroke-width='1.2'/%3E%3C/svg%3E");
+  --disp:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --body:'Karla',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(1200px 600px at 80% -10%, #1B2358 0%, transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, #17204A 0%, transparent 55%),
+    var(--nuit);
+  background-attachment:fixed;
+  color:var(--marbre);
+  font-family:var(--body);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px 80px}
+
+/* ---------- Frise (élément signature) ---------- */
+.frise{height:12px;background-image:var(--meander-dim);background-repeat:repeat-x;opacity:.85}
+.jauge{position:relative;height:12px;overflow:hidden;background-image:var(--meander-dim);background-repeat:repeat-x}
+.jauge > i{position:absolute;inset:0 auto 0 0;overflow:hidden;width:0;transition:width .5s cubic-bezier(.2,.8,.25,1)}
+.jauge > i::before{content:"";position:absolute;inset:0;width:2000px;background-image:var(--meander);background-repeat:repeat-x}
+
+/* ---------- En-tête ---------- */
+header{padding:38px 0 0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--bronze);margin:0 0 10px}
+h1{font-family:var(--disp);font-weight:300;font-size:clamp(38px,8.5vw,72px);line-height:.98;letter-spacing:.01em;margin:0 0 6px}
+h1 em{font-style:normal;color:var(--bronze)}
+.sub{color:var(--marbre-dim);max-width:46ch;margin:0 0 26px;font-size:14px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.stat{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--ligne);border-radius:3px;padding:14px 16px 12px}
+.stat b{display:block;font-family:var(--mono);font-weight:500;font-size:clamp(22px,5vw,30px);letter-spacing:-.02em}
+.stat b span{color:var(--marbre-dim);font-size:.55em}
+.stat small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--marbre-dim);margin-bottom:8px}
+.stat .jauge{margin-top:11px}
+
+/* ---------- Onglets ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--ligne);position:sticky;top:0;z-index:40;
+  background:rgba(12,17,48,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin:0 -18px;padding:0 18px}
+.tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--marbre-dim);
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:16px 14px 13px;cursor:pointer;transition:color .2s}
+.tab:hover{color:var(--marbre)}
+.tab[aria-selected="true"]{color:var(--bronze);border-bottom-color:var(--bronze)}
+.tab i{font-style:normal;opacity:.6;margin-left:7px}
+
+/* ---------- Barre d'outils ---------- */
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:20px 0 14px;position:sticky;top:47px;z-index:30;
+  background:linear-gradient(180deg,rgba(12,17,48,.96) 70%,rgba(12,17,48,0));margin:0 -18px;padding-left:18px;padding-right:18px}
+.search{flex:1 1 190px;min-width:150px;position:relative}
+.search input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--ligne);border-radius:3px;color:var(--marbre);
+  font-family:var(--body);font-size:14px;padding:9px 12px 9px 32px}
+.search input::placeholder{color:#6C749B}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5}
+.seg{display:flex;border:1px solid var(--ligne);border-radius:3px;overflow:hidden}
+.seg button{appearance:none;background:none;border:0;color:var(--marbre-dim);font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;padding:9px 11px;cursor:pointer;transition:.18s}
+.seg button + button{border-left:1px solid var(--ligne)}
+.seg button:hover{color:var(--marbre);background:rgba(255,255,255,.04)}
+.seg button[aria-pressed="true"]{background:var(--bronze);color:#171003;font-weight:500}
+.ghost{appearance:none;background:none;border:1px solid var(--ligne);border-radius:3px;color:var(--marbre-dim);
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:9px 11px;cursor:pointer;transition:.18s}
+.ghost:hover{color:var(--marbre);border-color:var(--bronze-dim)}
+
+/* ---------- Sections continent ---------- */
+.zone{margin-top:30px}
+.zone-head{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.zone-head h2{font-family:var(--disp);font-weight:500;font-size:26px;margin:0;letter-spacing:.01em}
+.zone-head .cnt{font-family:var(--mono);font-size:11px;color:var(--marbre-dim);letter-spacing:.1em;margin-left:auto;white-space:nowrap}
+.zone .jauge{margin:8px 0 18px}
+
+/* ---------- Grille drapeaux ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+.card{display:block;position:relative;appearance:none;text-align:left;background:rgba(255,255,255,.035);border:1px solid var(--ligne);
+  border-radius:3px;padding:0;cursor:pointer;overflow:hidden;transition:border-color .2s,background .2s,transform .12s;color:inherit;font:inherit}
+.card:hover{border-color:var(--bronze-dim);background:rgba(255,255,255,.06)}
+.card:active{transform:scale(.985)}
+.card:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.card .img{aspect-ratio:3/2;background:#0A0E28;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.card img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(.55) brightness(.75);opacity:.4;transition:filter .45s ease,opacity .45s ease}
+.card .fallback{font-family:var(--mono);font-size:20px;letter-spacing:.15em;color:var(--marbre-dim)}
+.card .meta{display:block;padding:8px 10px 9px}
+.card .nom{display:block;font-size:12.5px;overflow-wrap:anywhere;line-height:1.25;letter-spacing:.005em}
+.card .code{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#6C749B;margin-top:3px}
+.card .tick{position:absolute;top:7px;right:7px;width:19px;height:19px;border-radius:50%;border:1px solid rgba(234,228,214,.28);
+  background:rgba(10,14,40,.7);display:flex;align-items:center;justify-content:center;transition:.25s}
+.card .tick svg{opacity:0;transform:scale(.5);transition:.25s}
+.card.got{background:rgba(79,191,160,.07);border-color:rgba(79,191,160,.4)}
+.card.got img{filter:none;opacity:1}
+.card.got .tick{background:var(--verdigris);border-color:var(--verdigris)}
+.card.got .tick svg{opacity:1;transform:scale(1)}
+.card.got .code{color:var(--verdigris)}
+
+/* ---------- Arbre ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0 18px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--marbre-dim)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend s{width:7px;height:7px;border-radius:50%;display:inline-block;text-decoration:none}
+.tree{margin-top:6px}
+.kids{margin-left:11px;padding-left:15px;border-left:1px solid rgba(208,165,72,.22)}
+.kids[hidden]{display:none}
+.node{display:flex;align-items:flex-start;gap:8px;padding:3px 0;position:relative}
+.node::before{content:"";position:absolute;left:-15px;top:16px;width:11px;height:1px;background:rgba(208,165,72,.22)}
+.tree > .node::before{display:none}
+.twist{appearance:none;background:none;border:0;color:var(--bronze);cursor:pointer;padding:2px 1px;width:16px;flex:0 0 16px;
+  font-size:10px;line-height:1.6;transition:transform .2s;transform-origin:50% 55%}
+.twist.open{transform:rotate(90deg)}
+.twist.leaf{visibility:hidden}
+.chk{appearance:none;flex:0 0 17px;width:17px;height:17px;margin-top:3px;border:1px solid rgba(234,228,214,.3);border-radius:3px;
+  background:rgba(255,255,255,.04);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:.2s}
+.chk svg{opacity:0;transform:scale(.5);transition:.2s}
+.chk:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.node.got .chk{background:var(--verdigris);border-color:var(--verdigris)}
+.node.got .chk svg{opacity:1;transform:scale(1)}
+.label{appearance:none;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:2px 4px 2px 2px;
+  border-radius:3px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;flex:1;min-width:0}
+.label:hover{background:rgba(255,255,255,.05)}
+.label:focus-visible{outline:2px solid var(--bronze);outline-offset:1px}
+.label .nm{font-family:var(--disp);font-size:19px;font-weight:500;line-height:1.15;letter-spacing:.01em}
+.node.got .label .nm{color:var(--verdigris)}
+.label .gk{font-family:var(--disp);font-size:13px;color:#6C749B}
+.label .kd{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:2px 6px;border-radius:2px;
+  border:1px solid currentColor;opacity:.75}
+.union{display:flex;align-items:center;gap:9px;padding:9px 0 4px;margin-left:2px;position:relative}
+.union::before{content:"";position:absolute;left:-15px;top:23px;width:11px;height:1px;background:rgba(208,165,72,.22)}
+.union .u{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bronze);white-space:nowrap}
+.union .r{flex:1;height:1px;background:linear-gradient(90deg,rgba(208,165,72,.35),transparent)}
+.k-prim{color:#9AA7E8}.k-titan{color:#D0A548}.k-olymp{color:#F2D68B}.k-div{color:#7FC9B5}
+.k-creature{color:#C97A6D}.k-mortel{color:#C2BBA8}
+
+/* ---------- Fiche ---------- */
+#fiche{position:fixed;z-index:80;width:min(330px,calc(100vw - 28px));background:rgba(16,22,58,.97);
+  border:1px solid rgba(208,165,72,.4);border-radius:4px;padding:14px 16px 15px;
+  box-shadow:0 18px 50px rgba(0,0,0,.6);pointer-events:none;opacity:0;transition:opacity .16s;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#fiche.on{opacity:1}
+#fiche.pin{pointer-events:auto}
+#fiche h3{font-family:var(--disp);font-weight:600;font-size:24px;margin:0 0 2px;line-height:1.1}
+#fiche .gk{font-family:var(--disp);font-size:14px;color:var(--bronze);margin:0 0 9px}
+#fiche .kd{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;display:inline-block;
+  border:1px solid currentColor;padding:2px 6px;border-radius:2px;margin-bottom:9px}
+#fiche p{margin:0 0 9px;font-size:13.5px;line-height:1.5;color:#CDD2E6}
+#fiche .par{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--marbre-dim);border-top:1px solid var(--ligne);padding-top:8px;margin:0}
+#fiche .close{position:absolute;top:8px;right:8px;background:none;border:0;color:var(--marbre-dim);cursor:pointer;font-size:16px;display:none}
+#fiche.pin .close{display:block}
+
+
+/* ---------- Fenêtre « coller une liste » ---------- */
+.modal{position:fixed;inset:0;z-index:90;background:rgba(6,9,26,.74);display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.modal[hidden]{display:none}
+.modal .box{background:#131A40;border:1px solid rgba(208,165,72,.35);border-radius:4px;width:min(640px,100%);max-height:88vh;overflow:auto;padding:22px 22px 20px}
+.modal h2{font-family:var(--disp);font-weight:500;font-size:29px;margin:0 0 5px;line-height:1.1}
+.modal .h{color:var(--marbre-dim);font-size:13.5px;margin:0 0 15px;max-width:52ch}
+.modal textarea{width:100%;height:170px;background:rgba(0,0,0,.28);border:1px solid var(--ligne);border-radius:3px;color:var(--marbre);
+  font-family:var(--mono);font-size:12.5px;line-height:1.6;padding:11px;resize:vertical}
+.modal textarea::placeholder{color:#5C6489}
+.modal textarea:focus{outline:none;border-color:var(--bronze-dim)}
+.modal .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.primaire{background:var(--bronze);color:#171003;border:0;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  padding:10px 15px;border-radius:3px;cursor:pointer;font-weight:500}
+.primaire:hover{background:#E0B457}
+.res{margin-top:16px;border-top:1px solid var(--ligne);padding-top:13px}
+.res .bilan{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--marbre-dim);margin:0 0 12px}
+.res .bilan b{color:var(--verdigris);font-weight:500}
+.res h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bronze);margin:0 0 7px}
+.res ul{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.res li{font-size:12px;background:rgba(79,191,160,.14);border:1px solid rgba(79,191,160,.32);border-radius:2px;padding:2px 8px}
+.res li.deja{background:rgba(255,255,255,.045);border-color:var(--ligne);color:#6C749B}
+
+
+/* ---------- Vignettes ---------- */
+.av{flex:0 0 30px;width:30px;height:30px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.06);
+  border:1px solid var(--ligne);display:flex;align-items:center;justify-content:center;margin-top:1px;position:relative}
+.av img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.35) contrast(1.05)}
+.av span{font-family:var(--disp);font-size:15px;color:var(--marbre-dim);line-height:1}
+.node.got .av{border-color:rgba(79,191,160,.5)}
+.node.got .av img{filter:none}
+#fiche .vign{width:100%;height:150px;object-fit:cover;border-radius:3px;margin:0 0 11px;display:block;background:rgba(255,255,255,.05)}
+
+/* ---------- Vue graphe ---------- */
+.vues{display:flex;border:1px solid var(--ligne);border-radius:3px;overflow:hidden}
+.vues button{appearance:none;background:none;border:0;color:var(--marbre-dim);font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;padding:9px 12px;cursor:pointer;transition:.18s}
+.vues button+button{border-left:1px solid var(--ligne)}
+.vues button[aria-pressed="true"]{background:var(--bronze);color:#171003;font-weight:500}
+#graphe{position:relative;border:1px solid var(--ligne);border-radius:4px;overflow:hidden;height:min(72vh,620px);
+  background:radial-gradient(700px 400px at 30% 10%, rgba(255,255,255,.035), transparent 70%),rgba(0,0,0,.18);
+  touch-action:none;cursor:grab;margin-top:6px}
+#graphe.drag{cursor:grabbing}
+#graphe svg{display:block;width:100%;height:100%;user-select:none}
+.gn rect.bg{fill:rgba(255,255,255,.05);stroke:var(--ligne);stroke-width:1;rx:3}
+.gn.got rect.bg{fill:rgba(79,191,160,.1);stroke:rgba(79,191,160,.42)}
+.gn text.nm{font-family:var(--disp);font-size:15px;fill:var(--marbre);dominant-baseline:middle}
+.gn.got text.nm{fill:var(--verdigris)}
+.gn rect.stripe{rx:1.5}
+.gn rect.tick{fill:rgba(0,0,0,.3);stroke:rgba(234,228,214,.3);rx:2.5;cursor:pointer}
+.gn.got rect.tick{fill:var(--verdigris);stroke:var(--verdigris)}
+.gn path.tk{stroke:#0B2A22;stroke-width:2.2;fill:none;stroke-linecap:round;opacity:0}
+.gn.got path.tk{opacity:1}
+.gn circle.ph{fill:rgba(255,255,255,.07);stroke:var(--ligne)}
+.gn text.mono{font-family:var(--disp);font-size:13px;fill:#7B83AB;text-anchor:middle;dominant-baseline:middle}
+.gu path.dia{fill:rgba(208,165,72,.18);stroke:var(--bronze);stroke-width:1.1}
+.gu text{font-family:var(--mono);font-size:8.5px;fill:var(--bronze);letter-spacing:.06em;text-anchor:middle;opacity:.85}
+.ge{fill:none;stroke:rgba(208,165,72,.32);stroke-width:1.2}
+.ge.s{stroke:rgba(154,167,232,.42);stroke-dasharray:3 4}
+.gn,.gu,.ge{transition:opacity .18s}
+.faded{opacity:.09}
+.gn.hors{opacity:.1}
+.gn.vedette rect.bg{stroke:var(--bronze);stroke-width:1.8;fill:rgba(208,165,72,.13)}
+.ge.vif{stroke:var(--bronze);stroke-width:2;stroke-opacity:.95}
+.ge.s.vif{stroke:#9AA7E8}
+.gctl{position:absolute;right:10px;bottom:10px;display:flex;gap:5px;z-index:5}
+.gctl button{width:32px;height:32px;border:1px solid var(--ligne);background:rgba(12,17,48,.85);color:var(--marbre-dim);
+  border-radius:3px;cursor:pointer;font-family:var(--mono);font-size:13px;display:flex;align-items:center;justify-content:center}
+.gctl button:hover{color:var(--bronze);border-color:var(--bronze-dim)}
+.gaide{position:absolute;left:12px;top:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:#5C6489;pointer-events:none;z-index:5}
+
+/* ---------- Divers ---------- */
+.vide{text-align:center;color:var(--marbre-dim);padding:50px 20px;font-family:var(--disp);font-size:22px}
+.panneau[hidden]{display:none}
+footer{margin-top:54px;padding-top:20px;border-top:1px solid var(--ligne);display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#5C6489}
+footer .sp{flex:1}
+#etat{color:var(--verdigris)}
+@media (max-width:560px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+  .label .nm{font-size:17px}
+  .kids{margin-left:7px;padding-left:11px}
+  .node::before,.union::before{left:-11px;width:8px}
+  .stats{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Wikimaster · suivi de collection</p>
+  <h1>Cabinet de<br><em>collection</em></h1>
+  <p class="sub">Deux séries à compléter : les drapeaux du monde et la théogonie grecque. Cochez ce que vous possédez, la frise se remplit.</p>
+  <div class="stats">
+    <div class="stat">
+      <small>Drapeaux</small>
+      <b id="s-flag">0<span>/197</span></b>
+      <div class="jauge"><i id="j-flag"></i></div>
+    </div>
+    <div class="stat">
+      <small>Panthéon</small>
+      <b id="s-myth">0<span>/0</span></b>
+      <div class="jauge"><i id="j-myth"></i></div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" id="tab-flag" aria-controls="p-flag" aria-selected="true">Drapeaux <i id="t1">0</i></button>
+  <button class="tab" role="tab" id="tab-myth" aria-controls="p-myth" aria-selected="false">Théogonie <i id="t2">0</i></button>
+</div>
+
+<!-- ============ DRAPEAUX ============ -->
+<section class="panneau" id="p-flag" role="tabpanel" aria-labelledby="tab-flag">
+  <div class="tools">
+    <label class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="q-flag" placeholder="Chercher un pays…" autocomplete="off">
+    </label>
+    <div class="seg" id="f-flag">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+    <button class="ghost" id="copy-miss">Copier les manquants</button>
+  </div>
+  <div id="flags"></div>
+</section>
+
+<!-- ============ THÉOGONIE ============ -->
+<section class="panneau" id="p-myth" role="tabpanel" aria-labelledby="tab-myth" hidden>
+  <div class="tools">
+    <label class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="q-myth" placeholder="Chercher une divinité…" autocomplete="off">
+    </label>
+    <div class="seg" id="f-myth">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+    <div class="vues" id="vues">
+      <button data-v="liste" aria-pressed="true">Liste</button>
+      <button data-v="graphe" aria-pressed="false">Graphe</button>
+    </div>
+    <button class="ghost" id="expand">Tout déplier</button>
+    <button class="ghost" id="collapse">Replier</button>
+  </div>
+  <div class="legend">
+    <span><s style="background:#9AA7E8"></s>Primordial</span>
+    <span><s style="background:#D0A548"></s>Titan</span>
+    <span><s style="background:#F2D68B"></s>Olympien</span>
+    <span><s style="background:#7FC9B5"></s>Divinité</span>
+    <span><s style="background:#C97A6D"></s>Créature</span>
+    <span><s style="background:#C2BBA8"></s>Mortel / héros</span>
+  </div>
+  <div class="tree" id="tree"></div>
+  <div id="graphe" hidden>
+    <span class="gaide">Survolez une entité pour isoler sa lignée</span>
+    <svg id="gsvg"><g id="gcam"></g></svg>
+    <div class="gctl">
+      <button id="g-plus" aria-label="Zoom avant">+</button>
+      <button id="g-moins" aria-label="Zoom arrière">−</button>
+      <button id="g-fit" aria-label="Tout afficher">⤢</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span id="etat">Prêt</span>
+  <span class="sp"></span>
+  <button class="primaire" id="col">Coller une liste</button>
+  <button class="ghost" id="exp">Exporter</button>
+  <button class="ghost" id="imp">Importer</button>
+  <button class="ghost" id="rst">Réinitialiser</button>
+  <input type="file" id="file" accept="application/json" hidden>
+</footer>
+
+</div>
+
+
+<div class="modal" id="coller" hidden>
+  <div class="box">
+    <h2>Coller une liste</h2>
+    <p class="h">Colle ce que tu veux : une capture de texte de ton album WikiMasters, une liste de noms, un paragraphe en vrac. La page repère les pays et les divinités au passage, l'ordre et la ponctuation n'ont pas d'importance.</p>
+    <textarea id="cv" placeholder="Zeus &middot; Légendaire&#10;Héra &middot; Ultra rare&#10;Japon, France, Pérou…"></textarea>
+    <div class="row">
+      <button class="primaire" id="cv-go">Analyser</button>
+      <button class="ghost" id="cv-close">Fermer</button>
+      <span style="flex:1"></span>
+      <button class="primaire" id="cv-apply" hidden>Cocher les trouvailles</button>
+    </div>
+    <div class="res" id="cv-res" hidden></div>
+  </div>
+</div>
+
+<div id="fiche" role="dialog" aria-live="polite"><button class="close" aria-label="Fermer">✕</button><div id="fiche-in"></div></div>
+
+<script>
+const MYTH = {
+n:"Chaos", g:"Χάος", k:"prim", d:"Le Vide béant, premier de tous. Chez Hésiode, rien ne le précède : il n'est pas le désordre mais l'écart originel d'où tout se déploie.",
+c:[
+ {n:"Éros", g:"Ἔρως", k:"prim", d:"L'Attraction primordiale, le plus beau des immortels. Force qui pousse les êtres à s'unir : sans lui, aucune génération n'aurait suivi. À distinguer du petit archer fils d'Aphrodite."},
+ {n:"Tartare", g:"Τάρταρος", k:"prim", d:"L'abîme sous les Enfers, aussi loin sous terre que le ciel est au-dessus. Prison des Titans vaincus, gardée par les Hécatonchires."},
+ {n:"Érèbe", g:"Ἔρεβος", k:"prim", d:"Les Ténèbres souterraines, l'obscurité que traversent les âmes avant l'Hadès."},
+ {n:"Nyx", g:"Νύξ", k:"prim", d:"La Nuit. Même Zeus craint de lui déplaire. Elle enfante seule le cortège des puissances sombres qui bordent la vie humaine.",
+  c:[
+   {u:"Nyx seule", d:"Sans père : Nyx engendre par elle-même les forces qui pèsent sur les mortels.", c:[
+    {n:"Hypnos", g:"Ὕπνος", k:"div", d:"Le Sommeil, jumeau paisible de la Mort. Il endort même Zeus, à la demande d'Héra.",
+     c:[{n:"Morphée", g:"Μορφεύς", k:"div", d:"Fils d'Hypnos, il prend la forme des humains dans les rêves. Ses frères Phobétor et Phantasos figurent les bêtes et les objets."}]},
+    {n:"Thanatos", g:"Θάνατος", k:"div", d:"La Mort douce, au cœur de fer. Sisyphe réussit un temps à l'enchaîner : plus personne ne mourait sur terre."},
+    {n:"Némésis", g:"Νέμεσις", k:"div", d:"La juste rétribution. Elle frappe la démesure et l'orgueil heureux, remettant chacun à sa part."},
+    {n:"Éris", g:"Ἔρις", k:"div", d:"La Discorde. Écartée des noces de Thétis, elle y jette la pomme « à la plus belle » : le geste qui mène à la guerre de Troie."},
+    {n:"Les Moires", g:"Μοῖραι", k:"div", d:"Clotho file le fil de la vie, Lachésis en mesure la longueur, Atropos le coupe. Leur décret lie jusqu'aux dieux."},
+    {n:"Les Kères", g:"Κῆρες", k:"creature", d:"Génies de la mort violente, elles fondent sur les champs de bataille pour boire le sang des blessés."},
+    {n:"Les Hespérides", g:"Ἑσπερίδες", k:"div", d:"Nymphes du couchant, gardiennes du jardin aux pommes d'or avec le dragon Ladon. Onzième travail d'Héraclès."},
+    {n:"Géras", g:"Γῆρας", k:"div", d:"La Vieillesse. Sur les vases, un petit vieillard décharné qu'Héraclès repousse."},
+    {n:"Momos", g:"Μῶμος", k:"div", d:"Le Blâme et la raillerie. Chassé de l'Olympe pour avoir critiqué le travail des dieux."},
+    {n:"Apaté", g:"Ἀπάτη", k:"div", d:"La Tromperie, sœur des mensonges et des serments trahis."},
+    {n:"Oizys", g:"Ὀϊζύς", k:"div", d:"La Détresse et l'angoisse, la peine qui n'a pas de remède."}
+   ]},
+   {u:"Nyx × Érèbe", d:"L'union de la Nuit et des Ténèbres produit paradoxalement la lumière.", c:[
+    {n:"Éther", g:"Αἰθήρ", k:"prim", d:"L'air pur et lumineux des hauteurs, celui que respirent les dieux."},
+    {n:"Héméra", g:"Ἡμέρα", k:"prim", d:"Le Jour. Elle et sa mère Nyx se croisent au seuil de leur demeure sans jamais s'y trouver ensemble."},
+    {n:"Charon", g:"Χάρων", k:"div", d:"Le nocher des Enfers. Il fait passer l'Achéron contre une obole ; sans elle, l'âme erre cent ans sur la rive."}
+   ]}
+  ]},
+ {n:"Gaïa", g:"Γαῖα", k:"prim", d:"La Terre, assise inébranlable de tout ce qui existe. Mère et complice des révoltes : contre Ouranos, puis contre Zeus.",
+  c:[
+   {u:"Gaïa seule", d:"Elle produit d'elle-même son égal, le Ciel, ainsi que la mer et les montagnes.", c:[
+    {n:"Ouranos", g:"Οὐρανός", k:"prim", d:"Le Ciel étoilé, premier roi du monde. Il enfouit ses enfants dans le ventre de Gaïa jusqu'à ce que Cronos le mutile."},
+    {n:"Pontos", g:"Πόντος", k:"prim", d:"Le Flot marin, la mer stérile avant Poséidon. Père des divinités primitives de l'océan."},
+    {n:"Les Ouréa", g:"Οὔρεα", k:"prim", d:"Les Montagnes, nées de Gaïa comme des divinités à part entière."}
+   ]},
+   {u:"Gaïa × Ouranos", d:"Douze Titans, trois Cyclopes, trois Hécatonchires : la première génération divine.", c:[
+    {n:"Océan", g:"Ὠκεανός", k:"titan", d:"Le fleuve qui ceint le monde. Seul Titan à ne pas prendre part au complot contre Ouranos, il reste neutre dans la Titanomachie.",
+     c:[{u:"Océan × Téthys", d:"Trois mille Océanides et autant de fleuves.", c:[
+      {n:"Métis", g:"Μῆτις", k:"div", d:"La Ruse avisée. Première épouse de Zeus, qui l'avale par crainte d'un fils plus fort : Athéna naîtra du crâne paternel."},
+      {n:"Styx", g:"Στύξ", k:"div", d:"Le fleuve des Enfers. Première alliée de Zeus, elle reçoit l'honneur de porter le serment inviolable des dieux."},
+      {n:"Doris", g:"Δωρίς", k:"div", d:"Océanide épouse de Nérée, mère des cinquante Néréides."},
+      {n:"Clymène", g:"Κλυμένη", k:"div", d:"Océanide, épouse de Japet et mère de Prométhée."},
+      {n:"Eurynomé", g:"Εὐρυνόμη", k:"div", d:"Océanide qui recueille Héphaïstos précipité de l'Olympe ; mère des Charites."},
+      {n:"Les fleuves", g:"Ποταμοί", k:"div", d:"Achéloos, Alphée, Scamandre, Inachos : les cours d'eau sont des dieux à part entière, capables de combattre."}
+     ]}]},
+    {n:"Téthys", g:"Τηθύς", k:"titan", d:"Titanide des eaux douces nourricières, épouse d'Océan et mère de toutes les sources."},
+    {n:"Hypérion", g:"Ὑπερίων", k:"titan", d:"« Celui qui va au-dessus », Titan de la lumière céleste, père des trois grands luminaires.",
+     c:[{u:"Hypérion × Théia", d:"Les astres du jour et de la nuit.", c:[
+      {n:"Hélios", g:"Ἥλιος", k:"titan", d:"Le Soleil, qui traverse le ciel sur un quadrige. Il voit tout : c'est lui qui révèle à Déméter l'enlèvement de Perséphone.",
+       c:[
+        {n:"Circé", g:"Κίρκη", k:"div", d:"Magicienne d'Aiaié, elle change les compagnons d'Ulysse en pourceaux."},
+        {n:"Pasiphaé", g:"Πασιφάη", k:"div", d:"Épouse de Minos, mère du Minotaure après un amour contre nature envoyé comme châtiment."},
+        {n:"Aiétès", g:"Αἰήτης", k:"mortel", d:"Roi de Colchide, gardien de la Toison d'or, père de Médée."},
+        {n:"Phaéton", g:"Φαέθων", k:"mortel", d:"Il obtient de conduire le char solaire un jour, embrase la terre et tombe foudroyé."}
+       ]},
+      {n:"Séléné", g:"Σελήνη", k:"titan", d:"La Lune. Elle obtient pour son aimé Endymion un sommeil éternel qui le garde jeune."},
+      {n:"Éos", g:"Ἠώς", k:"titan", d:"L'Aurore aux doigts de rose. Elle demande l'immortalité pour Tithon, oublie la jeunesse : il vieillit sans fin.",
+       c:[{u:"Éos × Astréos", d:"Les vents et les astres.", c:[
+        {n:"Borée", g:"Βορέας", k:"div", d:"Vent du nord, glacial et violent ; il enlève Orithye et engendre des fils ailés."},
+        {n:"Zéphyr", g:"Ζέφυρος", k:"div", d:"Vent d'ouest, le plus doux, souffle du printemps."},
+        {n:"Notos", g:"Νότος", k:"div", d:"Vent du sud, chargé de brumes et d'orages d'été."},
+        {n:"Euros", g:"Εὖρος", k:"div", d:"Vent d'est, celui des pluies et des mauvais présages."}
+       ]}]}
+     ]}]},
+    {n:"Théia", g:"Θεία", k:"titan", d:"Titanide de la vue et de l'éclat, celle qui donne aux métaux et aux pierres leur valeur."},
+    {n:"Céos", g:"Κοῖος", k:"titan", d:"Titan de l'intelligence questionneuse et de l'axe céleste du nord.",
+     c:[{u:"Céos × Phébé", d:"La lignée oraculaire.", c:[
+      {n:"Léto", g:"Λητώ", k:"titan", d:"Poursuivie par la jalousie d'Héra, aucune terre n'ose l'accueillir : Délos, île flottante, lui offre asile."},
+      {n:"Astéria", g:"Ἀστερία", k:"titan", d:"Pour fuir Zeus elle se change en caille puis en rocher : c'est l'île de Délos.",
+       c:[{u:"Astéria × Persès", d:"", c:[
+        {n:"Hécate", g:"Ἑκάτη", k:"div", d:"Déesse des carrefours, de la lune noire et de la magie. Zeus lui laisse sa part de pouvoir sur le ciel, la terre et la mer."}
+       ]}]}
+     ]}]},
+    {n:"Phébé", g:"Φοίβη", k:"titan", d:"Titanide brillante, associée à Delphes dont elle transmet l'oracle à son petit-fils Apollon."},
+    {n:"Crios", g:"Κρῖος", k:"titan", d:"Titan des constellations et des saisons, moins raconté que ses frères.",
+     c:[{u:"Crios × Eurybie", d:"", c:[
+      {n:"Astréos", g:"Ἀστραῖος", k:"titan", d:"Titan du ciel étoilé du soir, époux de l'Aurore et père des vents."},
+      {n:"Pallas", g:"Πάλλας", k:"titan", d:"Titan de l'art guerrier, tué par Athéna lors de la Titanomachie selon certaines versions.",
+       c:[{u:"Pallas × Styx", d:"Les quatre serviteurs du trône de Zeus.", c:[
+        {n:"Niké", g:"Νίκη", k:"div", d:"La Victoire ailée, qui se tient près de Zeus et d'Athéna."},
+        {n:"Cratos", g:"Κράτος", k:"div", d:"La Puissance ; avec Bia, il enchaîne Prométhée au Caucase."},
+        {n:"Bia", g:"Βία", k:"div", d:"La Force brute, exécutrice des ordres de Zeus."},
+        {n:"Zélos", g:"Ζῆλος", k:"div", d:"L'Émulation, le désir d'égaler et de rivaliser."}
+       ]}]},
+      {n:"Persès", g:"Πέρσης", k:"titan", d:"Titan de la destruction, père d'Hécate."}
+     ]}]},
+    {n:"Japet", g:"Ἰαπετός", k:"titan", d:"Ancêtre de l'humanité par ses fils. Sa descendance porte tout ce que l'homme a de meilleur et de pire.",
+     c:[{u:"Japet × Clymène", d:"", c:[
+      {n:"Prométhée", g:"Προμηθεύς", k:"titan", d:"Le Prévoyant. Il façonne les hommes, leur vole le feu et paie d'un aigle qui lui dévore le foie chaque jour."},
+      {n:"Épiméthée", g:"Ἐπιμηθεύς", k:"titan", d:"Celui qui comprend trop tard. Il accepte Pandore et sa jarre malgré l'avertissement de son frère."},
+      {n:"Atlas", g:"Ἄτλας", k:"titan", d:"Condamné à porter la voûte du ciel sur ses épaules pour avoir mené les Titans au combat.",
+       c:[
+        {n:"Les Pléiades", g:"Πλειάδες", k:"div", d:"Sept sœurs, dont Maïa ; poursuivies par Orion, elles sont placées parmi les étoiles."},
+        {n:"Calypso", g:"Καλυψώ", k:"div", d:"Nymphe d'Ogygie, elle retient Ulysse sept ans et lui offre en vain l'immortalité."}
+       ]},
+      {n:"Ménœtios", g:"Μενοίτιος", k:"titan", d:"Titan de la violence orgueilleuse, foudroyé par Zeus et jeté au Tartare."}
+     ]}]},
+    {n:"Thémis", g:"Θέμις", k:"titan", d:"La Loi divine et l'ordre coutumier. Elle tient l'oracle de Delphes avant Apollon et conseille Zeus.",
+     c:[{u:"Thémis × Zeus", d:"", c:[
+      {n:"Les Heures", g:"Ὧραι", k:"div", d:"Eunomia, Diké et Iréné : le bon ordre, la justice et la paix, gardiennes des portes du ciel et des saisons."}
+     ]}]},
+    {n:"Mnémosyne", g:"Μνημοσύνη", k:"titan", d:"La Mémoire. Avant l'écriture, elle est la condition de toute poésie et de toute connaissance.",
+     c:[{u:"Mnémosyne × Zeus", d:"Neuf nuits, neuf filles.", c:[
+      {n:"Les Muses", g:"Μοῦσαι", k:"div", d:"Calliope, Clio, Érato, Euterpe, Melpomène, Polymnie, Terpsichore, Thalie, Uranie : elles inspirent poètes, savants et musiciens."}
+     ]}]},
+    {n:"Rhéa", g:"Ῥέα", k:"titan", d:"La Mère des dieux. Lasse de voir Cronos dévorer ses enfants, elle sauve Zeus en tendant à son époux une pierre emmaillotée."},
+    {n:"Cronos", g:"Κρόνος", k:"titan", d:"Le plus jeune Titan. Il châtre Ouranos avec la faucille de Gaïa, règne sur l'âge d'or, puis subit le sort qu'il avait infligé à son père.",
+     c:[
+      {u:"Cronos × Philyra", d:"", c:[
+       {n:"Chiron", g:"Χείρων", k:"creature", d:"Le centaure sage, médecin et précepteur d'Achille, d'Asclépios et de Jason. Blessé d'une flèche empoisonnée, il renonce à son immortalité."}
+      ]},
+      {u:"Cronos × Rhéa", d:"Les six Cronides : la génération qui prend l'Olympe.", c:[
+       {n:"Hestia", g:"Ἑστία", k:"olymp", d:"Aînée des Cronides, déesse du foyer. Elle refuse les prétendants et garde le feu qui ne doit jamais s'éteindre."},
+       {n:"Hadès", g:"Ἅιδης", k:"olymp", d:"Maître du monde souterrain après le partage du monde. Son casque rend invisible ; il ne siège pas sur l'Olympe.",
+        c:[{u:"Hadès × Perséphone", d:"Le couple des Enfers, sans descendance dans la version courante.", c:[
+         {n:"Cerbère", i:"cerbere", g:"Κέρβερος", k:"creature", d:"Chien à trois têtes qui laisse entrer tous les morts et n'en laisse ressortir aucun. Orphée l'endort, Héraclès l'emporte."}
+        ]}]},
+       {n:"Poséidon", g:"Ποσειδῶν", k:"olymp", d:"Dieu de la mer, des séismes et des chevaux. Son trident soulève les flots ; sa rancune poursuit Ulysse dix ans.",
+        c:[
+         {u:"Poséidon × Amphitrite", d:"", c:[
+          {n:"Triton", g:"Τρίτων", k:"div", d:"Messager marin à queue de poisson, il calme ou soulève les vagues en soufflant dans sa conque."}
+         ]},
+         {u:"Poséidon × Méduse", d:"Nés du cou tranché de la Gorgone.", c:[
+          {n:"Pégase", g:"Πήγασος", k:"creature", d:"Cheval ailé jailli du sang de Méduse. Bellérophon le monte, puis chute en voulant atteindre l'Olympe."},
+          {n:"Chrysaor", g:"Χρυσάωρ", k:"creature", d:"Le géant à l'épée d'or, né avec Pégase ; père du monstre Géryon."}
+         ]},
+         {u:"Poséidon × Thoosa", d:"", c:[
+          {n:"Polyphème", g:"Πολύφημος", k:"creature", d:"Cyclope pasteur aveuglé par Ulysse ; sa prière à son père vaut au héros son long retour."}
+         ]}
+        ]},
+       {n:"Déméter", g:"Δημήτηρ", k:"olymp", d:"Déesse des moissons. Son deuil pour Perséphone stérilise la terre : ainsi naît l'hiver, et avec lui les mystères d'Éleusis."},
+       {n:"Héra", g:"Ἥρα", k:"olymp", d:"Reine de l'Olympe, garante du mariage. Sa jalousie envers les amours de Zeus alimente une grande part des mythes.",
+        c:[{u:"Héra seule", d:"Par dépit d'avoir vu Zeus enfanter Athéna sans elle.", c:[
+         {n:"Héphaïstos", g:"Ἥφαιστος", k:"olymp", d:"Le forgeron boiteux, précipité de l'Olympe par sa mère. Il fabrique les armes des dieux, les automates d'or et le piège qui expose Aphrodite."}
+        ]}]},
+       {n:"Zeus", g:"Ζεύς", k:"olymp", d:"Le dernier-né devenu roi. Il libère ses frères, ses oncles Cyclopes lui donnent la foudre, et il fonde un ordre qui ne sera plus renversé.",
+        c:[
+         {u:"Zeus × Héra", d:"Le couple souverain.", c:[
+          {n:"Arès", g:"Ἄρης", k:"olymp", d:"Dieu de la fureur guerrière, du carnage plus que de la stratégie. Peu aimé, y compris de son père."},
+          {n:"Hébé", g:"Ἥβη", k:"div", d:"La Jeunesse, échanson des dieux ; elle épouse Héraclès une fois celui-ci divinisé."},
+          {n:"Ilithyie", g:"Εἰλείθυια", k:"div", d:"Déesse des accouchements ; Héra la retient pour retarder la naissance d'Héraclès."}
+         ]},
+         {u:"Zeus × Métis", d:"", c:[
+          {n:"Athéna", g:"Ἀθηνᾶ", k:"olymp", d:"Née adulte et casquée du crâne de Zeus. Guerre réfléchie, artisanat, sagesse : elle offre l'olivier à Athènes et bat Poséidon."}
+         ]},
+         {u:"Zeus × Léto", d:"Les jumeaux archers de Délos.", c:[
+          {n:"Apollon", g:"Ἀπόλλων", k:"olymp", d:"Lumière, oracle, musique et fléaux. Il tue le serpent Python et s'installe à Delphes.",
+           c:[
+            {n:"Asclépios", g:"Ἀσκληπιός", k:"div", d:"Médecin si habile qu'il ressuscite les morts ; Zeus le foudroie, puis le place parmi les astres."},
+            {n:"Orphée", g:"Ὀρφεύς", k:"mortel", d:"Fils de la Muse Calliope. Sa lyre fléchit Hadès, mais un regard en arrière lui reprend Eurydice."}
+           ]},
+          {n:"Artémis", g:"Ἄρτεμις", k:"olymp", d:"Chasseresse vierge, maîtresse des bêtes sauvages et des jeunes filles. Elle change Actéon en cerf pour l'avoir vue au bain."}
+         ]},
+         {u:"Zeus × Maïa", d:"", c:[
+          {n:"Hermès", g:"Ἑρμῆς", k:"olymp", d:"Né le matin, il vole les vaches d'Apollon le soir et invente la lyre pour se faire pardonner. Messager, guide des âmes, patron des voyageurs et des voleurs.",
+           c:[{u:"Hermès × Aphrodite", d:"", c:[
+            {n:"Hermaphrodite", g:"Ἑρμαφρόδιτος", k:"div", d:"Fondu en un seul corps avec la naïade Salmacis, il devient à la fois masculin et féminin."}
+           ]}]}
+         ]},
+         {u:"Zeus × Sémélé", d:"", c:[
+          {n:"Dionysos", g:"Διόνυσος", k:"olymp", d:"Deux fois né : arraché au ventre de sa mère foudroyée, il achève sa gestation dans la cuisse de Zeus. Vigne, extase, théâtre et perte de soi."}
+         ]},
+         {u:"Zeus × Déméter", d:"", c:[
+          {n:"Perséphone", g:"Περσεφόνη", k:"olymp", d:"Enlevée par Hadès, elle mange six grains de grenade : elle passe désormais une part de l'année sous terre et une part au jour."}
+         ]},
+         {u:"Zeus × Eurynomé", d:"", c:[
+          {n:"Les Charites", g:"Χάριτες", k:"div", d:"Aglaé, Euphrosyne et Thalie : les Grâces, qui donnent aux fêtes et aux œuvres leur éclat aimable."}
+         ]},
+         {u:"Zeus × Dioné", d:"Version homérique de la naissance d'Aphrodite.", c:[
+          {n:"Aphrodite (variante)", i:"aphrodite", g:"Ἀφροδίτη", k:"olymp", d:"Chez Homère elle est fille de Zeus et de Dioné, non née de l'écume : les deux traditions coexistent."}
+         ]},
+         {u:"Zeus × mortelles", d:"Les héros nés d'un père divin.", c:[
+          {n:"Héraclès", g:"Ἡρακλῆς", k:"mortel", d:"Fils d'Alcmène. Douze travaux imposés par Héra ; seul héros admis chez les dieux après sa mort."},
+          {n:"Persée", g:"Περσεύς", k:"mortel", d:"Fils de Danaé fécondée par une pluie d'or. Il décapite Méduse avec le bouclier-miroir d'Athéna."},
+          {n:"Hélène", g:"Ἑλένη", k:"mortel", d:"Fille de Léda, née d'un œuf. Sa beauté déclenche la guerre de Troie."},
+          {n:"Les Dioscures", g:"Διόσκουροι", k:"mortel", d:"Castor et Pollux. L'un mortel, l'autre non : ils choisissent de partager l'immortalité en alternance, et deviennent les Gémeaux."},
+          {n:"Minos", g:"Μίνως", k:"mortel", d:"Fils d'Europe, roi de Crète, commanditaire du Labyrinthe ; juge des morts après sa mort."}
+         ]}
+        ]}
+      ]}
+     ]},
+    {n:"Les Cyclopes", g:"Κύκλωπες", k:"creature", d:"Brontès, Stéropès et Argès, forgerons à l'œil unique. Libérés par Zeus, ils lui offrent la foudre, le trident à Poséidon, le casque à Hadès."},
+    {n:"Les Hécatonchires", g:"Ἑκατόγχειρες", k:"creature", d:"Cottos, Briarée et Gygès : cent bras, cinquante têtes. Leur entrée dans la Titanomachie décide de l'issue du conflit."}
+   ]},
+   {u:"Du sang et de l'écume d'Ouranos", d:"Ce qui naît de la mutilation du Ciel.", c:[
+    {n:"Aphrodite", g:"Ἀφροδίτη", k:"olymp", d:"Née de l'écume où tombent les parties d'Ouranos, elle aborde à Chypre. Désir, beauté, et le pouvoir de désorganiser tout ordre.",
+     c:[{u:"Aphrodite × Arès", d:"Les amants surpris dans le filet d'Héphaïstos.", c:[
+      {n:"Éros (Amour)", g:"Ἔρως", k:"div", d:"L'archer malicieux des versions tardives, fils d'Aphrodite : à distinguer de l'Éros primordial."},
+      {n:"Harmonie", g:"Ἁρμονία", k:"div", d:"L'Accord né de l'Amour et de la Guerre ; son collier maudit ruine la lignée de Thèbes."},
+      {n:"Phobos", g:"Φόβος", k:"div", d:"La Peur panique, qui accompagne son père au combat."},
+      {n:"Déimos", g:"Δεῖμος", k:"div", d:"La Terreur, jumeau de Phobos ; tous deux mènent le char d'Arès."}
+     ]}]},
+    {n:"Les Érinyes", g:"Ἐρινύες", k:"div", d:"Alecto, Mégère et Tisiphone, nées du sang d'Ouranos. Elles poursuivent sans relâche le meurtre du sang, surtout au sein de la famille."},
+    {n:"Les Géants", g:"Γίγαντες", k:"creature", d:"Nés du même sang, ils attaquent l'Olympe. La Gigantomachie ne peut être gagnée sans l'aide d'un mortel : Héraclès."},
+    {n:"Les Méliades", g:"Μελίαι", k:"div", d:"Nymphes des frênes, dont on fait les lances : la violence humaine sort de ces arbres."}
+   ]},
+   {u:"Gaïa × Pontos", d:"Les vieilles divinités marines, antérieures à Poséidon.", c:[
+    {n:"Nérée", g:"Νηρεύς", k:"div", d:"Le Vieillard de la mer, infaillible et véridique. Il change de forme pour échapper aux questions ; Héraclès le maîtrise.",
+     c:[{u:"Nérée × Doris", d:"", c:[
+      {n:"Les Néréides", g:"Νηρηΐδες", k:"div", d:"Cinquante nymphes bienveillantes des flots, dont Amphitrite et Thétis, mère d'Achille."}
+     ]}]},
+    {n:"Thaumas", g:"Θαύμας", k:"div", d:"La Merveille marine, père des prodiges du ciel.",
+     c:[{u:"Thaumas × Électre", d:"", c:[
+      {n:"Iris", g:"Ἶρις", k:"div", d:"L'arc-en-ciel, messagère des dieux ; elle relie l'Olympe à la terre et va puiser l'eau du Styx."},
+      {n:"Les Harpies", g:"Ἅρπυιαι", k:"creature", d:"Femmes-oiseaux qui enlèvent et souillent ; elles supplicient le devin Phinée."}
+     ]}]},
+    {n:"Phorcys", g:"Φόρκυς", k:"div", d:"Dieu des dangers de la mer profonde.",
+     c:[{u:"Phorcys × Céto", d:"La lignée des monstres.", c:[
+      {n:"Les Gorgones", g:"Γοργόνες", k:"creature", d:"Sthéno, Euryale et Méduse, seule mortelle des trois. Leur regard pétrifie."},
+      {n:"Les Grées", g:"Γραῖαι", k:"creature", d:"Trois vieilles nées grises, se partageant un œil et une dent ; Persée le leur dérobe pour obtenir sa route."},
+      {n:"Échidna", g:"Ἔχιδνα", k:"creature", d:"Moitié femme, moitié serpent : la mère de presque tous les monstres."},
+      {n:"Ladon", g:"Λάδων", k:"creature", d:"Le dragon aux cent têtes enroulé autour du pommier des Hespérides."}
+     ]}]},
+    {n:"Céto", g:"Κητώ", k:"div", d:"Divinité des grands monstres marins et des périls de la haute mer."},
+    {n:"Eurybie", g:"Εὐρυβία", k:"div", d:"Au cœur d'acier, elle unit la lignée marine aux Titans en épousant Crios."}
+   ]},
+   {u:"Gaïa × Tartare", d:"L'ultime révolte de la Terre contre Zeus.", c:[
+    {n:"Typhon", g:"Τυφῶν", k:"creature", d:"Cent têtes de dragon, plus haut que les montagnes. Zeus l'écrase sous l'Etna après un combat qui ébranle le cosmos.",
+     c:[{u:"Typhon × Échidna", d:"La portée monstrueuse.", c:[
+      {n:"Cerbère", g:"Κέρβερος", k:"creature", d:"Le chien tricéphale des Enfers, douzième travail d'Héraclès."},
+      {n:"L'Hydre de Lerne", g:"Ὕδρα", k:"creature", d:"Chaque tête tranchée repousse double ; Héraclès cautérise les plaies pour en venir à bout."},
+      {n:"La Chimère", g:"Χίμαιρα", k:"creature", d:"Lion devant, chèvre au milieu, serpent derrière, et du feu dans la gueule. Bellérophon l'abat du haut de Pégase."},
+      {n:"Orthos", g:"Ὄρθρος", k:"creature", d:"Chien à deux têtes, gardien des troupeaux de Géryon."},
+      {n:"Le Sphinx", g:"Σφίγξ", k:"creature", d:"Elle étrangle qui ne résout pas son énigme ; Œdipe répond, et elle se jette du haut du rocher."},
+      {n:"Le Lion de Némée", g:"Λέων", k:"creature", d:"Sa peau est invulnérable : Héraclès l'étouffe et s'en fait une armure."},
+      {n:"L'Aigle du Caucase", g:"Ἀετός", k:"creature", d:"Il dévore chaque jour le foie de Prométhée, que la nuit fait repousser."}
+     ]}]}
+   ]}
+  ]}
+]};
+
+const PAYS = [{"c": "za", "n": "Afrique du Sud", "z": "AF"}, {"c": "dz", "n": "Algérie", "z": "AF"}, {"c": "ao", "n": "Angola", "z": "AF"}, {"c": "bw", "n": "Botswana", "z": "AF"}, {"c": "bf", "n": "Burkina Faso", "z": "AF"}, {"c": "bi", "n": "Burundi", "z": "AF"}, {"c": "bj", "n": "Bénin", "z": "AF"}, {"c": "cm", "n": "Cameroun", "z": "AF"}, {"c": "cv", "n": "Cap-Vert", "z": "AF"}, {"c": "km", "n": "Comores", "z": "AF"}, {"c": "ci", "n": "Côte d'Ivoire", "z": "AF"}, {"c": "dj", "n": "Djibouti", "z": "AF"}, {"c": "sz", "n": "Eswatini", "z": "AF"}, {"c": "ga", "n": "Gabon", "z": "AF"}, {"c": "gm", "n": "Gambie", "z": "AF"}, {"c": "gh", "n": "Ghana", "z": "AF"}, {"c": "gn", "n": "Guinée", "z": "AF"}, {"c": "gq", "n": "Guinée équatoriale", "z": "AF"}, {"c": "gw", "n": "Guinée-Bissau", "z": "AF"}, {"c": "ke", "n": "Kenya", "z": "AF"}, {"c": "ls", "n": "Lesotho", "z": "AF"}, {"c": "ly", "n": "Libye", "z": "AF"}, {"c": "lr", "n": "Libéria", "z": "AF"}, {"c": "mg", "n": "Madagascar", "z": "AF"}, {"c": "mw", "n": "Malawi", "z": "AF"}, {"c": "ml", "n": "Mali", "z": "AF"}, {"c": "ma", "n": "Maroc", "z": "AF"}, {"c": "mu", "n": "Maurice", "z": "AF"}, {"c": "mr", "n": "Mauritanie", "z": "AF"}, {"c": "mz", "n": "Mozambique", "z": "AF"}, {"c": "na", "n": "Namibie", "z": "AF"}, {"c": "ne", "n": "Niger", "z": "AF"}, {"c": "ng", "n": "Nigeria", "z": "AF"}, {"c": "ug", "n": "Ouganda", "z": "AF"}, {"c": "rw", "n": "Rwanda", "z": "AF"}, {"c": "cf", "n": "République centrafricaine", "z": "AF"}, {"c": "cg", "n": "République du Congo", "z": "AF"}, {"c": "cd", "n": "République démocratique du Congo", "z": "AF"}, {"c": "st", "n": "Sao Tomé-et-Principe", "z": "AF"}, {"c": "sc", "n": "Seychelles", "z": "AF"}, {"c": "sl", "n": "Sierra Leone", "z": "AF"}, {"c": "so", "n": "Somalie", "z": "AF"}, {"c": "sd", "n": "Soudan", "z": "AF"}, {"c": "ss", "n": "Soudan du Sud", "z": "AF"}, {"c": "sn", "n": "Sénégal", "z": "AF"}, {"c": "tz", "n": "Tanzanie", "z": "AF"}, {"c": "td", "n": "Tchad", "z": "AF"}, {"c": "tg", "n": "Togo", "z": "AF"}, {"c": "tn", "n": "Tunisie", "z": "AF"}, {"c": "zm", "n": "Zambie", "z": "AF"}, {"c": "zw", "n": "Zimbabwe", "z": "AF"}, {"c": "eg", "n": "Égypte", "z": "AF"}, {"c": "er", "n": "Érythrée", "z": "AF"}, {"c": "et", "n": "Éthiopie", "z": "AF"}, {"c": "af", "n": "Afghanistan", "z": "AS"}, {"c": "sa", "n": "Arabie saoudite", "z": "AS"}, {"c": "am", "n": "Arménie", "z": "AS"}, {"c": "az", "n": "Azerbaïdjan", "z": "AS"}, {"c": "bh", "n": "Bahreïn", "z": "AS"}, {"c": "bd", "n": "Bangladesh", "z": "AS"}, {"c": "bt", "n": "Bhoutan", "z": "AS"}, {"c": "mm", "n": "Birmanie (Myanmar)", "z": "AS"}, {"c": "bn", "n": "Brunei", "z": "AS"}, {"c": "kh", "n": "Cambodge", "z": "AS"}, {"c": "cn", "n": "Chine", "z": "AS"}, {"c": "kp", "n": "Corée du Nord", "z": "AS"}, {"c": "kr", "n": "Corée du Sud", "z": "AS"}, {"c": "ge", "n": "Géorgie", "z": "AS"}, {"c": "in", "n": "Inde", "z": "AS"}, {"c": "id", "n": "Indonésie", "z": "AS"}, {"c": "iq", "n": "Irak", "z": "AS"}, {"c": "ir", "n": "Iran", "z": "AS"}, {"c": "il", "n": "Israël", "z": "AS"}, {"c": "jp", "n": "Japon", "z": "AS"}, {"c": "jo", "n": "Jordanie", "z": "AS"}, {"c": "kz", "n": "Kazakhstan", "z": "AS"}, {"c": "kg", "n": "Kirghizistan", "z": "AS"}, {"c": "kw", "n": "Koweït", "z": "AS"}, {"c": "la", "n": "Laos", "z": "AS"}, {"c": "lb", "n": "Liban", "z": "AS"}, {"c": "my", "n": "Malaisie", "z": "AS"}, {"c": "mv", "n": "Maldives", "z": "AS"}, {"c": "mn", "n": "Mongolie", "z": "AS"}, {"c": "np", "n": "Népal", "z": "AS"}, {"c": "om", "n": "Oman", "z": "AS"}, {"c": "uz", "n": "Ouzbékistan", "z": "AS"}, {"c": "pk", "n": "Pakistan", "z": "AS"}, {"c": "ps", "n": "Palestine", "z": "AS"}, {"c": "ph", "n": "Philippines", "z": "AS"}, {"c": "qa", "n": "Qatar", "z": "AS"}, {"c": "sg", "n": "Singapour", "z": "AS"}, {"c": "lk", "n": "Sri Lanka", "z": "AS"}, {"c": "sy", "n": "Syrie", "z": "AS"}, {"c": "tj", "n": "Tadjikistan", "z": "AS"}, {"c": "tw", "n": "Taïwan", "z": "AS"}, {"c": "th", "n": "Thaïlande", "z": "AS"}, {"c": "tl", "n": "Timor oriental", "z": "AS"}, {"c": "tm", "n": "Turkménistan", "z": "AS"}, {"c": "tr", "n": "Turquie", "z": "AS"}, {"c": "vn", "n": "Viêt Nam", "z": "AS"}, {"c": "ye", "n": "Yémen", "z": "AS"}, {"c": "ae", "n": "Émirats arabes unis", "z": "AS"}, {"c": "al", "n": "Albanie", "z": "EU"}, {"c": "de", "n": "Allemagne", "z": "EU"}, {"c": "ad", "n": "Andorre", "z": "EU"}, {"c": "at", "n": "Autriche", "z": "EU"}, {"c": "be", "n": "Belgique", "z": "EU"}, {"c": "by", "n": "Biélorussie", "z": "EU"}, {"c": "ba", "n": "Bosnie-Herzégovine", "z": "EU"}, {"c": "bg", "n": "Bulgarie", "z": "EU"}, {"c": "cy", "n": "Chypre", "z": "EU"}, {"c": "hr", "n": "Croatie", "z": "EU"}, {"c": "dk", "n": "Danemark", "z": "EU"}, {"c": "es", "n": "Espagne", "z": "EU"}, {"c": "ee", "n": "Estonie", "z": "EU"}, {"c": "fi", "n": "Finlande", "z": "EU"}, {"c": "fr", "n": "France", "z": "EU"}, {"c": "gr", "n": "Grèce", "z": "EU"}, {"c": "hu", "n": "Hongrie", "z": "EU"}, {"c": "ie", "n": "Irlande", "z": "EU"}, {"c": "is", "n": "Islande", "z": "EU"}, {"c": "it", "n": "Italie", "z": "EU"}, {"c": "xk", "n": "Kosovo", "z": "EU"}, {"c": "lv", "n": "Lettonie", "z": "EU"}, {"c": "li", "n": "Liechtenstein", "z": "EU"}, {"c": "lt", "n": "Lituanie", "z": "EU"}, {"c": "lu", "n": "Luxembourg", "z": "EU"}, {"c": "mk", "n": "Macédoine du Nord", "z": "EU"}, {"c": "mt", "n": "Malte", "z": "EU"}, {"c": "md", "n": "Moldavie", "z": "EU"}, {"c": "mc", "n": "Monaco", "z": "EU"}, {"c": "me", "n": "Monténégro", "z": "EU"}, {"c": "no", "n": "Norvège", "z": "EU"}, {"c": "nl", "n": "Pays-Bas", "z": "EU"}, {"c": "pl", "n": "Pologne", "z": "EU"}, {"c": "pt", "n": "Portugal", "z": "EU"}, {"c": "ro", "n": "Roumanie", "z": "EU"}, {"c": "gb", "n": "Royaume-Uni", "z": "EU"}, {"c": "ru", "n": "Russie", "z": "EU"}, {"c": "sm", "n": "Saint-Marin", "z": "EU"}, {"c": "rs", "n": "Serbie", "z": "EU"}, {"c": "sk", "n": "Slovaquie", "z": "EU"}, {"c": "si", "n": "Slovénie", "z": "EU"}, {"c": "ch", "n": "Suisse", "z": "EU"}, {"c": "se", "n": "Suède", "z": "EU"}, {"c": "cz", "n": "Tchéquie", "z": "EU"}, {"c": "ua", "n": "Ukraine", "z": "EU"}, {"c": "va", "n": "Vatican", "z": "EU"}, {"c": "ag", "n": "Antigua-et-Barbuda", "z": "NA"}, {"c": "bs", "n": "Bahamas", "z": "NA"}, {"c": "bb", "n": "Barbade", "z": "NA"}, {"c": "bz", "n": "Belize", "z": "NA"}, {"c": "ca", "n": "Canada", "z": "NA"}, {"c": "cr", "n": "Costa Rica", "z": "NA"}, {"c": "cu", "n": "Cuba", "z": "NA"}, {"c": "dm", "n": "Dominique", "z": "NA"}, {"c": "gd", "n": "Grenade", "z": "NA"}, {"c": "gt", "n": "Guatemala", "z": "NA"}, {"c": "ht", "n": "Haïti", "z": "NA"}, {"c": "hn", "n": "Honduras", "z": "NA"}, {"c": "jm", "n": "Jamaïque", "z": "NA"}, {"c": "mx", "n": "Mexique", "z": "NA"}, {"c": "ni", "n": "Nicaragua", "z": "NA"}, {"c": "pa", "n": "Panama", "z": "NA"}, {"c": "do", "n": "République dominicaine", "z": "NA"}, {"c": "kn", "n": "Saint-Christophe-et-Niévès", "z": "NA"}, {"c": "vc", "n": "Saint-Vincent-et-les-Grenadines", "z": "NA"}, {"c": "lc", "n": "Sainte-Lucie", "z": "NA"}, {"c": "sv", "n": "Salvador", "z": "NA"}, {"c": "tt", "n": "Trinité-et-Tobago", "z": "NA"}, {"c": "us", "n": "États-Unis", "z": "NA"}, {"c": "au", "n": "Australie", "z": "OC"}, {"c": "fj", "n": "Fidji", "z": "OC"}, {"c": "ki", "n": "Kiribati", "z": "OC"}, {"c": "fm", "n": "Micronésie", "z": "OC"}, {"c": "nr", "n": "Nauru", "z": "OC"}, {"c": "nz", "n": "Nouvelle-Zélande", "z": "OC"}, {"c": "pw", "n": "Palaos", "z": "OC"}, {"c": "pg", "n": "Papouasie-Nouvelle-Guinée", "z": "OC"}, {"c": "ws", "n": "Samoa", "z": "OC"}, {"c": "to", "n": "Tonga", "z": "OC"}, {"c": "tv", "n": "Tuvalu", "z": "OC"}, {"c": "vu", "n": "Vanuatu", "z": "OC"}, {"c": "mh", "n": "Îles Marshall", "z": "OC"}, {"c": "sb", "n": "Îles Salomon", "z": "OC"}, {"c": "ar", "n": "Argentine", "z": "SA"}, {"c": "bo", "n": "Bolivie", "z": "SA"}, {"c": "br", "n": "Brésil", "z": "SA"}, {"c": "cl", "n": "Chili", "z": "SA"}, {"c": "co", "n": "Colombie", "z": "SA"}, {"c": "gy", "n": "Guyana", "z": "SA"}, {"c": "py", "n": "Paraguay", "z": "SA"}, {"c": "pe", "n": "Pérou", "z": "SA"}, {"c": "sr", "n": "Suriname", "z": "SA"}, {"c": "uy", "n": "Uruguay", "z": "SA"}, {"c": "ve", "n": "Venezuela", "z": "SA"}, {"c": "ec", "n": "Équateur", "z": "SA"}];
+const ZONES = {AF:"Afrique", AS:"Asie", EU:"Europe", NA:"Amérique du Nord", SA:"Amérique du Sud", OC:"Océanie"};
+const KINDS = {prim:"Primordial", titan:"Titan", olymp:"Olympien", div:"Divinité", creature:"Créature", mortel:"Mortel"};
+const KEY = "wikimaster-collection";
+
+/* ---------- couche de stockage ----------
+   Trois sources possibles, testées dans cet ordre :
+   1. window.storage  — présent quand la page tourne dans Claude
+   2. localStorage    — cas normal sur GitHub Pages ou tout hébergement https
+   3. mémoire vive    — dernier recours (fichier ouvert en file://, mode privé strict) */
+const STORE = (function(){
+  if(window.storage && typeof window.storage.get === "function"){
+    return {
+      nom: "Claude", durable: true,
+      async lire(k){ const r = await window.storage.get(k); return r ? r.value : null; },
+      async ecrire(k, v){ await window.storage.set(k, v); }
+    };
+  }
+  try{
+    const t = "__essai__";
+    localStorage.setItem(t, "1"); localStorage.removeItem(t);
+    return {
+      nom: "navigateur", durable: true,
+      async lire(k){ return localStorage.getItem(k); },
+      async ecrire(k, v){ localStorage.setItem(k, v); }
+    };
+  }catch(e){}
+  const m = {};
+  return {
+    nom: "mémoire", durable: false,
+    async lire(k){ return k in m ? m[k] : null; },
+    async ecrire(k, v){ m[k] = v; }
+  };
+})();
+
+/* ---------- état + sauvegarde ---------- */
+let flags = new Set(), myth = new Set(), saveT = null;
+const etat = document.getElementById("etat");
+
+async function charger(){
+  try{
+    const brut = await STORE.lire(KEY);
+    const v = JSON.parse(brut);
+    flags = new Set(v.flags || []); myth = new Set(v.myth || []);
+    etat.textContent = "Collection chargée";
+  }catch(e){
+    etat.textContent = STORE.durable ? "Nouvelle collection" : "Session uniquement";
+  }
+}
+function sauver(){
+  clearTimeout(saveT);
+  etat.textContent = "Enregistrement…";
+  saveT = setTimeout(async ()=>{
+    if(!STORE.durable){ etat.textContent = "Session uniquement — pensez à exporter"; return; }
+    try{
+      await STORE.ecrire(KEY, JSON.stringify({flags:[...flags], myth:[...myth]}));
+      etat.textContent = "Enregistré";
+    }catch(e){ etat.textContent = "Enregistrement impossible"; }
+  }, 400);
+}
+
+/* ---------- utilitaires ---------- */
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const slug = s => norm(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const TICK = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0B2A22" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.5"/></svg>';
+
+/* ---------- index de la théogonie ---------- */
+const IDS = new Set();
+(function idx(n){
+  if(!n.u){ n.i = n.i || slug(n.n); IDS.add(n.i); }
+  (n.c||[]).forEach(idx);
+})(MYTH);
+const TOTAL_M = IDS.size, TOTAL_F = PAYS.length;
+
+/* ---------- compteurs ---------- */
+function maj(){
+  document.getElementById("s-flag").innerHTML = flags.size + "<span>/" + TOTAL_F + "</span>";
+  document.getElementById("s-myth").innerHTML = myth.size + "<span>/" + TOTAL_M + "</span>";
+  document.getElementById("j-flag").style.width = (flags.size/TOTAL_F*100).toFixed(1) + "%";
+  document.getElementById("j-myth").style.width = (myth.size/TOTAL_M*100).toFixed(1) + "%";
+  document.getElementById("t1").textContent = flags.size + "/" + TOTAL_F;
+  document.getElementById("t2").textContent = myth.size + "/" + TOTAL_M;
+  document.querySelectorAll("[data-zone]").forEach(el=>{
+    const z = el.dataset.zone, l = PAYS.filter(p=>p.z===z), g = l.filter(p=>flags.has(p.c)).length;
+    el.querySelector(".cnt").textContent = g + " / " + l.length;
+    el.querySelector(".jauge > i").style.width = (g/l.length*100).toFixed(1) + "%";
+  });
+}
+
+/* ---------- onglets ---------- */
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(x=>{
+      const on = x===t;
+      x.setAttribute("aria-selected", on);
+      document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+    });
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+});
+
+/* ============ DRAPEAUX ============ */
+let fFilter = "all", fQuery = "";
+const zoneBox = document.getElementById("flags");
+
+function buildFlags(){
+  zoneBox.innerHTML = "";
+  let vus = 0;
+  Object.keys(ZONES).forEach(z=>{
+    const liste = PAYS.filter(p=>p.z===z);
+    const sec = document.createElement("section");
+    sec.className = "zone"; sec.dataset.zone = z;
+    sec.innerHTML = '<div class="zone-head"><h2>'+ZONES[z]+'</h2><span class="cnt"></span></div><div class="jauge"><i></i></div><div class="grid"></div>';
+    const grid = sec.querySelector(".grid");
+    let n = 0;
+    liste.forEach(p=>{
+      const got = flags.has(p.c);
+      if(fFilter==="got" && !got) return;
+      if(fFilter==="miss" && got) return;
+      if(fQuery && !norm(p.n).includes(fQuery) && p.c !== fQuery) return;
+      n++; vus++;
+      const b = document.createElement("button");
+      b.className = "card" + (got?" got":"");
+      b.dataset.code = p.c;
+      b.setAttribute("aria-pressed", got);
+      b.innerHTML =
+        '<div class="img"><img loading="lazy" alt="Drapeau : '+p.n+'" src="https://flagcdn.com/w160/'+p.c+'.png" srcset="https://flagcdn.com/w320/'+p.c+'.png 2x"></div>'+
+        '<span class="tick">'+TICK+'</span>'+
+        '<span class="meta"><span class="nom">'+p.n+'</span><span class="code">'+p.c+'</span></span>';
+      const img = b.querySelector("img");
+      img.addEventListener("error", ()=>{ img.parentNode.innerHTML = '<span class="fallback">'+p.c.toUpperCase()+'</span>'; });
+      grid.appendChild(b);
+    });
+    if(n) zoneBox.appendChild(sec);
+  });
+  if(!vus) zoneBox.innerHTML = '<p class="vide">'+(fFilter==="miss"?"Série complète. Rien ne manque ici.":"Aucun pays ne correspond.")+'</p>';
+  maj();
+}
+
+zoneBox.addEventListener("click", e=>{
+  const b = e.target.closest(".card"); if(!b) return;
+  const c = b.dataset.code;
+  if(flags.has(c)) flags.delete(c); else flags.add(c);
+  const got = flags.has(c);
+  b.classList.toggle("got", got); b.setAttribute("aria-pressed", got);
+  sauver();
+  if(fFilter!=="all") setTimeout(buildFlags, 260); else maj();
+});
+
+document.getElementById("q-flag").addEventListener("input", e=>{ fQuery = norm(e.target.value.trim()); buildFlags(); });
+document.getElementById("f-flag").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  fFilter = b.dataset.f;
+  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+  buildFlags();
+});
+document.getElementById("copy-miss").addEventListener("click", async e=>{
+  const l = PAYS.filter(p=>!flags.has(p.c)).map(p=>p.n);
+  try{ await navigator.clipboard.writeText(l.join("\n")); e.target.textContent = l.length+" copiés"; }
+  catch(err){ e.target.textContent = "Copie refusée"; }
+  setTimeout(()=>{ e.target.textContent = "Copier les manquants"; }, 1900);
+});
+
+/* ============ THÉOGONIE ============ */
+let mFilter = "all", mQuery = "", ouverts = new Set();
+const treeBox = document.getElementById("tree");
+
+(function init(n, d){
+  if(!n.u && d < 3) ouverts.add(n.i);
+  (n.c||[]).forEach(x=>init(x, d + (n.u?0:1)));
+})(MYTH, 0);
+
+const match = n => {
+  if(n.u) return false;
+  if(mFilter==="got" && !myth.has(n.i)) return false;
+  if(mFilter==="miss" && myth.has(n.i)) return false;
+  if(mQuery && !norm(n.n+" "+n.d).includes(mQuery)) return false;
+  return true;
+};
+const garde = n => match(n) || (n.c||[]).some(garde);
+
+function build(n, depth){
+  if(!garde(n)) return null;
+  const frag = document.createDocumentFragment();
+  const forced = mQuery || mFilter!=="all";
+  if(n.u){
+    const u = document.createElement("div");
+    u.className = "union";
+    u.innerHTML = '<span class="u">'+n.u+'</span><span class="r"></span>';
+    frag.appendChild(u);
+    const k = document.createElement("div"); k.className = "kids";
+    (n.c||[]).forEach(c=>{ const e = build(c, depth+1); if(e) k.appendChild(e); });
+    frag.appendChild(k);
+    return frag;
+  }
+  const open = forced || ouverts.has(n.i);
+  const got = myth.has(n.i);
+  const row = document.createElement("div");
+  row.className = "node" + (got?" got":"");
+  row.dataset.id = n.i;
+  const kids = (n.c||[]).map(c=>build(c, depth+1)).filter(Boolean);
+  row.innerHTML =
+    '<button class="twist'+(kids.length?"":" leaf")+(open?" open":"")+'" aria-label="Déplier">▶</button>'+
+    '<button class="chk" role="checkbox" aria-checked="'+got+'" aria-label="Marquer comme obtenu">'+TICK+'</button>'+
+    '<span class="av" data-id="'+n.i+'"><span>'+n.n.replace(/^(Les|Le|La|L[’\'])\s*/,"").charAt(0)+'</span></span>'+
+    '<button class="label"><span class="nm">'+n.n+'</span><span class="gk">'+n.g+'</span><span class="kd k-'+n.k+'">'+KINDS[n.k]+'</span></button>';
+  frag.appendChild(row);
+  if(kids.length){
+    const k = document.createElement("div");
+    k.className = "kids"; k.hidden = !open;
+    kids.forEach(e=>k.appendChild(e));
+    frag.appendChild(k);
+  }
+  return frag;
+}
+
+function buildTree(){
+  treeBox.innerHTML = "";
+  const e = build(MYTH, 0);
+  if(e) treeBox.appendChild(e); else treeBox.innerHTML = '<p class="vide">'+(mFilter==="miss"?"Panthéon complet. Bravo.":"Aucune entité ne correspond.")+'</p>';
+  maj();
+  if(typeof poserVignettes === "function") poserVignettes();
+}
+
+treeBox.addEventListener("click", e=>{
+  const tw = e.target.closest(".twist");
+  if(tw){
+    const kids = tw.closest(".node").nextElementSibling;
+    const id = tw.closest(".node").dataset.id;
+    if(kids && kids.classList.contains("kids")){
+      kids.hidden = !kids.hidden; tw.classList.toggle("open", !kids.hidden);
+      if(kids.hidden) ouverts.delete(id); else ouverts.add(id);
+    }
+    return;
+  }
+  const chk = e.target.closest(".chk");
+  if(chk){
+    const id = chk.closest(".node").dataset.id;
+    if(myth.has(id)) myth.delete(id); else myth.add(id);
+    const got = myth.has(id);
+    document.querySelectorAll('.node[data-id="'+id+'"]').forEach(r=>{
+      r.classList.toggle("got", got);
+      r.querySelector(".chk").setAttribute("aria-checked", got);
+    });
+    sauver();
+    if(typeof majEtatsGraphe === "function") majEtatsGraphe();
+    if(mFilter!=="all") setTimeout(buildTree, 260); else maj();
+    return;
+  }
+  const lab = e.target.closest(".label");
+  if(lab){ ouvrirFiche(lab, true); }
+});
+
+document.getElementById("q-myth").addEventListener("input", e=>{ mQuery = norm(e.target.value.trim()); buildTree(); });
+document.getElementById("f-myth").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  mFilter = b.dataset.f;
+  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+  buildTree();
+});
+document.getElementById("expand").addEventListener("click", ()=>{
+  treeBox.querySelectorAll(".kids").forEach(k=>k.hidden=false);
+  treeBox.querySelectorAll(".twist").forEach(t=>t.classList.add("open"));
+  treeBox.querySelectorAll(".node").forEach(n=>ouverts.add(n.dataset.id));
+});
+document.getElementById("collapse").addEventListener("click", ()=>{ ouverts.clear(); buildTree(); });
+
+/* ---------- fiche au survol / au clic ---------- */
+const fiche = document.getElementById("fiche"), ficheIn = document.getElementById("fiche-in");
+const survol = window.matchMedia ? window.matchMedia("(hover: hover) and (pointer: fine)").matches : true;
+let cible = null;
+
+function trouver(el){
+  const id = el.closest(".node").dataset.id;
+  let out = null;
+  (function walk(n){ if(!n.u && n.i===id && !out) out = n; (n.c||[]).forEach(walk); })(MYTH);
+  return out;
+}
+function parId(id){
+  let out = null;
+  (function w(n){ if(!n.u && n.i===id && !out) out = n; (n.c||[]).forEach(w); })(MYTH);
+  return out;
+}
+function ficheDepuisId(id, ancre){
+  const n = parId(id); if(n) rendreFiche(n, ancre, true, "");
+}
+function ouvrirFiche(el, pin){
+  const n = trouver(el); if(!n) return;
+  let orig = "";
+  const prev = el.closest(".node").parentElement.previousElementSibling;
+  if(prev && prev.classList.contains("union")) orig = "Issu de " + prev.querySelector(".u").textContent;
+  else if(prev && prev.classList.contains("node")) orig = "Enfant de " + prev.querySelector(".nm").textContent;
+  rendreFiche(n, el, pin, orig);
+}
+function rendreFiche(n, el, pin, orig){
+  const img = (typeof vign === "object" && vign[n.i]) ? '<img class="vign" alt="" src="'+vign[n.i]+'">' : "";
+  ficheIn.innerHTML = img +
+    '<h3>'+n.n+'</h3><p class="gk">'+n.g+'</p>'+
+    '<span class="kd k-'+n.k+'">'+KINDS[n.k]+'</span>'+
+    '<p>'+n.d+'</p>'+
+    (orig?'<p class="par">'+orig+'</p>':'')+
+    '<p class="par" style="margin-top:6px">'+(myth.has(n.i)?"✓ Dans votre collection":"Pas encore obtenu")+'</p>';
+  const r = el.getBoundingClientRect();
+  fiche.style.visibility = "hidden"; fiche.classList.add("on");
+  const h = fiche.offsetHeight, w = fiche.offsetWidth;
+  let top = r.bottom + 10, left = r.left;
+  if(top + h > innerHeight - 10) top = Math.max(10, r.top - h - 10);
+  if(left + w > innerWidth - 12) left = innerWidth - w - 12;
+  fiche.style.top = top+"px"; fiche.style.left = Math.max(12,left)+"px";
+  fiche.style.visibility = "visible";
+  fiche.classList.toggle("pin", !!pin);
+  cible = el;
+}
+function fermerFiche(){ fiche.classList.remove("on","pin"); cible = null; }
+if(survol){
+  treeBox.addEventListener("mouseover", e=>{
+    const l = e.target.closest(".label"); if(!l || l===cible) return;
+    if(fiche.classList.contains("pin")) return;
+    ouvrirFiche(l, false);
+  });
+  treeBox.addEventListener("mouseout", e=>{
+    const l = e.target.closest(".label");
+    if(l && !fiche.classList.contains("pin")) fermerFiche();
+  });
+}
+fiche.querySelector(".close").addEventListener("click", fermerFiche);
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") fermerFiche(); });
+document.addEventListener("click", e=>{
+  if(fiche.classList.contains("pin") && !e.target.closest("#fiche") && !e.target.closest(".label")) fermerFiche();
+});
+addEventListener("scroll", ()=>{ if(!fiche.classList.contains("pin")) fermerFiche(); }, {passive:true});
+
+/* ---------- export / import / reset ---------- */
+document.getElementById("exp").addEventListener("click", ()=>{
+  const b = new Blob([JSON.stringify({flags:[...flags], myth:[...myth]}, null, 1)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(b); a.download = "wikimaster-collection.json"; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
+});
+document.getElementById("imp").addEventListener("click", ()=>document.getElementById("file").click());
+document.getElementById("file").addEventListener("change", e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const v = JSON.parse(r.result);
+      flags = new Set(v.flags||[]); myth = new Set(v.myth||[]);
+      buildFlags(); buildTree(); sauver(); etat.textContent = "Collection importée";
+    }catch(err){ etat.textContent = "Fichier illisible"; }
+  };
+  r.readAsText(f); e.target.value = "";
+});
+document.getElementById("rst").addEventListener("click", e=>{
+  if(e.target.dataset.sure){ flags.clear(); myth.clear(); buildFlags(); buildTree(); sauver();
+    e.target.textContent = "Réinitialiser"; delete e.target.dataset.sure; return; }
+  e.target.dataset.sure = "1"; e.target.textContent = "Confirmer ?";
+  setTimeout(()=>{ if(e.target.dataset.sure){ e.target.textContent="Réinitialiser"; delete e.target.dataset.sure; } }, 4000);
+});
+
+
+/* ============ RECONNAISSANCE DE NOMS ============ */
+const nk = s => norm(s).replace(/[^a-z0-9]+/g," ").trim();
+const CLEFS = {}, LISTE = [], NOMS = {};
+
+function ajout(k, type, id){
+  k = nk(k);
+  if(k.length < 3 || CLEFS[k]) return;
+  CLEFS[k] = [type, id]; LISTE.push(k);
+  const nu = k.replace(/^(les|le|la|l|des|du|de|d)\s+/, "");
+  if(nu !== k && nu.length >= 3 && !CLEFS[nu]){ CLEFS[nu] = [type, id]; LISTE.push(nu); }
+}
+
+const ALIAS_P = {
+  us:["etats unis","etats unis d amerique","usa"], gb:["grande bretagne","royaume uni de grande bretagne et d irlande du nord"],
+  nl:["hollande","royaume des pays bas"], cz:["republique tcheque"], mm:["myanmar","birmanie"], tl:["timor leste"],
+  sz:["swaziland"], cd:["rd congo","rdc","congo kinshasa","zaire"], cg:["congo","congo brazzaville"],
+  va:["saint siege","cite du vatican","etat de la cite du vatican"], cv:["cabo verde"], vn:["vietnam"],
+  mk:["macedoine"], md:["moldova"], by:["belarus"], kn:["saint kitts et nevis"], tt:["trinidad et tobago"],
+  cf:["centrafrique"], ru:["federation de russie"], tr:["turkiye"], de:["republique federale d allemagne"],
+  pw:["palau"], fm:["etats federes de micronesie"], mh:["marshall"], sb:["salomon"], tw:["republique de chine"],
+  cn:["republique populaire de chine"], ps:["etat de palestine"], ir:["republique islamique d iran"],
+  la:["republique democratique populaire lao"], bn:["brunei darussalam"], ci:["ivory coast"], ga:["republique gabonaise"]
+};
+const ALIAS_M = {
+  "les-moires":["clotho","lachesis","atropos","moires"],
+  "les-muses":["calliope","clio","erato","euterpe","melpomene","polymnie","terpsichore","uranie","muses"],
+  "les-charites":["graces","aglae","euphrosyne","charites"],
+  "les-gorgones":["meduse","stheno","euryale","gorgones"],
+  "les-cyclopes":["brontes","steropes","arges","cyclopes"],
+  "les-hecatonchires":["cottos","briaree","gyges","hecatonchires"],
+  "les-dioscures":["castor","pollux","castor et pollux","dioscures"],
+  "les-erinyes":["alecto","megere","tisiphone","furies","erinyes","euménides"],
+  "les-pleiades":["maia","pleiades"], "les-nereides":["amphitrite","thetis","nereides"],
+  "les-heures":["eunomia","dike","irene","horai","heures"],
+  "les-hesperides":["hesperides"], "les-grees":["grees","dino","enyo","pemphredo"],
+  "les-keres":["keres"], "les-geants":["gigantomachie","geants"], "les-meliades":["meliades"],
+  "les-titans":["titans"], "les-fleuves":["acheloos","alphee","scamandre","inachos"],
+  "heracles":["hercule"], "typhon":["typhee"], "cerbere":["cerberus"],
+  "l-hydre-de-lerne":["hydre","hydre de lerne"], "le-lion-de-nemee":["lion de nemee"],
+  "le-sphinx":["sphinx"], "l-aigle-du-caucase":["aigle du caucase"], "la-chimere":["chimere"],
+  "les-ourea":["ourea","montagnes"], "les-harpies":["harpies"], "les-vents":["anemoi"]
+};
+
+PAYS.forEach(p=>{ ajout(p.n, "f", p.c); NOMS["f:"+p.c] = p.n; });
+Object.keys(ALIAS_P).forEach(c => ALIAS_P[c].forEach(a => ajout(a, "f", c)));
+(function bal(n){
+  if(!n.u){
+    if(!NOMS["m:"+n.i] || n.n.length < NOMS["m:"+n.i].length) NOMS["m:"+n.i] = n.n;
+    ajout(n.n, "m", n.i);
+    const sansPar = n.n.replace(/\s*\([^)]*\)\s*/g, " ");
+    if(sansPar !== n.n) ajout(sansPar, "m", n.i);
+  }
+  (n.c||[]).forEach(bal);
+})(MYTH);
+Object.keys(ALIAS_M).forEach(id => { if(IDS.has(id)) ALIAS_M[id].forEach(a => ajout(a, "m", id)); });
+LISTE.sort((a,b)=>b.length-a.length);
+
+function reconnaitre(txt){
+  const t = " " + nk(txt) + " ";
+  const pris = new Array(t.length).fill(false);
+  const res = {f:[], m:[]};
+  for(const k of LISTE){
+    let i = t.indexOf(" "+k+" ");
+    while(i !== -1){
+      const a = i+1, b = a + k.length;
+      let libre = true;
+      for(let j=a; j<b; j++) if(pris[j]){ libre = false; break; }
+      if(libre){
+        for(let j=a; j<b; j++) pris[j] = true;
+        const [type, id] = CLEFS[k];
+        const tab = type==="f" ? res.f : res.m;
+        if(!tab.includes(id)) tab.push(id);
+      }
+      i = t.indexOf(" "+k+" ", i+1);
+    }
+  }
+  return res;
+}
+
+/* ---------- interface ---------- */
+const boite = document.getElementById("coller"), champ = document.getElementById("cv"),
+      resu = document.getElementById("cv-res"), btnApp = document.getElementById("cv-apply");
+let trouve = null;
+
+function ouvrirColler(){ boite.hidden = false; resu.hidden = true; btnApp.hidden = true; trouve = null; champ.focus(); }
+function fermerColler(){ boite.hidden = true; champ.value = ""; }
+document.getElementById("col").addEventListener("click", ouvrirColler);
+document.getElementById("cv-close").addEventListener("click", fermerColler);
+boite.addEventListener("click", e=>{ if(e.target===boite) fermerColler(); });
+
+document.getElementById("cv-go").addEventListener("click", ()=>{
+  trouve = reconnaitre(champ.value);
+  const nf = trouve.f.filter(c=>!flags.has(c)).length, nm = trouve.m.filter(i=>!myth.has(i)).length;
+  const bloc = (titre, ids, type, dejaSet) => {
+    if(!ids.length) return "";
+    const li = ids.map(id=>{
+      const d = dejaSet.has(id);
+      return '<li class="'+(d?"deja":"")+'">'+NOMS[type+":"+id]+(d?" ✓":"")+'</li>';
+    }).join("");
+    return '<h4>'+titre+' — '+ids.length+'</h4><ul>'+li+'</ul>';
+  };
+  if(!trouve.f.length && !trouve.m.length){
+    resu.innerHTML = '<p class="bilan">Aucun nom reconnu. Vérifie que le texte contient bien des noms de pays ou de divinités.</p>';
+    btnApp.hidden = true;
+  }else{
+    resu.innerHTML =
+      '<p class="bilan"><b>'+(nf+nm)+' nouvelle(s) case(s)</b> à cocher · '+
+      (trouve.f.length+trouve.m.length-nf-nm)+' déjà dans la collection</p>' +
+      bloc("Drapeaux", trouve.f, "f", flags) + bloc("Théogonie", trouve.m, "m", myth);
+    btnApp.hidden = false;
+  }
+  resu.hidden = false;
+});
+
+btnApp.addEventListener("click", ()=>{
+  if(!trouve) return;
+  const n = trouve.f.filter(c=>!flags.has(c)).length + trouve.m.filter(i=>!myth.has(i)).length;
+  trouve.f.forEach(c=>flags.add(c)); trouve.m.forEach(i=>myth.add(i));
+  buildFlags(); buildTree(); sauver(); fermerColler();
+  etat.textContent = n + " case(s) cochée(s)";
+});
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !boite.hidden) fermerColler(); });
+
+
+/* ============ VIGNETTES WIKIPÉDIA ============ */
+const WIKI = {
+"Chaos":"Chaos (mythologie)","Tartare":"Tartare (mythologie)","Éther":"Éther (mythologie)",
+"Charon":"Charon (mythologie)","Morphée":"Morphée (mythologie)","Les Moires":"Moires","Les Kères":"Kères",
+"Les Hespérides":"Hespérides","Les Ouréa":"Ouréa","Océan":"Océan (mythologie)","Métis":"Métis (mythologie)",
+"Styx":"Styx (mythologie)","Doris":"Doris (Océanide)","Clymène":"Clymène (Océanide)","Eurynomé":"Eurynomé (Océanide)",
+"Les fleuves":"Potamoi","Téthys":"Téthys (Titanide)","Hypérion":"Hypérion (Titan)","Aiétès":"Éétès",
+"Euros":"Euros (mythologie)","Phébé":"Phébé (Titanide)","Pallas":"Pallas (Titan)","Bia":"Bia (mythologie)",
+"Persès":"Persès (Titan)","Japet":"Japet (mythologie)","Atlas":"Atlas (mythologie)","Les Pléiades":"Pléiades (mythologie)",
+"Calypso":"Calypso (mythologie)","Les Heures":"Heures (mythologie)","Les Muses":"Muses","Chiron":"Chiron (mythologie)",
+"Triton":"Triton (mythologie)","Les Cyclopes":"Cyclope","Les Hécatonchires":"Hécatonchires","Les Érinyes":"Érinyes",
+"Les Géants":"Géants (mythologie grecque)","Les Méliades":"Méliades","Les Néréides":"Néréides","Iris":"Iris (mythologie)",
+"Les Harpies":"Harpies","Les Gorgones":"Gorgone","Les Grées":"Grées","Échidna":"Échidna (mythologie)",
+"Ladon":"Ladon (mythologie)","Typhon":"Typhon (mythologie)","L'Hydre de Lerne":"Hydre de Lerne",
+"La Chimère":"Chimère (mythologie)","Orthos":"Orthros","Le Sphinx":"Sphinx (mythologie grecque)",
+"Le Lion de Némée":"Lion de Némée","L'Aigle du Caucase":"Aigle du Caucase","Les Charites":"Charites",
+"Aphrodite (variante)":"Aphrodite","Éros (Amour)":"Éros","Hélène":"Hélène (mythologie)","Les Dioscures":"Dioscures",
+"Harmonie":"Harmonie (mythologie)","Phobos":"Phobos (mythologie)","Déimos":"Déimos (mythologie)",
+"Hermaphrodite":"Hermaphrodite (mythologie)","Cerbère":"Cerbère","Perséphone":"Perséphone","Pégase":"Pégase"
+};
+const CACHE_V = "wikimaster-vignettes";
+let vign = {}, vignPret = false;
+
+const titreWiki = n => WIKI[n] || n.replace(/^(Les|Le|La)\s+/,"").replace(/^L['’]/,"");
+
+async function chargerVignettes(){
+  try{ vign = JSON.parse(await STORE.lire(CACHE_V)) || {}; }catch(e){ vign = {}; }
+  const manquants = [];
+  IDS.forEach(id=>{ if(!(id in vign)) manquants.push(id); });
+  poserVignettes();
+  if(!manquants.length){ vignPret = true; return; }
+  const titres = {};
+  (function bal(n){ if(!n.u && manquants.includes(n.i) && !titres[n.i]) titres[n.i] = titreWiki(n.n); (n.c||[]).forEach(bal); })(MYTH);
+  const ids = Object.keys(titres);
+  let ok = false;
+  for(let i=0; i<ids.length; i+=40){
+    const lot = ids.slice(i, i+40);
+    const url = "https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1"
+      + "&prop=pageimages&piprop=thumbnail&pithumbsize=240&titles="
+      + encodeURIComponent(lot.map(id=>titres[id]).join("|"));
+    try{
+      const rep = await fetch(url);
+      const js = await rep.json();
+      const q = js.query || {};
+      const parTitre = {};
+      Object.values(q.pages || {}).forEach(p=>{ parTitre[p.title] = p.thumbnail ? p.thumbnail.source : ""; });
+      const redir = {}; (q.redirects||[]).forEach(r=>redir[r.from] = r.to);
+      const norml = {}; (q.normalized||[]).forEach(r=>norml[r.from] = r.to);
+      lot.forEach(id=>{
+        let t = titres[id];
+        if(norml[t]) t = norml[t];
+        if(redir[t]) t = redir[t];
+        vign[id] = parTitre[t] || "";
+      });
+      ok = true;
+    }catch(e){ lot.forEach(id=>{ if(!(id in vign)) vign[id] = ""; }); }
+    poserVignettes();
+  }
+  vignPret = true;
+  if(ok){ try{ await STORE.ecrire(CACHE_V, JSON.stringify(vign)); }catch(e){} }
+}
+
+function poserVignettes(){
+  document.querySelectorAll(".av[data-id]").forEach(a=>{
+    const u = vign[a.dataset.id];
+    if(u && !a.querySelector("img")) a.innerHTML = '<img loading="lazy" alt="" src="'+u+'">';
+  });
+  if(typeof rafraichirGraphe === "function") rafraichirGraphe();
+}
+
+/* ============ VUE GRAPHE ============ */
+const PY = 46, HB = 34, LB = 208;
+let G = null, cam = {x:0, y:0, k:1}, gPret = false;
+
+function preparerGraphe(){
+  const noeuds = [], liens = [];
+  let uid = 0;
+  (function walk(n, pere, prof){
+    const nd = n.u
+      ? {id:"u"+(uid++), t:"u", label:n.u, prof, kids:[], pere}
+      : {id:"n"+(uid++), t:"e", ref:n, prof, kids:[], pere};
+    noeuds.push(nd);
+    if(pere){ pere.kids.push(nd); liens.push({a:pere, b:nd, s:false}); }
+    (n.c||[]).forEach(c=>walk(c, nd, prof+1));
+  })(MYTH, null, 0);
+
+  const parNom = {};
+  noeuds.forEach(nd=>{ if(nd.t==="e"){ const k = nk(nd.ref.n); if(!parNom[k]) parNom[k] = nd; } });
+  noeuds.filter(n=>n.t==="u").forEach(u=>{
+    if(u.label.indexOf("×") === -1){ u.court = u.label.replace(/^.*\s(seule?|seul)$/i,"seule"); return; }
+    const parts = u.label.split("×").map(s=>s.trim());
+    const proprio = u.pere && u.pere.t==="e" ? nk(u.pere.ref.n) : "";
+    const autres = parts.filter(p=>nk(p) !== proprio);
+    u.court = "× " + autres.join(" × ");
+    autres.forEach(p=>{
+      const nd = parNom[nk(p)];
+      if(nd && nd !== u.pere) liens.push({a:nd, b:u, s:true});
+    });
+  });
+
+  // ordonnancement : les feuilles reçoivent une ligne, les parents se centrent
+  let ligne = 0;
+  (function pos(nd){
+    if(!nd.kids.length){ nd.y = ligne * PY; ligne++; return; }
+    nd.kids.forEach(pos);
+    nd.y = (nd.kids[0].y + nd.kids[nd.kids.length-1].y) / 2;
+  })(noeuds[0]);
+
+  const parProf = [];
+  noeuds.forEach(n=>{ (parProf[n.prof] = parProf[n.prof] || []).push(n); });
+  const X = []; let x = 0;
+  parProf.forEach((arr, d)=>{ X[d] = x; x += arr.some(n=>n.t==="e") ? LB + 62 : 96; });
+  noeuds.forEach(n=>{ n.x = X[n.prof]; n.sortie = n.x + (n.t==="e" ? LB : 20); n.entree = n.x; });
+
+  // voisinages pour le surlignage
+  const entrants = {}, sortants = {};
+  liens.forEach(l=>{ (sortants[l.a.id] = sortants[l.a.id]||[]).push(l.b); (entrants[l.b.id] = entrants[l.b.id]||[]).push(l.a); });
+  const parcours = (dep, carte) => {
+    const vus = new Set(), file = [dep];
+    while(file.length){ const n = file.pop(); (carte[n.id]||[]).forEach(v=>{ if(!vus.has(v.id)){ vus.add(v.id); file.push(v); } }); }
+    return vus;
+  };
+  noeuds.forEach(n=>{ n.lignee = new Set([n.id, ...parcours(n, entrants), ...parcours(n, sortants)]); });
+
+  G = {noeuds, liens, largeur:x, hauteur:ligne * PY + 40};
+}
+
+function dessinerGraphe(){
+  const cam0 = document.getElementById("gcam");
+  const arcs = G.liens.map(l=>{
+    const x1 = l.a.sortie, y1 = l.a.y, x2 = l.b.entree, y2 = l.b.y;
+    let d;
+    if(l.s || x2 < x1 + 12){
+      d = "M"+x1+","+y1+" C"+(x1+46)+","+y1+" "+(x2-46)+","+y2+" "+x2+","+y2;
+    }else{
+      const m = x1 + (x2 - x1) / 2;
+      d = "M"+x1+","+y1+" H"+m+" V"+y2+" H"+x2;
+    }
+    return '<path class="ge'+(l.s?" s":"")+'" data-a="'+l.a.id+'" data-b="'+l.b.id+'" d="'+d+'"/>';
+  }).join("");
+
+  const boites = G.noeuds.map(n=>{
+    if(n.t === "u"){
+      const cx = n.x + 10, cy = n.y;
+      return '<g class="gu" data-id="'+n.id+'"><path class="dia" d="M'+cx+','+(cy-7)+'L'+(cx+7)+','+cy+'L'+cx+','+(cy+7)+'L'+(cx-7)+','+cy+'Z"/>'
+        + '<text x="'+cx+'" y="'+(cy-13)+'">'+esc(n.court||"")+'</text></g>';
+    }
+    const r = n.ref, y0 = n.y - HB/2, got = myth.has(r.i);
+    const nom = r.n.length > 21 ? r.n.slice(0,20)+"…" : r.n;
+    const u = vign[r.i];
+    const image = u
+      ? '<clipPath id="c'+n.id+'"><circle cx="'+(n.x+20)+'" cy="'+n.y+'" r="12"/></clipPath>'
+        + '<image href="'+u+'" x="'+(n.x+8)+'" y="'+(n.y-12)+'" width="24" height="24" preserveAspectRatio="xMidYMid slice" clip-path="url(#c'+n.id+')"/>'
+        + '<circle class="ph" cx="'+(n.x+20)+'" cy="'+n.y+'" r="12" fill="none"/>'
+      : '<circle class="ph" cx="'+(n.x+20)+'" cy="'+n.y+'" r="12"/>'
+        + '<text class="mono" x="'+(n.x+20)+'" y="'+(n.y+1)+'">'+esc(r.n.replace(/^(Les|Le|La|L[’\'])\s*/,"").charAt(0))+'</text>';
+    return '<g class="gn'+(got?" got":"")+'" data-id="'+n.id+'" data-ent="'+r.i+'">'
+      + '<rect class="bg" x="'+n.x+'" y="'+y0+'" width="'+LB+'" height="'+HB+'"/>'
+      + '<rect class="stripe" x="'+n.x+'" y="'+(y0+6)+'" width="3" height="'+(HB-12)+'" fill="'+coul(r.k)+'"/>'
+      + image
+      + '<text class="nm" x="'+(n.x+40)+'" y="'+(n.y+1)+'">'+esc(nom)+'</text>'
+      + '<rect class="tick" x="'+(n.x+LB-21)+'" y="'+(n.y-7)+'" width="14" height="14"/>'
+      + '<path class="tk" d="M'+(n.x+LB-18)+','+n.y+' l2.6,2.8 l5.2,-6"/></g>';
+  }).join("");
+
+  cam0.innerHTML = arcs + boites;
+}
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const coul = k => ({prim:"#9AA7E8",titan:"#D0A548",olymp:"#F2D68B",div:"#7FC9B5",creature:"#C97A6D",mortel:"#C2BBA8"})[k];
+
+function appliquerCam(){
+  document.getElementById("gcam").setAttribute("transform",
+    "translate("+cam.x+","+cam.y+") scale("+cam.k+")");
+}
+function cadre(){
+  const b = document.getElementById("graphe").getBoundingClientRect();
+  document.getElementById("gsvg").setAttribute("viewBox", "0 0 "+b.width+" "+b.height);
+  return b;
+}
+function ajusterCam(){
+  const b = cadre();
+  cam.k = Math.max(.06, Math.min(b.width / (G.largeur + 70), b.height / (G.hauteur + 40)));
+  cam.x = 24; cam.y = (b.height - G.hauteur * cam.k) / 2 - Math.min(...G.noeuds.map(n=>n.y)) * cam.k;
+  appliquerCam();
+}
+function centrer(nd, k){
+  const b = cadre();
+  if(k) cam.k = k;
+  cam.x = b.width * 0.28 - nd.x * cam.k;
+  cam.y = b.height / 2 - nd.y * cam.k;
+  appliquerCam();
+}
+function filtrerGraphe(){
+  if(!gPret) return;
+  document.querySelectorAll("#gcam .gn").forEach(g=>{
+    const got = myth.has(g.dataset.ent);
+    g.classList.toggle("hors", (mFilter==="got" && !got) || (mFilter==="miss" && got));
+  });
+}
+function rafraichirGraphe(){
+  if(!gPret || !G) return;
+  dessinerGraphe(); cadre(); appliquerCam(); filtrerGraphe();
+}
+function majEtatsGraphe(){
+  if(!gPret) return;
+  document.querySelectorAll("#gcam .gn").forEach(g=>g.classList.toggle("got", myth.has(g.dataset.ent)));
+}
+
+function surligner(id){
+  const cible = G.noeuds.find(n=>n.id === id);
+  const cam0 = document.getElementById("gcam");
+  if(!cible){ cam0.querySelectorAll(".faded,.vedette,.vif").forEach(e=>e.classList.remove("faded","vedette","vif")); return; }
+  const L = cible.lignee;
+  cam0.querySelectorAll(".gn,.gu").forEach(g=>{
+    const dans = L.has(g.dataset.id);
+    g.classList.toggle("faded", !dans);
+    g.classList.toggle("vedette", g.dataset.id === id);
+  });
+  cam0.querySelectorAll(".ge").forEach(p=>{
+    const dans = L.has(p.dataset.a) && L.has(p.dataset.b);
+    p.classList.toggle("faded", !dans);
+    p.classList.toggle("vif", dans);
+  });
+}
+
+function activerGraphe(){
+  if(!G) preparerGraphe();
+  gPret = true;
+  dessinerGraphe();
+  requestAnimationFrame(()=>{ centrer(G.noeuds[0], .62); filtrerGraphe(); });
+}
+function viserGraphe(q){
+  if(!gPret || !q) return;
+  const cible = G.noeuds.find(n=>n.t==="e" && norm(n.ref.n).includes(q));
+  if(cible){ centrer(cible, Math.max(cam.k, .7)); surligner(cible.id); }
+}
+
+/* ---------- interactions du graphe ---------- */
+const gbox = document.getElementById("graphe");
+let glisse = null, bouge = false;
+
+gbox.addEventListener("pointerdown", e=>{
+  glisse = {x:e.clientX, y:e.clientY, cx:cam.x, cy:cam.y, id:e.pointerId}; bouge = false;
+  gbox.setPointerCapture(e.pointerId); gbox.classList.add("drag");
+});
+gbox.addEventListener("pointermove", e=>{
+  if(!glisse || e.pointerId !== glisse.id) return;
+  const dx = e.clientX - glisse.x, dy = e.clientY - glisse.y;
+  if(Math.abs(dx) + Math.abs(dy) > 4) bouge = true;
+  cam.x = glisse.cx + dx; cam.y = glisse.cy + dy; appliquerCam();
+});
+["pointerup","pointercancel"].forEach(ev=>gbox.addEventListener(ev, ()=>{ glisse = null; gbox.classList.remove("drag"); }));
+gbox.addEventListener("wheel", e=>{
+  e.preventDefault();
+  const b = gbox.getBoundingClientRect(), mx = e.clientX - b.left, my = e.clientY - b.top;
+  const f = e.deltaY < 0 ? 1.14 : 1/1.14, nk2 = Math.max(.12, Math.min(2.6, cam.k * f));
+  cam.x = mx - (mx - cam.x) * (nk2 / cam.k); cam.y = my - (my - cam.y) * (nk2 / cam.k);
+  cam.k = nk2; appliquerCam();
+}, {passive:false});
+const zoom = f => {
+  const b = gbox.getBoundingClientRect(), mx = b.width/2, my = b.height/2;
+  const nk2 = Math.max(.12, Math.min(2.6, cam.k * f));
+  cam.x = mx - (mx - cam.x) * (nk2 / cam.k); cam.y = my - (my - cam.y) * (nk2 / cam.k);
+  cam.k = nk2; appliquerCam();
+};
+document.getElementById("g-plus").addEventListener("click", ()=>zoom(1.25));
+document.getElementById("g-moins").addEventListener("click", ()=>zoom(1/1.25));
+document.getElementById("g-fit").addEventListener("click", ajusterCam);
+
+gbox.addEventListener("mouseover", e=>{
+  const g = e.target.closest(".gn"); if(!g) return;
+  surligner(g.dataset.id);
+});
+gbox.addEventListener("mouseleave", ()=>surligner(null));
+
+gbox.addEventListener("click", e=>{
+  if(bouge) return;
+  const g = e.target.closest(".gn"); if(!g) return;
+  const id = g.dataset.ent;
+  if(e.target.classList.contains("tick") || e.target.classList.contains("tk")){
+    if(myth.has(id)) myth.delete(id); else myth.add(id);
+    const got = myth.has(id);
+    document.querySelectorAll('.node[data-id="'+id+'"]').forEach(r=>{
+      r.classList.toggle("got", got); r.querySelector(".chk").setAttribute("aria-checked", got);
+    });
+    majEtatsGraphe(); filtrerGraphe(); maj(); sauver(); return;
+  }
+  surligner(g.dataset.id);
+  ficheDepuisId(id, g.querySelector("rect.bg"));
+});
+
+/* ---------- bascule liste / graphe ---------- */
+document.getElementById("vues").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  const graphe = b.dataset.v === "graphe";
+  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+  document.getElementById("tree").hidden = graphe;
+  gbox.hidden = !graphe;
+  document.getElementById("expand").hidden = graphe;
+  document.getElementById("collapse").hidden = graphe;
+  if(graphe && !gPret) activerGraphe();
+  else if(graphe){ cadre(); filtrerGraphe(); }
+});
+document.getElementById("q-myth").addEventListener("input", e=>{
+  if(!gbox.hidden) viserGraphe(norm(e.target.value.trim()));
+});
+document.getElementById("f-myth").addEventListener("click", ()=>{ setTimeout(filtrerGraphe, 0); });
+
+/* ---------- démarrage ---------- */
+(async ()=>{ await charger(); buildFlags(); buildTree(); chargerVignettes(); })();
+
+/* ---------- mode hors-ligne (ignoré en file:// et dans Claude) ---------- */
+if("serviceWorker" in navigator && location.protocol.indexOf("http") === 0){
+  addEventListener("load", ()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
