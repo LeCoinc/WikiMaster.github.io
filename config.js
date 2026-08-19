@@ -15,6 +15,8 @@
    dans la collection d'un autre. Ne collez jamais ici la clé service_role.
 --------------------------------------------------------------------- */
 window.CONFIG = {
-  url: "",
-  cle: ""
+  url: "https://ayzmcicfsrwhgrbgwhpn.supabase.co",
+  cle: "sb_publishable_DCv9aQ6n_1t1MNm12lIK7g_SHqdfVJK"
 };
+
+
