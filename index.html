@@ -65,7 +65,7 @@ header{padding:38px 0 0}
 h1{font-family:var(--disp);font-weight:300;font-size:clamp(38px,8.5vw,72px);line-height:.98;letter-spacing:.01em;margin:0 0 6px}
 h1 em{font-style:normal;color:var(--bronze)}
 .sub{color:var(--marbre-dim);max-width:46ch;margin:0 0 26px;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px}
+
 .stat{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--ligne);border-radius:3px;padding:14px 16px 12px}
 .stat b{display:block;font-family:var(--mono);font-weight:500;font-size:clamp(22px,5vw,30px);letter-spacing:-.02em}
 .stat b span{color:var(--marbre-dim);font-size:.55em}
@@ -328,6 +328,21 @@ ul.ech li{font-size:12px;background:rgba(208,165,72,.12);border:1px solid rgba(2
 .rien{font-size:12.5px;color:var(--marbre-dim);font-style:italic}
 #sync{color:var(--marbre-dim);margin-left:6px}
 
+
+.stat.total b{font-size:clamp(30px,7vw,44px)}
+.minis{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin:12px 0 26px}
+.mini{border:1px solid var(--ligne);border-radius:3px;padding:9px 10px 8px;background:rgba(255,255,255,.028)}
+.mini b{display:block;font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:-.01em}
+.mini b span{color:#6C749B;font-size:.72em}
+.mini small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--marbre-dim);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini .jauge{margin-top:7px;height:8px;background-size:auto 8px}
+.mini .jauge>i::before{background-size:auto 8px}
+.tabs{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;-ms-overflow-style:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;flex:0 0 auto}
+.intro{color:var(--marbre-dim);font-size:13px;margin:2px 0 0;max-width:62ch}
+
 /* ---------- Divers ---------- */
 .vide{text-align:center;color:var(--marbre-dim);padding:50px 20px;font-family:var(--disp);font-size:22px}
 .panneau[hidden]{display:none}
@@ -340,8 +355,8 @@ footer .sp{flex:1}
   .label .nm{font-size:17px}
   .kids{margin-left:7px;padding-left:11px}
   .node::before,.union::before{left:-11px;width:8px}
-  .stats{grid-template-columns:1fr 1fr}
   .regnes{grid-template-columns:1fr}
+  .minis{grid-template-columns:repeat(2,1fr)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -354,29 +369,22 @@ footer .sp{flex:1}
   <p class="eyebrow">Wikimaster · suivi de collection</p>
   <h1>Cabinet de<br><em>collection</em></h1>
   <p class="sub">Deux séries à compléter : les drapeaux du monde et la théogonie grecque. Cochez ce que vous possédez, la frise se remplit.</p>
-  <div class="stats">
-    <div class="stat">
-      <small>Drapeaux</small>
-      <b id="s-flag">0<span>/197</span></b>
-      <div class="jauge"><i id="j-flag"></i></div>
-    </div>
-    <div class="stat">
-      <small>Panthéon</small>
-      <b id="s-myth">0<span>/0</span></b>
-      <div class="jauge"><i id="j-myth"></i></div>
-    </div>
-    <div class="stat">
-      <small>Souverains</small>
-      <b id="s-roi">0<span>/0</span></b>
-      <div class="jauge"><i id="j-roi"></i></div>
-    </div>
+  <div class="stat total">
+    <small>Collection complète</small>
+    <b id="s-tot">0<span>/0</span></b>
+    <div class="jauge"><i id="j-tot"></i></div>
   </div>
+  <div class="minis" id="minis"></div>
 </header>
 
 <div class="tabs" role="tablist">
-  <button class="tab" role="tab" id="tab-flag" aria-controls="p-flag" aria-selected="true">Drapeaux <i id="t1">0</i></button>
-  <button class="tab" role="tab" id="tab-myth" aria-controls="p-myth" aria-selected="false">Théogonie <i id="t2">0</i></button>
-  <button class="tab" role="tab" id="tab-roi" aria-controls="p-roi" aria-selected="false">Souverains <i id="t3">0</i></button>
+  <button class="tab" role="tab" id="tab-flag" aria-controls="p-flag" aria-selected="true">Drapeaux <i id="t-f">0</i></button>
+  <button class="tab" role="tab" id="tab-myth" aria-controls="p-myth" aria-selected="false">Théogonie <i id="t-m">0</i></button>
+  <button class="tab" role="tab" id="tab-roi" aria-controls="p-roi" aria-selected="false">Souverains <i id="t-roi">0</i></button>
+  <button class="tab" role="tab" id="tab-kru" aria-controls="p-kru" aria-selected="false">Kruger <i id="t-kru">0</i></button>
+  <button class="tab" role="tab" id="tab-vil" aria-controls="p-vil" aria-selected="false">Maroc <i id="t-vil">0</i></button>
+  <button class="tab" role="tab" id="tab-pir" aria-controls="p-pir" aria-selected="false">Pirates <i id="t-pir">0</i></button>
+  <button class="tab" role="tab" id="tab-tin" aria-controls="p-tin" aria-selected="false">Tintin <i id="t-tin">0</i></button>
   <button class="tab" role="tab" id="tab-grp" aria-controls="p-grp" aria-selected="false">Groupe</button>
 </div>
 
@@ -437,21 +445,77 @@ footer .sp{flex:1}
 </section>
 
 
+
 <!-- ============ SOUVERAINS ============ -->
 <section class="panneau" id="p-roi" role="tabpanel" aria-labelledby="tab-roi" hidden>
   <div class="tools">
-    <label class="search">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input type="search" id="q-roi" placeholder="Chercher un souverain…" autocomplete="off">
-    </label>
+    <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="q-roi" placeholder="Chercher…" autocomplete="off"></label>
     <div class="seg" id="f-roi">
       <button data-f="all" aria-pressed="true">Tous</button>
       <button data-f="got" aria-pressed="false">Obtenus</button>
       <button data-f="miss" aria-pressed="false">Manquants</button>
     </div>
   </div>
-  <div id="rois"></div>
+  <p class="intro" id="i-roi"></p>
+  <div id="b-roi"></div>
 </section>
+
+<!-- ============ KRUGER ============ -->
+<section class="panneau" id="p-kru" role="tabpanel" aria-labelledby="tab-kru" hidden>
+  <div class="tools">
+    <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="q-kru" placeholder="Chercher…" autocomplete="off"></label>
+    <div class="seg" id="f-kru">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+  </div>
+  <p class="intro" id="i-kru"></p>
+  <div id="b-kru"></div>
+</section>
+
+<!-- ============ MAROC ============ -->
+<section class="panneau" id="p-vil" role="tabpanel" aria-labelledby="tab-vil" hidden>
+  <div class="tools">
+    <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="q-vil" placeholder="Chercher…" autocomplete="off"></label>
+    <div class="seg" id="f-vil">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+  </div>
+  <p class="intro" id="i-vil"></p>
+  <div id="b-vil"></div>
+</section>
+
+<!-- ============ PIRATES ============ -->
+<section class="panneau" id="p-pir" role="tabpanel" aria-labelledby="tab-pir" hidden>
+  <div class="tools">
+    <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="q-pir" placeholder="Chercher…" autocomplete="off"></label>
+    <div class="seg" id="f-pir">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+  </div>
+  <p class="intro" id="i-pir"></p>
+  <div id="b-pir"></div>
+</section>
+
+<!-- ============ TINTIN ============ -->
+<section class="panneau" id="p-tin" role="tabpanel" aria-labelledby="tab-tin" hidden>
+  <div class="tools">
+    <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="q-tin" placeholder="Chercher…" autocomplete="off"></label>
+    <div class="seg" id="f-tin">
+      <button data-f="all" aria-pressed="true">Tous</button>
+      <button data-f="got" aria-pressed="false">Obtenus</button>
+      <button data-f="miss" aria-pressed="false">Manquants</button>
+    </div>
+  </div>
+  <p class="intro" id="i-tin"></p>
+  <div id="b-tin"></div>
+</section>
+
 
 <!-- ============ GROUPE ============ -->
 <section class="panneau" id="p-grp" role="tabpanel" aria-labelledby="tab-grp" hidden>
@@ -856,6 +920,339 @@ ROIS.forEach(d => d.r.forEach(k => {
   k.i = k.n.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
           .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }));
+/* ============ ANIMAUX DU KRUGER ============ */
+const KRUGER = [
+{d:"Les Big Five", p:"Les cinq espèces que les chasseurs coloniaux jugeaient les plus dangereuses à pied", r:[
+ {n:"Lion", e:"Panthera leo", a:"Big Five", w:"Lion", t:"Environ 1 600 individus dans le parc. Les mâles à crinière sombre du Kruger sont parmi les plus grands d'Afrique."},
+ {n:"Léopard", e:"Panthera pardus", a:"Big Five", w:"Léopard", t:"Solitaire et nocturne, il hisse ses proies dans les arbres pour les soustraire aux hyènes."},
+ {n:"Éléphant de savane d'Afrique", e:"Loxodonta africana", a:"Big Five", w:"Éléphant de savane d'Afrique", t:"Plus de 30 000 individus. Leur pression sur les baobabs et mopanes façonne le paysage du parc."},
+ {n:"Buffle d'Afrique", e:"Syncerus caffer", a:"Big Five", w:"Buffle d'Afrique", t:"En troupeaux de plusieurs centaines. Réputé le plus rancunier des Big Five."},
+ {n:"Rhinocéros blanc", e:"Ceratotherium simum", a:"Big Five", w:"Rhinocéros blanc", t:"Brouteur d'herbe à la bouche carrée. Le Kruger en abritait la plus grande population sauvage avant l'explosion du braconnage."},
+ {n:"Rhinocéros noir", e:"Diceros bicornis", a:"Big Five", w:"Rhinocéros noir", t:"Plus petit, plus irascible, il broute les buissons avec sa lèvre préhensile. En danger critique."}
+]},
+{d:"Grands prédateurs", p:"Les chasseurs, du plus rapide au plus opportuniste", r:[
+ {n:"Guépard", e:"Acinonyx jubatus", a:"félin", w:"Guépard", t:"Le sprinteur des plaines ouvertes de l'est du parc. Se fait souvent voler ses proies."},
+ {n:"Lycaon", e:"Lycaon pictus", a:"canidé", w:"Lycaon", t:"Chien sauvage à la robe marbrée, chassant en meute avec un taux de réussite inégalé. Espèce en danger."},
+ {n:"Hyène tachetée", e:"Crocuta crocuta", a:"hyénidé", w:"Hyène tachetée", t:"Bien plus chasseuse que charognarde, malgré sa réputation. Société matriarcale."},
+ {n:"Hyène brune", e:"Parahyaena brunnea", a:"hyénidé", w:"Hyène brune", t:"Rare et strictement nocturne dans le Kruger, à la longue crinière hirsute."},
+ {n:"Chacal à chabraque", e:"Canis mesomelas", a:"canidé", w:"Chacal à chabraque", t:"Reconnaissable au manteau argenté sur le dos. Omniprésent autour des carcasses."},
+ {n:"Caracal", e:"Caracal caracal", a:"félin", w:"Caracal", t:"Félin aux oreilles à pinceaux noirs, capable d'attraper un oiseau en plein vol."},
+ {n:"Serval", e:"Leptailurus serval", a:"félin", w:"Serval", t:"Longues pattes, grandes oreilles : il repère les rongeurs sous l'herbe à l'oreille seule."},
+ {n:"Chat sauvage d'Afrique", e:"Felis lybica", a:"félin", w:"Chat ganté", t:"Ancêtre du chat domestique, discret dans les broussailles."},
+ {n:"Ratel", e:"Mellivora capensis", a:"mustélidé", w:"Ratel", t:"Le blaireau à miel, réputé pour une audace sans proportion avec sa taille."},
+ {n:"Civette d'Afrique", e:"Civettictis civetta", a:"viverridé", w:"Civette d'Afrique", t:"Nocturne, au masque noir et blanc, elle marque son territoire d'une sécrétion musquée."},
+ {n:"Genette", e:"Genetta genetta", a:"viverridé", w:"Genette commune", t:"Silhouette allongée et longue queue annelée, souvent aperçue dans les camps la nuit."},
+ {n:"Mangouste rayée", e:"Mungos mungo", a:"herpestidé", w:"Mangouste rayée", t:"Vit en bandes bruyantes qui fouillent le sol en progressant."},
+ {n:"Loutre à joues blanches", e:"Aonyx capensis", a:"mustélidé", w:"Loutre à joues blanches du Cap", t:"Dans les rivières Sabie et Olifants, elle attrape crabes et poissons à mains nues."}
+]},
+{d:"Grands herbivores", p:"Les silhouettes qui composent le paysage", r:[
+ {n:"Girafe", e:"Giraffa camelopardalis", a:"herbivore", w:"Girafe", t:"Elle broute les acacias en évitant les épines de la langue. Dort moins de deux heures par jour."},
+ {n:"Zèbre de Burchell", e:"Equus quagga burchellii", a:"herbivore", w:"Zèbre de Burchell", t:"Migre de conserve avec les gnous, dont il précède le passage en tondant les herbes hautes."},
+ {n:"Hippopotame", e:"Hippopotamus amphibius", a:"herbivore", w:"Hippopotame", t:"Immergé le jour, brouteur la nuit. Responsable de plus de morts humaines que tous les fauves réunis."},
+ {n:"Gnou bleu", e:"Connochaetes taurinus", a:"herbivore", w:"Gnou bleu", t:"Toutes les femelles d'un troupeau mettent bas en trois semaines : les prédateurs ne peuvent tout prendre."},
+ {n:"Phacochère", e:"Phacochoerus africanus", a:"suidé", w:"Phacochère commun", t:"Il recule dans son terrier pour garder les défenses vers l'entrée. Broute à genoux."},
+ {n:"Potamochère", e:"Potamochoerus larvatus", a:"suidé", w:"Potamochère du Cap", t:"Cousin roux et nocturne du phacochère, cantonné aux fourrés riverains."},
+ {n:"Oryctérope", e:"Orycteropus afer", a:"insectivore", w:"Oryctérope du Cap", t:"Creuse les termitières la nuit. Ses terriers abandonnés logent une bonne part de la faune du parc."},
+ {n:"Pangolin de Temminck", e:"Smutsia temminckii", a:"insectivore", w:"Pangolin de Temminck", t:"Couvert d'écailles, il se roule en boule. L'un des animaux les plus rarement observés du Kruger."},
+ {n:"Porc-épic à crête", e:"Hystrix africaeaustralis", a:"rongeur", w:"Porc-épic à crête", t:"Il ne lance pas ses piquants : il recule brusquement pour les planter."}
+]},
+{d:"Antilopes", p:"Du plus grand bovidé du monde au minuscule steenbok", r:[
+ {n:"Grand koudou", e:"Tragelaphus strepsiceros", a:"antilope", w:"Grand koudou", t:"Les cornes du mâle décrivent deux tours et demi de spirale. Fantôme gris des fourrés."},
+ {n:"Éland du Cap", e:"Taurotragus oryx", a:"antilope", w:"Éland du Cap", t:"La plus grande antilope du monde, jusqu'à 900 kg, et pourtant capable de sauter deux mètres."},
+ {n:"Nyala", e:"Tragelaphus angasii", a:"antilope", w:"Nyala", t:"Fort dimorphisme : le mâle est gris et frangé, la femelle rousse et rayée."},
+ {n:"Guib harnaché", e:"Tragelaphus scriptus", a:"antilope", w:"Guib harnaché", t:"Solitaire et riverain, marqué de taches et de rayures blanches."},
+ {n:"Impala", e:"Aepyceros melampus", a:"antilope", w:"Impala", t:"L'antilope la plus abondante du parc, plus de 100 000 têtes. Le M noir sur la croupe est sa signature."},
+ {n:"Cobe à croissant", e:"Kobus ellipsiprymnus", a:"antilope", w:"Cobe à croissant", t:"Le cercle blanc sur l'arrière-train lui vaut son nom. Sa chair sent le suif, ce qui décourage certains prédateurs."},
+ {n:"Redunca", e:"Redunca arundinum", a:"antilope", w:"Rédunca", t:"Cantonné aux herbes hautes et humides, il siffle avant de fuir par bonds."},
+ {n:"Damalisque tsessebe", e:"Damaliscus lunatus", a:"antilope", w:"Damalisque à front blanc", t:"L'antilope la plus rapide d'Afrique australe, à la robe lie-de-vin lustrée."},
+ {n:"Hippotrague noir", e:"Hippotragus niger", a:"antilope", w:"Hippotrague noir", t:"Le mâle adulte est d'un noir profond, ses cornes recourbées atteignent un mètre."},
+ {n:"Hippotrague rouan", e:"Hippotragus equinus", a:"antilope", w:"Hippotrague rouan", t:"Grande antilope au masque noir et blanc, rare et confinée au nord du parc."},
+ {n:"Steenbok", e:"Raphicerus campestris", a:"antilope", w:"Steenbok", t:"Petite antilope rousse, solitaire, qui enterre ses déjections."},
+ {n:"Grysbok de Sharpe", e:"Raphicerus sharpei", a:"antilope", w:"Grysbok de Sharpe", t:"Minuscule et nocturne, au pelage roux moucheté de blanc."},
+ {n:"Céphalophe commun", e:"Sylvicapra grimmia", a:"antilope", w:"Céphalophe de Grimm", t:"Il plonge dans le couvert au moindre danger — d'où son nom, du néerlandais duiker, plongeur."},
+ {n:"Oréotrague", e:"Oreotragus oreotragus", a:"antilope", w:"Oréotrague", t:"Le klipspringer marche sur la pointe de sabots cylindriques, en équilibre sur les rochers."},
+ {n:"Suni", e:"Neotragus moschatus", a:"antilope", w:"Suni", t:"L'une des plus petites antilopes du parc, à peine 35 cm au garrot."}
+]},
+{d:"Primates et petits mammifères", p:"Ce qui grimpe, fouille et détale", r:[
+ {n:"Babouin chacma", e:"Papio ursinus", a:"primate", w:"Babouin chacma", t:"Troupes hiérarchisées de plusieurs dizaines. Redoutable pilleur de camps."},
+ {n:"Vervet", e:"Chlorocebus pygerythrus", a:"primate", w:"Vervet", t:"Petit singe gris à face noire, doté de cris d'alarme différents selon le prédateur."},
+ {n:"Galago du Sénégal", e:"Galago senegalensis", a:"primate", w:"Galago du Sénégal", t:"Le bushbaby, aux yeux énormes, dont les cris nocturnes évoquent des pleurs d'enfant."},
+ {n:"Écureuil de Smith", e:"Paraxerus cepapi", a:"rongeur", w:"Écureuil de Smith", t:"L'écureuil des arbres du Kruger, familier de tous les campements."},
+ {n:"Lièvre des buissons", e:"Lepus saxatilis", a:"lagomorphe", w:"Lièvre des buissons", t:"Nocturne, il détale en zigzag devant les phares."},
+ {n:"Damand des rochers", e:"Procavia capensis", a:"hyracoïde", w:"Daman des rochers", t:"Malgré son allure de marmotte, son plus proche parent vivant est l'éléphant."}
+]},
+{d:"Les Big Six ailés", p:"Les six oiseaux emblématiques que les guides du parc font chercher", r:[
+ {n:"Aigle-martial", e:"Polemaetus bellicosus", a:"Big Six", w:"Aigle martial", t:"Le plus puissant rapace d'Afrique, capable d'emporter un jeune céphalophe."},
+ {n:"Vautour oricou", e:"Torgos tracheliotos", a:"Big Six", w:"Vautour oricou", t:"Le plus grand vautour africain : son bec ouvre les carcasses que les autres ne peuvent entamer."},
+ {n:"Jabiru d'Afrique", e:"Ephippiorhynchus senegalensis", a:"Big Six", w:"Jabiru d'Afrique", t:"Cigogne à selle rouge et noire sur le bec, silhouette des rivières du parc."},
+ {n:"Outarde kori", e:"Ardeotis kori", a:"Big Six", w:"Outarde kori", t:"L'un des plus lourds oiseaux volants du monde. Parade en gonflant le cou en boule."},
+ {n:"Bucorve du Sud", e:"Bucorvus leadbeateri", a:"Big Six", w:"Bucorve du Sud", t:"Grand calao terrestre à la gorge rouge, marchant en groupes familiaux."},
+ {n:"Chouette-pêcheuse de Pel", e:"Scotopelia peli", a:"Big Six", w:"Chouette-pêcheuse de Pel", t:"Rousse et nocturne, elle cueille les poissons à la surface. La plus difficile à cocher des six."}
+]},
+{d:"Autres oiseaux", p:"Les silhouettes qu'on finit toujours par croiser", r:[
+ {n:"Pygargue vocifère", e:"Icthyophaga vocifer", a:"oiseau", w:"Pygargue vocifère", t:"Son cri est le fond sonore de toutes les rivières africaines."},
+ {n:"Rollier à longue queue", e:"Coracias caudatus", a:"oiseau", w:"Rollier à longue queue", t:"Huit couleurs sur un même oiseau. Le plus photographié du parc."},
+ {n:"Calao à bec rouge", e:"Tockus erythrorhynchus", a:"oiseau", w:"Calao à bec rouge", t:"Le mâle emmure la femelle dans le nid et la nourrit par une fente."},
+ {n:"Guêpier carmin", e:"Merops nubicoides", a:"oiseau", w:"Guêpier carmin", t:"Niche en colonies dans les berges sableuses, souvent perché sur le dos des outardes."},
+ {n:"Marabout d'Afrique", e:"Leptoptilos crumenifer", a:"oiseau", w:"Marabout d'Afrique", t:"Charognard au sac gulaire pendant, présent à toutes les carcasses."},
+ {n:"Ombrette africaine", e:"Scopus umbretta", a:"oiseau", w:"Ombrette africaine", t:"Construit un nid en dôme d'un mètre et demi, le plus gros de tous les oiseaux africains."},
+ {n:"Piqueboeuf à bec rouge", e:"Buphagus erythrorynchus", a:"oiseau", w:"Piquebœuf à bec rouge", t:"Il débarrasse les grands mammifères de leurs tiques — et rouvre volontiers leurs plaies."},
+ {n:"Autruche d'Afrique", e:"Struthio camelus", a:"oiseau", w:"Autruche d'Afrique", t:"Présente dans les plaines ouvertes du sud-est du parc."},
+ {n:"Messager sagittaire", e:"Sagittarius serpentarius", a:"oiseau", w:"Messager sagittaire", t:"Le secrétaire chasse les serpents à coups de pattes, debout dans l'herbe."},
+ {n:"Héron goliath", e:"Ardea goliath", a:"oiseau", w:"Héron goliath", t:"Le plus grand héron du monde, immobile des heures au bord des vasques."},
+ {n:"Touraco de Livingstone", e:"Tauraco livingstonii", a:"oiseau", w:"Touraco de Livingstone", t:"Vert éclatant à huppe blanche, ses ailes rouges n'apparaissent qu'en vol."},
+ {n:"Grue caronculée", e:"Bugeranus carunculatus", a:"oiseau", w:"Grue caronculée", t:"La plus rare des grues africaines, quelques couples seulement dans les zones humides."}
+]},
+{d:"Reptiles", p:"Ce qui rampe et qu'on préfère voir de loin", r:[
+ {n:"Crocodile du Nil", e:"Crocodylus niloticus", a:"reptile", w:"Crocodile du Nil", t:"Jusqu'à cinq mètres dans les grandes rivières. Immobile pendant des heures."},
+ {n:"Python de Séba", e:"Python sebae", a:"reptile", w:"Python de Séba", t:"Le plus grand serpent d'Afrique, jusqu'à six mètres, constricteur."},
+ {n:"Mamba noir", e:"Dendroaspis polylepis", a:"reptile", w:"Mamba noir", t:"Rapide et très venimeux, il doit son nom à l'intérieur noir de sa gueule, non à sa robe."},
+ {n:"Cobra cracheur du Mozambique", e:"Naja mossambica", a:"reptile", w:"Naja mossambica", t:"Projette son venin vers les yeux à plus de deux mètres."},
+ {n:"Varan du Nil", e:"Varanus niloticus", a:"reptile", w:"Varan du Nil", t:"Excellent nageur, il pille les nids de crocodiles."},
+ {n:"Tortue léopard", e:"Stigmochelys pardalis", a:"reptile", w:"Tortue léopard", t:"La plus grande tortue terrestre d'Afrique australe, à la carapace mouchetée."}
+]}
+];
+
+/* ============ VILLES DU MAROC ============ */
+const VILLES = [
+{d:"Plus d'un million", p:"Les métropoles, avec leur population au recensement de 2024", r:[
+ {n:"Casablanca", e:"Casablanca-Settat", a:"3 236 000 hab.", t:"Capitale économique du Royaume et premier port d'Afrique du Nord."},
+ {n:"Tanger", e:"Tanger-Tétouan-Al Hoceïma", a:"1 275 000 hab.", t:"Passée deuxième ville du pays en 2024, portée par Tanger Med et l'industrie automobile."},
+ {n:"Fès", e:"Fès-Meknès", a:"1 183 000 hab.", t:"Capitale spirituelle, sa médina est le plus vaste ensemble urbain médiéval encore habité."},
+ {n:"Marrakech", e:"Marrakech-Safi", a:"1 015 000 hab.", t:"La ville ocre, fondée par les Almoravides au XIe siècle."}
+]},
+{d:"De 300 000 à un million", p:"Populations du recensement de 2024 pour les trois premières, de 2014 ensuite", r:[
+ {n:"Salé", e:"Rabat-Salé-Kénitra", a:"945 000 hab.", t:"Face à Rabat sur l'autre rive du Bouregreg, longtemps port corsaire."},
+ {n:"Meknès", e:"Fès-Meknès", a:"562 000 hab.", t:"Capitale de Moulay Ismaïl, ceinte de quarante kilomètres de remparts."},
+ {n:"Rabat", e:"Rabat-Salé-Kénitra", a:"516 000 hab.", t:"Capitale administrative, inscrite au patrimoine mondial en 2012."},
+ {n:"Oujda", e:"l'Oriental", a:"494 252 hab.", t:"Aux portes de l'Algérie, carrefour historique des routes du Maghreb."},
+ {n:"Kénitra", e:"Rabat-Salé-Kénitra", a:"431 282 hab.", t:"Port fluvial sur le Sebou, fondée par Lyautey sous le nom de Port-Lyautey."},
+ {n:"Agadir", e:"Souss-Massa", a:"421 844 hab.", t:"Entièrement reconstruite après le séisme de 1960."},
+ {n:"Tétouan", e:"Tanger-Tétouan-Al Hoceïma", a:"380 787 hab.", t:"La colombe blanche, héritière de l'Andalousie et ancienne capitale du protectorat espagnol."},
+ {n:"Témara", e:"Rabat-Salé-Kénitra", a:"313 510 hab.", t:"Excroissance méridionale de l'agglomération de Rabat."},
+ {n:"Safi", e:"Marrakech-Safi", a:"308 508 hab.", t:"Port sardinier et capitale historique de la céramique marocaine."}
+]},
+{d:"De 100 000 à 300 000", p:"Populations du recensement de 2014", r:[
+ {n:"Laâyoune", e:"Laâyoune-Sakia El Hamra", a:"217 732 hab.", t:"Principale ville du Sahara, développée à partir des années 1970."},
+ {n:"Mohammédia", e:"Casablanca-Settat", a:"208 612 hab.", t:"Ancienne Fedala, ville pétrochimique et balnéaire entre Casablanca et Rabat."},
+ {n:"Khouribga", e:"Béni Mellal-Khénifra", a:"196 196 hab.", t:"Capitale mondiale du phosphate, sur le plateau des Ouled Abdoun."},
+ {n:"El Jadida", e:"Casablanca-Settat", a:"194 934 hab.", t:"L'ancienne Mazagan portugaise, dont la citerne est classée."},
+ {n:"Béni Mellal", e:"Béni Mellal-Khénifra", a:"192 676 hab.", t:"Au pied du Moyen Atlas, au cœur de la plaine agricole du Tadla."},
+ {n:"Aït Melloul", e:"Souss-Massa", a:"171 847 hab.", t:"Ville industrielle contiguë à Agadir, née de l'essor maraîcher du Souss."},
+ {n:"Nador", e:"l'Oriental", a:"161 726 hab.", t:"Sur la lagune de Marchica, face à l'enclave de Melilla."},
+ {n:"Taza", e:"Fès-Meknès", a:"148 456 hab.", t:"Gardienne du couloir entre Rif et Moyen Atlas, passage obligé vers l'est."},
+ {n:"Settat", e:"Casablanca-Settat", a:"142 250 hab.", t:"Centre de la Chaouia céréalière, ville universitaire."},
+ {n:"Berrechid", e:"Casablanca-Settat", a:"136 634 hab.", t:"Nœud routier au sud de Casablanca, en croissance rapide."},
+ {n:"Khémisset", e:"Rabat-Salé-Kénitra", a:"131 542 hab.", t:"Capitale des Zemmour, sur la route de Rabat à Meknès."},
+ {n:"Inezgane", e:"Souss-Massa", a:"130 333 hab.", t:"Grand marché de gros du Souss, accolée à Agadir."},
+ {n:"Ksar El Kébir", e:"Tanger-Tétouan-Al Hoceïma", a:"126 617 hab.", t:"Dans la plaine du Loukkos, près du champ de la bataille des Trois Rois."},
+ {n:"Larache", e:"Tanger-Tétouan-Al Hoceïma", a:"125 008 hab.", t:"Port atlantique voisin des ruines de Lixus."},
+ {n:"Guelmim", e:"Guelmim-Oued Noun", a:"118 318 hab.", t:"La porte du désert, ancienne étape des caravanes sahariennes."},
+ {n:"Berkane", e:"l'Oriental", a:"109 237 hab.", t:"Capitale de la clémentine, adossée aux Beni Snassen."},
+ {n:"Dakhla", e:"Dakhla-Oued Ed-Dahab", a:"106 277 hab.", t:"Sur une péninsule sableuse, devenue capitale mondiale du kitesurf."},
+ {n:"Bouskoura", e:"Casablanca-Settat", a:"103 026 hab.", t:"Banlieue résidentielle et industrielle de Casablanca, en forte expansion."},
+ {n:"Fkih Ben Salah", e:"Béni Mellal-Khénifra", a:"102 019 hab.", t:"Ville agricole du Tadla, marquée par une forte émigration vers l'Italie."},
+ {n:"Dcheira El Jihadia", e:"Souss-Massa", a:"100 336 hab.", t:"Troisième composante de l'agglomération d'Agadir avec Inezgane et Aït Melloul."}
+]},
+{d:"De 70 000 à 100 000", p:"Populations du recensement de 2014", r:[
+ {n:"Oued Zem", e:"Béni Mellal-Khénifra", a:"95 267 hab.", t:"Ville minière du plateau des phosphates."},
+ {n:"Sidi Slimane", e:"Rabat-Salé-Kénitra", a:"92 989 hab.", t:"Au cœur du Gharb rizicole et betteravier."},
+ {n:"Errachidia", e:"Drâa-Tafilalet", a:"92 374 hab.", t:"Ancienne Ksar es-Souk, verrou administratif de la vallée du Ziz."},
+ {n:"Guercif", e:"l'Oriental", a:"90 880 hab.", t:"Entre Taza et Oujda, sur la Moulouya."},
+ {n:"Oulad Teima", e:"Souss-Massa", a:"89 387 hab.", t:"Capitale agricole de la plaine du Souss."},
+ {n:"Ben Guerir", e:"Marrakech-Safi", a:"88 626 hab.", t:"Ville nouvelle universitaire et minière au nord de Marrakech."},
+ {n:"Tiflet", e:"Rabat-Salé-Kénitra", a:"85 811 hab.", t:"Sur le plateau central, entre Khémisset et Rabat."},
+ {n:"Lqliaa", e:"Souss-Massa", a:"81 828 hab.", t:"Extension urbaine récente au sud d'Aït Melloul."},
+ {n:"Taroudant", e:"Souss-Massa", a:"80 149 hab.", t:"Ceinte de remparts de terre, on la surnomme la petite Marrakech."},
+ {n:"Taourirt", e:"l'Oriental", a:"80 024 hab.", t:"Carrefour ferroviaire sur la ligne Fès-Oujda."},
+ {n:"Sefrou", e:"Fès-Meknès", a:"79 887 hab.", t:"Au pied du Moyen Atlas, connue pour sa fête des cerises."},
+ {n:"Essaouira", e:"Marrakech-Safi", a:"77 966 hab.", t:"L'ancienne Mogador, ville des alizés et du gnaoua, médina classée."},
+ {n:"Fnideq", e:"Tanger-Tétouan-Al Hoceïma", a:"77 436 hab.", t:"Aux portes de Sebta, longtemps vouée au commerce transfrontalier."},
+ {n:"El Kelaa des Sraghna", e:"Marrakech-Safi", a:"76 019 hab.", t:"Ville oléicole de la plaine du Haouz."},
+ {n:"Sidi Kacem", e:"Rabat-Salé-Kénitra", a:"75 672 hab.", t:"Centre sucrier et pétrolier du Gharb."},
+ {n:"Tiznit", e:"Souss-Massa", a:"74 699 hab.", t:"Capitale de l'argenterie berbère, entourée de six kilomètres de murailles."},
+ {n:"Tan-Tan", e:"Guelmim-Oued Noun", a:"73 209 hab.", t:"Port sahariens et grand moussem inscrit à l'UNESCO."},
+ {n:"Ouarzazate", e:"Drâa-Tafilalet", a:"71 067 hab.", t:"Porte du désert et capitale du cinéma marocain."}
+]},
+{d:"De 50 000 à 70 000", p:"Populations du recensement de 2014", r:[
+ {n:"Youssoufia", e:"Marrakech-Safi", a:"67 628 hab.", t:"Ville minière créée autour des phosphates de Gantour."},
+ {n:"Martil", e:"Tanger-Tétouan-Al Hoceïma", a:"64 355 hab.", t:"Station balnéaire de Tétouan, sur la Méditerranée."},
+ {n:"Skhirat", e:"Rabat-Salé-Kénitra", a:"59 775 hab.", t:"Entre Rabat et Casablanca, connue pour son palais royal."},
+ {n:"Ouazzane", e:"Tanger-Tétouan-Al Hoceïma", a:"59 606 hab.", t:"Ville sainte du Rif occidental, siège d'une confrérie influente."},
+ {n:"Smara", e:"Laâyoune-Sakia El Hamra", a:"57 035 hab.", t:"Fondée au XIXe siècle par Ma El Aïnin, seule ville saharienne d'origine précoloniale."},
+ {n:"Al Hoceïma", e:"Tanger-Tétouan-Al Hoceïma", a:"56 716 hab.", t:"Capitale du Rif central, enserrée entre montagne et Méditerranée."},
+ {n:"M'diq", e:"Tanger-Tétouan-Al Hoceïma", a:"56 227 hab.", t:"Ancien port de pêche devenu station balnéaire."},
+ {n:"Sidi Bennour", e:"Casablanca-Settat", a:"55 815 hab.", t:"Centre betteravier des Doukkala."},
+ {n:"Midelt", e:"Drâa-Tafilalet", a:"55 304 hab.", t:"Entre Haut et Moyen Atlas, ville des pommes et des minéraux."},
+ {n:"Souk El Arbaa", e:"Rabat-Salé-Kénitra", a:"54 587 hab.", t:"Marché hebdomadaire devenu ville, au cœur du Gharb."},
+ {n:"Azrou", e:"Fès-Meknès", a:"54 350 hab.", t:"Au milieu des cédraies du Moyen Atlas, réputée pour ses singes magots."},
+ {n:"Benslimane", e:"Casablanca-Settat", a:"51 887 hab.", t:"Ville forestière entre Casablanca et Rabat."},
+ {n:"Beni Ansar", e:"l'Oriental", a:"51 733 hab.", t:"Port de Nador, face à Melilla."},
+ {n:"Zagora", e:"Drâa-Tafilalet", a:"50 796 hab.", t:"Dans la vallée du Drâa, dernière étape avant l'erg Chegaga."}
+]}
+];
+
+/* ============ PIRATES DES CARAÏBES ============ */
+const PIRATES = [
+{d:"Les films", p:"La saga produite par Jerry Bruckheimer pour Walt Disney Pictures", r:[
+ {n:"La Malédiction du Black Pearl", e:"film, 2003", a:"Gore Verbinski", w:"Pirates des Caraïbes : La Malédiction du Black Pearl", t:"Tiré d'une attraction de Disneyland, le film relance à lui seul le genre du film de pirates."},
+ {n:"Le Secret du coffre maudit", e:"film, 2006", a:"Gore Verbinski", w:"Pirates des Caraïbes : Le Secret du coffre maudit", t:"Introduit Davy Jones et le Kraken. Premier film à dépasser le milliard de dollars de recettes cette année-là."},
+ {n:"Jusqu'au bout du monde", e:"film, 2007", a:"Gore Verbinski", w:"Pirates des Caraïbes : Jusqu'au bout du monde", t:"Conclut la trilogie initiale par le conseil de la Confrérie et la libération de Calypso."},
+ {n:"La Fontaine de Jouvence", e:"film, 2011", a:"Rob Marshall", w:"Pirates des Caraïbes : La Fontaine de Jouvence", t:"Nouveau départ sans les Turner, adapté du roman Sur des mers plus ignorées de Tim Powers."},
+ {n:"La Vengeance de Salazar", e:"film, 2017", a:"Joachim Rønning et Espen Sandberg", w:"Pirates des Caraïbes : La Vengeance de Salazar", t:"Cinquième volet, centré sur les enfants de Will Turner et d'Elizabeth Swann."}
+]},
+{d:"Derrière la caméra", p:"Réalisation, production, musique", r:[
+ {n:"Gore Verbinski", e:"réalisateur", a:"films 1 à 3", t:"Il impose le ton baroque de la saga avant de passer la main après le troisième volet."},
+ {n:"Rob Marshall", e:"réalisateur", a:"film 4", t:"Venu de la comédie musicale, il signe La Fontaine de Jouvence."},
+ {n:"Joachim Rønning", e:"réalisateur", a:"film 5", t:"Norvégien, il coréalise La Vengeance de Salazar avec Espen Sandberg."},
+ {n:"Espen Sandberg", e:"réalisateur", a:"film 5", t:"Coréalisateur du cinquième volet, en duo avec Rønning depuis Kon-Tiki."},
+ {n:"Jerry Bruckheimer", e:"producteur", a:"films 1 à 5", t:"Producteur de toute la saga, figure du blockbuster hollywoodien."},
+ {n:"Hans Zimmer", e:"compositeur", a:"films 2 à 5", t:"Il reprend et amplifie le thème initial, jusqu'au motif de valse de Davy Jones."},
+ {n:"Klaus Badelt", e:"compositeur", a:"film 1", t:"Signe He's a Pirate, le thème que toute la saga reprendra."},
+ {n:"Ted Elliott", e:"scénariste", a:"films 1 à 4", t:"Coauteur du scénario avec Terry Rossio, il façonne le personnage de Jack Sparrow."},
+ {n:"Terry Rossio", e:"scénariste", a:"films 1 à 5", t:"Seul scénariste présent sur les cinq films de la saga."}
+]},
+{d:"Personnages principaux", p:"Ceux qui portent l'intrigue d'un film à l'autre", r:[
+ {n:"Jack Sparrow", e:"capitaine du Black Pearl", a:"films 1 à 5", w:"Jack Sparrow", t:"Pirate à la démarche titubante, inspirée de Keith Richards. Toujours du côté qui l'arrange."},
+ {n:"Hector Barbossa", e:"capitaine mutin", a:"films 1 à 5", w:"Hector Barbossa", t:"D'abord antagoniste maudit, puis allié, puis corsaire du roi : le personnage le plus retors de la saga."},
+ {n:"Will Turner", e:"forgeron devenu pirate", a:"films 1 à 3, 5", w:"Will Turner", t:"Fils de Bootstrap Bill, il finit capitaine du Hollandais volant, à terre un jour tous les dix ans."},
+ {n:"Elizabeth Swann", e:"fille du gouverneur", a:"films 1 à 3, 5", w:"Elizabeth Swann", t:"De demoiselle en corset à roi des pirates élue par la Confrérie."},
+ {n:"Davy Jones", e:"capitaine du Hollandais volant", a:"films 2 et 3", w:"Davy Jones (Pirates des Caraïbes)", t:"Visage de poulpe et cœur enfermé dans un coffre, par chagrin d'amour pour Calypso."},
+ {n:"Joshamee Gibbs", e:"second de Jack Sparrow", a:"films 1 à 5", t:"Fidèle malgré tout, mémoire vivante des superstitions de la mer."},
+ {n:"Cutler Beckett", e:"Compagnie des Indes orientales", a:"films 2 et 3", t:"L'ennemi en habit et perruque : il combat la piraterie par les registres et le commerce."},
+ {n:"James Norrington", e:"officier de la Royal Navy", a:"films 1 à 3", t:"Rival honnête de Jack, il se perd puis se rachète en libérant Elizabeth."},
+ {n:"Tia Dalma / Calypso", e:"déesse de la mer", a:"films 2 et 3", t:"Enfermée dans un corps humain par la Confrérie, elle se libère en tempête."},
+ {n:"Bootstrap Bill Turner", e:"pirate maudit", a:"films 1 à 3, 5", t:"Père de Will, jeté à la mer une chaîne au pied, puis absorbé par le Hollandais."},
+ {n:"Weatherby Swann", e:"gouverneur de Port Royal", a:"films 1 à 3", t:"Père d'Elizabeth, dépassé par les événements et broyé par Beckett."},
+ {n:"Sao Feng", e:"seigneur pirate de Singapour", a:"film 3", t:"Maître des cartes de navigation vers le bout du monde."},
+ {n:"Angelica", e:"fille de Barbe-Noire", a:"film 4", t:"Ancienne novice séduite puis abandonnée par Jack, elle le manipule à son tour."},
+ {n:"Barbe-Noire", e:"capitaine du Queen Anne's Revenge", a:"film 4", w:"Barbe Noire (Pirates des Caraïbes)", t:"Le pirate que tous les pirates craignent, maître d'une épée qui commande aux navires."},
+ {n:"Armando Salazar", e:"capitaine de la Silent Mary", a:"film 5", t:"Chasseur de pirates espagnol, piégé dans le triangle du Diable par un jeune Jack Sparrow."},
+ {n:"Henry Turner", e:"fils de Will et Elizabeth", a:"film 5", t:"Il cherche le trident de Poséidon pour délivrer son père de sa malédiction."},
+ {n:"Carina Smyth", e:"astronome", a:"film 5", t:"Savante accusée de sorcellerie, elle lit le ciel pour retrouver le trident — et son père."},
+ {n:"Pintel", e:"pirate du Black Pearl", a:"films 1 à 3", t:"Le petit chauve du duo comique, inséparable de Ragetti."},
+ {n:"Ragetti", e:"pirate du Black Pearl", a:"films 1 à 3", t:"L'échalas à l'œil de bois, comparse de Pintel."},
+ {n:"Marty", e:"membre d'équipage", a:"films 1 à 4", t:"Le plus petit marin du Black Pearl, présent sur presque toute la saga."},
+ {n:"Cotton", e:"membre d'équipage", a:"films 1 à 3", t:"Muet, il parle par la voix de son perroquet."},
+ {n:"Anamaria", e:"capitaine dépossédée", a:"film 1", t:"Elle réclame à Jack le bateau qu'il lui a volé, et se voit offrir l'Intercepteur."},
+ {n:"Capitaine Teague", e:"gardien du Code", a:"films 3 et 4", t:"Père de Jack Sparrow, gardien du Codex de la Confrérie."},
+ {n:"Scrum", e:"membre d'équipage", a:"films 4 et 5", t:"Le marin chanteur du Queen Anne's Revenge."},
+ {n:"Le Kraken", e:"créature", a:"films 2 et 3", t:"Monstre au service de Davy Jones, envoyé engloutir ceux qui lui doivent une dette."},
+ {n:"Jack le singe", e:"capucin de Barbossa", a:"films 1 à 5", t:"Maudit lui aussi, donc immortel. Il survit à tout, y compris à un coup de pistolet."}
+]},
+{d:"Les navires", p:"Ils comptent autant que les personnages", r:[
+ {n:"Le Black Pearl", e:"navire", a:"films 1 à 5", w:"Black Pearl", t:"Anciennement le Wicked Wench, remonté des fonds par Davy Jones. Le plus rapide des Caraïbes."},
+ {n:"Le Hollandais volant", e:"navire", a:"films 2, 3 et 5", w:"Hollandais volant", t:"Chargé de conduire les âmes des noyés dans l'autre monde. Son capitaine ne touche terre qu'une fois tous les dix ans."},
+ {n:"Le Queen Anne's Revenge", e:"navire", a:"film 4", t:"Vaisseau de Barbe-Noire, dont les lance-flammes réduisent les adversaires en cendres."},
+ {n:"La Silent Mary", e:"navire", a:"film 5", t:"Navire fantôme de Salazar, à la coque éventrée qui dévore les autres bateaux."},
+ {n:"L'Intercepteur", e:"navire", a:"film 1", t:"Le brick le plus rapide de la Royal Navy, jusqu'à ce que Barbossa le pulvérise."},
+ {n:"Le Dauntless", e:"navire", a:"film 1", t:"Vaisseau de ligne de la Royal Navy, puissant mais trop lent pour rattraper le Pearl."}
+]},
+{d:"Les interprètes", p:"Ceux dont le visage est attaché à la saga", r:[
+ {n:"Johnny Depp", e:"Jack Sparrow", a:"films 1 à 5", t:"Il compose le personnage contre l'avis du studio, qui craignait un capitaine incompréhensible."},
+ {n:"Geoffrey Rush", e:"Hector Barbossa", a:"films 1 à 5", t:"Acteur australien oscarisé pour Shine, seul avec Depp à traverser les cinq films."},
+ {n:"Orlando Bloom", e:"Will Turner", a:"films 1 à 3, 5", t:"Révélé par Le Seigneur des anneaux, il enchaîne aussitôt sur la saga."},
+ {n:"Keira Knightley", e:"Elizabeth Swann", a:"films 1 à 3, 5", t:"Dix-sept ans au tournage du premier film."},
+ {n:"Bill Nighy", e:"Davy Jones", a:"films 2 et 3", t:"Joué intégralement en capture de mouvement, sous une combinaison à points."},
+ {n:"Kevin McNally", e:"Joshamee Gibbs", a:"films 1 à 5", t:"Acteur britannique présent sur l'ensemble de la saga."},
+ {n:"Tom Hollander", e:"Cutler Beckett", a:"films 2 et 3", t:"Il donne au fonctionnaire une froideur plus inquiétante que tous les fantômes."},
+ {n:"Jack Davenport", e:"James Norrington", a:"films 1 à 3", t:"Il incarne la rectitude militaire, puis son effondrement."},
+ {n:"Jonathan Pryce", e:"Weatherby Swann", a:"films 1 à 3", t:"Comédien gallois, aussi connu pour Brazil et Game of Thrones."},
+ {n:"Stellan Skarsgård", e:"Bootstrap Bill", a:"films 2, 3 et 5", t:"Acteur suédois sous plusieurs kilos de prothèses de coquillages."},
+ {n:"Naomie Harris", e:"Tia Dalma", a:"films 2 et 3", t:"Actrice britannique, future Moneypenny de la saga James Bond."},
+ {n:"Chow Yun-fat", e:"Sao Feng", a:"film 3", t:"Star hongkongaise du polar, invitée pour le troisième volet."},
+ {n:"Lee Arenberg", e:"Pintel", a:"films 1 à 3", t:"Moitié du duo comique, avec Mackenzie Crook."},
+ {n:"Mackenzie Crook", e:"Ragetti", a:"films 1 à 3", t:"Venu de la série The Office, il joue l'homme à l'œil de bois."},
+ {n:"Penélope Cruz", e:"Angelica", a:"film 4", t:"Actrice espagnole oscarisée, elle tourne enceinte et se fait doubler par sa sœur."},
+ {n:"Ian McShane", e:"Barbe-Noire", a:"film 4", t:"Comédien britannique, révélé au grand public par Deadwood."},
+ {n:"Javier Bardem", e:"Armando Salazar", a:"film 5", t:"Acteur espagnol oscarisé, il rejoint la saga aux côtés de son épouse Penélope Cruz."},
+ {n:"Brenton Thwaites", e:"Henry Turner", a:"film 5", t:"Acteur australien, il reprend le flambeau du jeune premier."},
+ {n:"Kaya Scodelario", e:"Carina Smyth", a:"film 5", t:"Révélée par la série Skins, elle incarne l'astronome accusée de sorcellerie."},
+ {n:"Keith Richards", e:"capitaine Teague", a:"films 3 et 4", t:"Le guitariste des Rolling Stones, dont la démarche avait inspiré Jack Sparrow, joue son père."},
+ {n:"Paul McCartney", e:"oncle Jack", a:"film 5", t:"Apparition d'un seul plan, en prisonnier chantant dans une geôle."},
+]}
+];
+
+/* ============ ALBUMS DE TINTIN ============ */
+const TINTIN = [
+{d:"Les années noir et blanc", p:"Publiés d'abord dans Le Petit Vingtième, redessinés ensuite pour la plupart", r:[
+ {n:"Tintin au pays des Soviets", e:"album 1", a:"1930", w:"Tintin au pays des Soviets", t:"Le tout premier, resté longtemps introuvable. Hergé le jugeait maladroit et refusa de le redessiner."},
+ {n:"Tintin au Congo", e:"album 2", a:"1931", w:"Tintin au Congo", t:"Le plus controversé de la série, marqué par le regard colonial de son époque."},
+ {n:"Tintin en Amérique", e:"album 3", a:"1932", w:"Tintin en Amérique", t:"Chicago, Al Capone et les Pieds-Noirs : l'Amérique vue depuis Bruxelles."},
+ {n:"Les Cigares du pharaon", e:"album 4", a:"1934", w:"Les Cigares du pharaon", t:"Première apparition de Dupond et Dupont, et de Rastapopoulos."},
+ {n:"Le Lotus bleu", e:"album 5", a:"1936", w:"Le Lotus bleu", t:"Le tournant de l'œuvre : sa rencontre avec Tchang Tchong-jen impose à Hergé l'exigence documentaire."},
+ {n:"L'Oreille cassée", e:"album 6", a:"1937", w:"L'Oreille cassée", t:"Une statuette volée mène à une guerre du pétrole en Amérique du Sud."},
+ {n:"L'Île Noire", e:"album 7", a:"1938", w:"L'Île Noire", t:"Faux-monnayeurs en Écosse. Entièrement redessiné en 1966 après une enquête sur place."},
+ {n:"Le Sceptre d'Ottokar", e:"album 8", a:"1939", w:"Le Sceptre d'Ottokar", t:"Un coup d'État en Syldavie, transparente allégorie de l'Anschluss."}
+]},
+{d:"Les albums en couleurs", p:"De la rencontre avec Haddock aux grandes aventures d'après-guerre", r:[
+ {n:"Le Crabe aux pinces d'or", e:"album 9", a:"1941", w:"Le Crabe aux pinces d'or", t:"Entrée en scène du capitaine Haddock, ivre et hurlant, dans la cale d'un cargo."},
+ {n:"L'Étoile mystérieuse", e:"album 10", a:"1942", w:"L'Étoile mystérieuse", t:"Une météorite tombe dans l'Arctique. Album marqué par le contexte de l'Occupation."},
+ {n:"Le Secret de La Licorne", e:"album 11", a:"1943", w:"Le Secret de La Licorne", t:"Trois maquettes, trois parchemins, et l'apparition du chevalier de Hadoque."},
+ {n:"Le Trésor de Rackham le Rouge", e:"album 12", a:"1944", w:"Le Trésor de Rackham le Rouge", t:"Première apparition de Tryphon Tournesol, et acquisition de Moulinsart."},
+ {n:"Les Sept Boules de cristal", e:"album 13", a:"1948", w:"Les Sept Boules de cristal", t:"Une malédiction inca frappe les membres d'une expédition, un à un."},
+ {n:"Le Temple du Soleil", e:"album 14", a:"1949", w:"Le Temple du Soleil", t:"La suite andine, avec l'éclipse la plus célèbre de la bande dessinée."},
+ {n:"Tintin au pays de l'or noir", e:"album 15", a:"1950", w:"Tintin au pays de l'or noir", t:"Commencé en 1939, interrompu par la guerre, achevé onze ans plus tard. Introduit Abdallah."},
+ {n:"Objectif Lune", e:"album 16", a:"1953", w:"Objectif Lune", t:"Hergé consulte des ingénieurs : la fusée à damier est techniquement plausible, seize ans avant Apollo."},
+ {n:"On a marché sur la Lune", e:"album 17", a:"1954", w:"On a marché sur la Lune", t:"Le premier pas sur la Lune en bande dessinée, quinze ans avant Armstrong."},
+ {n:"L'Affaire Tournesol", e:"album 18", a:"1956", w:"L'Affaire Tournesol", t:"Souvent tenu pour le sommet de la série. Espionnage entre Syldavie et Bordurie."},
+ {n:"Coke en stock", e:"album 19", a:"1958", w:"Coke en stock", t:"Un trafic d'esclaves sous couvert de pèlerinage. Retour de presque tous les personnages récurrents."},
+ {n:"Tintin au Tibet", e:"album 20", a:"1960", w:"Tintin au Tibet", t:"L'album le plus personnel d'Hergé, écrit pendant une dépression. Aucun méchant, seulement l'amitié."},
+ {n:"Les Bijoux de la Castafiore", e:"album 21", a:"1963", w:"Les Bijoux de la Castafiore", t:"Une aventure où il ne se passe rien, à Moulinsart. Exercice de style admiré des critiques."},
+ {n:"Vol 714 pour Sydney", e:"album 22", a:"1968", w:"Vol 714 pour Sydney", t:"Détournement d'avion, île volcanique et extraterrestres : Hergé s'ouvre au fantastique."},
+ {n:"Tintin et les Picaros", e:"album 23", a:"1976", w:"Tintin et les Picaros", t:"Retour au San Theodoros. Tintin y porte un jean et un casque, au grand dam des puristes."},
+ {n:"Tintin et l'Alph-Art", e:"album 24", a:"1986", w:"Tintin et l'Alph-Art", t:"Inachevé à la mort d'Hergé, publié à l'état de crayonnés. Tintin y frôle une mort en sculpture."}
+]}
+];
+
+/* Alias de reconnaissance pour le collage de listes. */
+const ALIAS_S = {
+ k:{ "elephant-de-savane-d-afrique":["éléphant","elephant"], "buffle-d-afrique":["buffle"],
+     "crocodile-du-nil":["crocodile"], "python-de-seba":["python"], "autruche-d-afrique":["autruche"],
+     "babouin-chacma":["babouin"], "grand-koudou":["koudou"], "eland-du-cap":["éland","eland"],
+     "guib-harnache":["bushbuck"], "oreotrague":["klipspringer"], "cephalophe-commun":["céphalophe","duiker"],
+     "damalisque-tsessebe":["tsessebe"], "cobe-a-croissant":["waterbuck"], "chat-sauvage-d-afrique":["chat ganté"],
+     "pygargue-vociferе":["aigle pêcheur"], "messager-sagittaire":["secrétaire"],
+     "loutre-a-joues-blanches":["loutre"], "damand-des-rochers":["daman"], "pangolin-de-temminck":["pangolin"] },
+ p:{ "hector-barbossa":["barbossa","capitaine barbossa"], "jack-sparrow":["sparrow","capitaine jack sparrow"],
+     "joshamee-gibbs":["gibbs"], "bootstrap-bill-turner":["bootstrap bill","bill turner"],
+     "weatherby-swann":["gouverneur swann"], "barbe-noire":["blackbeard"],
+     "la-malediction-du-black-pearl":["pirates des caraïbes 1"], "le-secret-du-coffre-maudit":["dead man s chest"],
+     "armando-salazar":["salazar"], "capitaine-teague":["teague"], "le-hollandais-volant":["flying dutchman"] },
+ v:{ "casablanca":["dar el beida"], "essaouira":["mogador"], "el-jadida":["mazagan"],
+     "laayoune":["el aaiun"], "beni-ansar":["beni enzar"] },
+ t:{ "tintin-et-l-alph-art":["alph art"], "le-secret-de-la-licorne":["la licorne"],
+     "on-a-marche-sur-la-lune":["marché sur la lune"] }
+};
+
+/* ============ REGISTRE DES SÉRIES ============
+   Chaque série en liste groupée partage le même moteur d'affichage.
+   `cle` est le préfixe utilisé dans le journal de synchronisation :
+   f = drapeaux, m = théogonie, puis r, k, v, p, t. */
+const SERIES = [
+  {cle:"r", id:"roi", titre:"Souverains", donnees:ROIS,
+   intro:"Cent règnes, des chefs gaulois d'avant la conquête à Napoléon III."},
+  {cle:"k", id:"kru", titre:"Kruger", donnees:KRUGER,
+   intro:"La faune du parc national Kruger, des Big Five aux Big Six ailés."},
+  {cle:"v", id:"vil", titre:"Maroc", donnees:VILLES,
+   intro:"Les villes marocaines de plus de 50 000 habitants, par taille."},
+  {cle:"p", id:"pir", titre:"Pirates", donnees:PIRATES,
+   intro:"Films, personnages, navires et interprètes de la saga."},
+  {cle:"t", id:"tin", titre:"Tintin", donnees:TINTIN,
+   intro:"Les vingt-quatre albums, du pays des Soviets à l'Alph-Art inachevé."}
+];
+
+const _slug = n => n.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+SERIES.forEach(s => {
+  s.total = 0;
+  s.donnees.forEach(g => g.r.forEach(k => {
+    k.i = k.i || _slug(k.n);
+    k.dyn = g.d;
+    k.serie = s.cle;
+    s.total++;
+  }));
+});
 
 const PAYS = [{"c": "za", "n": "Afrique du Sud", "z": "AF"}, {"c": "dz", "n": "Algérie", "z": "AF"}, {"c": "ao", "n": "Angola", "z": "AF"}, {"c": "bw", "n": "Botswana", "z": "AF"}, {"c": "bf", "n": "Burkina Faso", "z": "AF"}, {"c": "bi", "n": "Burundi", "z": "AF"}, {"c": "bj", "n": "Bénin", "z": "AF"}, {"c": "cm", "n": "Cameroun", "z": "AF"}, {"c": "cv", "n": "Cap-Vert", "z": "AF"}, {"c": "km", "n": "Comores", "z": "AF"}, {"c": "ci", "n": "Côte d'Ivoire", "z": "AF"}, {"c": "dj", "n": "Djibouti", "z": "AF"}, {"c": "sz", "n": "Eswatini", "z": "AF"}, {"c": "ga", "n": "Gabon", "z": "AF"}, {"c": "gm", "n": "Gambie", "z": "AF"}, {"c": "gh", "n": "Ghana", "z": "AF"}, {"c": "gn", "n": "Guinée", "z": "AF"}, {"c": "gq", "n": "Guinée équatoriale", "z": "AF"}, {"c": "gw", "n": "Guinée-Bissau", "z": "AF"}, {"c": "ke", "n": "Kenya", "z": "AF"}, {"c": "ls", "n": "Lesotho", "z": "AF"}, {"c": "ly", "n": "Libye", "z": "AF"}, {"c": "lr", "n": "Libéria", "z": "AF"}, {"c": "mg", "n": "Madagascar", "z": "AF"}, {"c": "mw", "n": "Malawi", "z": "AF"}, {"c": "ml", "n": "Mali", "z": "AF"}, {"c": "ma", "n": "Maroc", "z": "AF"}, {"c": "mu", "n": "Maurice", "z": "AF"}, {"c": "mr", "n": "Mauritanie", "z": "AF"}, {"c": "mz", "n": "Mozambique", "z": "AF"}, {"c": "na", "n": "Namibie", "z": "AF"}, {"c": "ne", "n": "Niger", "z": "AF"}, {"c": "ng", "n": "Nigeria", "z": "AF"}, {"c": "ug", "n": "Ouganda", "z": "AF"}, {"c": "rw", "n": "Rwanda", "z": "AF"}, {"c": "cf", "n": "République centrafricaine", "z": "AF"}, {"c": "cg", "n": "République du Congo", "z": "AF"}, {"c": "cd", "n": "République démocratique du Congo", "z": "AF"}, {"c": "st", "n": "Sao Tomé-et-Principe", "z": "AF"}, {"c": "sc", "n": "Seychelles", "z": "AF"}, {"c": "sl", "n": "Sierra Leone", "z": "AF"}, {"c": "so", "n": "Somalie", "z": "AF"}, {"c": "sd", "n": "Soudan", "z": "AF"}, {"c": "ss", "n": "Soudan du Sud", "z": "AF"}, {"c": "sn", "n": "Sénégal", "z": "AF"}, {"c": "tz", "n": "Tanzanie", "z": "AF"}, {"c": "td", "n": "Tchad", "z": "AF"}, {"c": "tg", "n": "Togo", "z": "AF"}, {"c": "tn", "n": "Tunisie", "z": "AF"}, {"c": "zm", "n": "Zambie", "z": "AF"}, {"c": "zw", "n": "Zimbabwe", "z": "AF"}, {"c": "eg", "n": "Égypte", "z": "AF"}, {"c": "er", "n": "Érythrée", "z": "AF"}, {"c": "et", "n": "Éthiopie", "z": "AF"}, {"c": "af", "n": "Afghanistan", "z": "AS"}, {"c": "sa", "n": "Arabie saoudite", "z": "AS"}, {"c": "am", "n": "Arménie", "z": "AS"}, {"c": "az", "n": "Azerbaïdjan", "z": "AS"}, {"c": "bh", "n": "Bahreïn", "z": "AS"}, {"c": "bd", "n": "Bangladesh", "z": "AS"}, {"c": "bt", "n": "Bhoutan", "z": "AS"}, {"c": "mm", "n": "Birmanie (Myanmar)", "z": "AS"}, {"c": "bn", "n": "Brunei", "z": "AS"}, {"c": "kh", "n": "Cambodge", "z": "AS"}, {"c": "cn", "n": "Chine", "z": "AS"}, {"c": "kp", "n": "Corée du Nord", "z": "AS"}, {"c": "kr", "n": "Corée du Sud", "z": "AS"}, {"c": "ge", "n": "Géorgie", "z": "AS"}, {"c": "in", "n": "Inde", "z": "AS"}, {"c": "id", "n": "Indonésie", "z": "AS"}, {"c": "iq", "n": "Irak", "z": "AS"}, {"c": "ir", "n": "Iran", "z": "AS"}, {"c": "il", "n": "Israël", "z": "AS"}, {"c": "jp", "n": "Japon", "z": "AS"}, {"c": "jo", "n": "Jordanie", "z": "AS"}, {"c": "kz", "n": "Kazakhstan", "z": "AS"}, {"c": "kg", "n": "Kirghizistan", "z": "AS"}, {"c": "kw", "n": "Koweït", "z": "AS"}, {"c": "la", "n": "Laos", "z": "AS"}, {"c": "lb", "n": "Liban", "z": "AS"}, {"c": "my", "n": "Malaisie", "z": "AS"}, {"c": "mv", "n": "Maldives", "z": "AS"}, {"c": "mn", "n": "Mongolie", "z": "AS"}, {"c": "np", "n": "Népal", "z": "AS"}, {"c": "om", "n": "Oman", "z": "AS"}, {"c": "uz", "n": "Ouzbékistan", "z": "AS"}, {"c": "pk", "n": "Pakistan", "z": "AS"}, {"c": "ps", "n": "Palestine", "z": "AS"}, {"c": "ph", "n": "Philippines", "z": "AS"}, {"c": "qa", "n": "Qatar", "z": "AS"}, {"c": "sg", "n": "Singapour", "z": "AS"}, {"c": "lk", "n": "Sri Lanka", "z": "AS"}, {"c": "sy", "n": "Syrie", "z": "AS"}, {"c": "tj", "n": "Tadjikistan", "z": "AS"}, {"c": "tw", "n": "Taïwan", "z": "AS"}, {"c": "th", "n": "Thaïlande", "z": "AS"}, {"c": "tl", "n": "Timor oriental", "z": "AS"}, {"c": "tm", "n": "Turkménistan", "z": "AS"}, {"c": "tr", "n": "Turquie", "z": "AS"}, {"c": "vn", "n": "Viêt Nam", "z": "AS"}, {"c": "ye", "n": "Yémen", "z": "AS"}, {"c": "ae", "n": "Émirats arabes unis", "z": "AS"}, {"c": "al", "n": "Albanie", "z": "EU"}, {"c": "de", "n": "Allemagne", "z": "EU"}, {"c": "ad", "n": "Andorre", "z": "EU"}, {"c": "at", "n": "Autriche", "z": "EU"}, {"c": "be", "n": "Belgique", "z": "EU"}, {"c": "by", "n": "Biélorussie", "z": "EU"}, {"c": "ba", "n": "Bosnie-Herzégovine", "z": "EU"}, {"c": "bg", "n": "Bulgarie", "z": "EU"}, {"c": "cy", "n": "Chypre", "z": "EU"}, {"c": "hr", "n": "Croatie", "z": "EU"}, {"c": "dk", "n": "Danemark", "z": "EU"}, {"c": "es", "n": "Espagne", "z": "EU"}, {"c": "ee", "n": "Estonie", "z": "EU"}, {"c": "fi", "n": "Finlande", "z": "EU"}, {"c": "fr", "n": "France", "z": "EU"}, {"c": "gr", "n": "Grèce", "z": "EU"}, {"c": "hu", "n": "Hongrie", "z": "EU"}, {"c": "ie", "n": "Irlande", "z": "EU"}, {"c": "is", "n": "Islande", "z": "EU"}, {"c": "it", "n": "Italie", "z": "EU"}, {"c": "xk", "n": "Kosovo", "z": "EU"}, {"c": "lv", "n": "Lettonie", "z": "EU"}, {"c": "li", "n": "Liechtenstein", "z": "EU"}, {"c": "lt", "n": "Lituanie", "z": "EU"}, {"c": "lu", "n": "Luxembourg", "z": "EU"}, {"c": "mk", "n": "Macédoine du Nord", "z": "EU"}, {"c": "mt", "n": "Malte", "z": "EU"}, {"c": "md", "n": "Moldavie", "z": "EU"}, {"c": "mc", "n": "Monaco", "z": "EU"}, {"c": "me", "n": "Monténégro", "z": "EU"}, {"c": "no", "n": "Norvège", "z": "EU"}, {"c": "nl", "n": "Pays-Bas", "z": "EU"}, {"c": "pl", "n": "Pologne", "z": "EU"}, {"c": "pt", "n": "Portugal", "z": "EU"}, {"c": "ro", "n": "Roumanie", "z": "EU"}, {"c": "gb", "n": "Royaume-Uni", "z": "EU"}, {"c": "ru", "n": "Russie", "z": "EU"}, {"c": "sm", "n": "Saint-Marin", "z": "EU"}, {"c": "rs", "n": "Serbie", "z": "EU"}, {"c": "sk", "n": "Slovaquie", "z": "EU"}, {"c": "si", "n": "Slovénie", "z": "EU"}, {"c": "ch", "n": "Suisse", "z": "EU"}, {"c": "se", "n": "Suède", "z": "EU"}, {"c": "cz", "n": "Tchéquie", "z": "EU"}, {"c": "ua", "n": "Ukraine", "z": "EU"}, {"c": "va", "n": "Vatican", "z": "EU"}, {"c": "ag", "n": "Antigua-et-Barbuda", "z": "NA"}, {"c": "bs", "n": "Bahamas", "z": "NA"}, {"c": "bb", "n": "Barbade", "z": "NA"}, {"c": "bz", "n": "Belize", "z": "NA"}, {"c": "ca", "n": "Canada", "z": "NA"}, {"c": "cr", "n": "Costa Rica", "z": "NA"}, {"c": "cu", "n": "Cuba", "z": "NA"}, {"c": "dm", "n": "Dominique", "z": "NA"}, {"c": "gd", "n": "Grenade", "z": "NA"}, {"c": "gt", "n": "Guatemala", "z": "NA"}, {"c": "ht", "n": "Haïti", "z": "NA"}, {"c": "hn", "n": "Honduras", "z": "NA"}, {"c": "jm", "n": "Jamaïque", "z": "NA"}, {"c": "mx", "n": "Mexique", "z": "NA"}, {"c": "ni", "n": "Nicaragua", "z": "NA"}, {"c": "pa", "n": "Panama", "z": "NA"}, {"c": "do", "n": "République dominicaine", "z": "NA"}, {"c": "kn", "n": "Saint-Christophe-et-Niévès", "z": "NA"}, {"c": "vc", "n": "Saint-Vincent-et-les-Grenadines", "z": "NA"}, {"c": "lc", "n": "Sainte-Lucie", "z": "NA"}, {"c": "sv", "n": "Salvador", "z": "NA"}, {"c": "tt", "n": "Trinité-et-Tobago", "z": "NA"}, {"c": "us", "n": "États-Unis", "z": "NA"}, {"c": "au", "n": "Australie", "z": "OC"}, {"c": "fj", "n": "Fidji", "z": "OC"}, {"c": "ki", "n": "Kiribati", "z": "OC"}, {"c": "fm", "n": "Micronésie", "z": "OC"}, {"c": "nr", "n": "Nauru", "z": "OC"}, {"c": "nz", "n": "Nouvelle-Zélande", "z": "OC"}, {"c": "pw", "n": "Palaos", "z": "OC"}, {"c": "pg", "n": "Papouasie-Nouvelle-Guinée", "z": "OC"}, {"c": "ws", "n": "Samoa", "z": "OC"}, {"c": "to", "n": "Tonga", "z": "OC"}, {"c": "tv", "n": "Tuvalu", "z": "OC"}, {"c": "vu", "n": "Vanuatu", "z": "OC"}, {"c": "mh", "n": "Îles Marshall", "z": "OC"}, {"c": "sb", "n": "Îles Salomon", "z": "OC"}, {"c": "ar", "n": "Argentine", "z": "SA"}, {"c": "bo", "n": "Bolivie", "z": "SA"}, {"c": "br", "n": "Brésil", "z": "SA"}, {"c": "cl", "n": "Chili", "z": "SA"}, {"c": "co", "n": "Colombie", "z": "SA"}, {"c": "gy", "n": "Guyana", "z": "SA"}, {"c": "py", "n": "Paraguay", "z": "SA"}, {"c": "pe", "n": "Pérou", "z": "SA"}, {"c": "sr", "n": "Suriname", "z": "SA"}, {"c": "uy", "n": "Uruguay", "z": "SA"}, {"c": "ve", "n": "Venezuela", "z": "SA"}, {"c": "ec", "n": "Équateur", "z": "SA"}];
 const ZONES = {AF:"Afrique", AS:"Asie", EU:"Europe", NA:"Amérique du Nord", SA:"Amérique du Sud", OC:"Océanie"};
@@ -893,14 +1290,17 @@ const STORE = (function(){
 })();
 
 /* ---------- état + sauvegarde ---------- */
-let flags = new Set(), myth = new Set(), rois = new Set(), saveT = null;
+let flags = new Set(), myth = new Set(), saveT = null;
+const COL = {r:new Set(), k:new Set(), v:new Set(), p:new Set(), t:new Set()};
+const ENS = c => c === "f" ? flags : c === "m" ? myth : COL[c];
 const etat = document.getElementById("etat");
 
 async function charger(){
   try{
     const brut = await STORE.lire(KEY);
     const v = JSON.parse(brut);
-    flags = new Set(v.flags || []); myth = new Set(v.myth || []); rois = new Set(v.rois || []);
+    flags = new Set(v.flags || []); myth = new Set(v.myth || []);
+    Object.keys(COL).forEach(c=>{ COL[c].clear(); (v[c] || []).forEach(x=>COL[c].add(x)); });
     journal = v.journal || {};
     etat.textContent = "Collection chargée";
   }catch(e){
@@ -920,9 +1320,9 @@ function sauverLocal(){
   saveT = setTimeout(async ()=>{
     if(!STORE.durable){ etat.textContent = "Session uniquement — pensez à exporter"; return; }
     try{
-      await STORE.ecrire(KEY, JSON.stringify({
-        flags:[...flags], myth:[...myth], rois:[...rois], journal: journal
-      }));
+      const paquet = {flags:[...flags], myth:[...myth], journal: journal};
+      Object.keys(COL).forEach(c=>{ paquet[c] = [...COL[c]]; });
+      await STORE.ecrire(KEY, JSON.stringify(paquet));
       etat.textContent = "Enregistré";
     }catch(e){ etat.textContent = "Enregistrement impossible"; }
   }, 400);
@@ -943,27 +1343,46 @@ const TOTAL_M = IDS.size, TOTAL_F = PAYS.length;
 
 /* ---------- compteurs ---------- */
 function maj(){
-  document.getElementById("s-flag").innerHTML = flags.size + "<span>/" + TOTAL_F + "</span>";
-  document.getElementById("s-myth").innerHTML = myth.size + "<span>/" + TOTAL_M + "</span>";
-  document.getElementById("j-flag").style.width = (flags.size/TOTAL_F*100).toFixed(1) + "%";
-  document.getElementById("j-myth").style.width = (myth.size/TOTAL_M*100).toFixed(1) + "%";
-  document.getElementById("t1").textContent = flags.size + "/" + TOTAL_F;
-  document.getElementById("t2").textContent = myth.size + "/" + TOTAL_M;
-  if(typeof TOTAL_R !== "undefined"){
-    document.getElementById("s-roi").innerHTML = rois.size + "<span>/" + TOTAL_R + "</span>";
-    document.getElementById("j-roi").style.width = (rois.size/TOTAL_R*100).toFixed(1) + "%";
-    document.getElementById("t3").textContent = rois.size + "/" + TOTAL_R;
-    document.querySelectorAll("[data-dyn]").forEach(el=>{
-      const d = ROIS.find(x=>x.d === el.dataset.dyn); if(!d) return;
-      const g = d.r.filter(k=>rois.has(k.i)).length;
-      el.querySelector(".cnt").textContent = g + " / " + d.r.length;
-      el.querySelector(".jauge > i").style.width = (g/d.r.length*100).toFixed(1) + "%";
-    });
+  document.getElementById("t-f").textContent = flags.size + "/" + TOTAL_F;
+  document.getElementById("t-m").textContent = myth.size + "/" + TOTAL_M;
+
+  const lignes = [
+    {id:"f", nom:"Drapeaux",  n:flags.size, tot:TOTAL_F},
+    {id:"m", nom:"Théogonie", n:myth.size,  tot:TOTAL_M}
+  ];
+  if(typeof SERIES !== "undefined") SERIES.forEach(s=>{
+    lignes.push({id:s.id, nom:s.titre, n:COL[s.cle].size, tot:s.total});
+    const e = document.getElementById("t-" + s.id);
+    if(e) e.textContent = COL[s.cle].size + "/" + s.total;
+  });
+
+  const n = lignes.reduce((a,l)=>a+l.n, 0), tot = lignes.reduce((a,l)=>a+l.tot, 0);
+  document.getElementById("s-tot").innerHTML = n + "<span>/" + tot + "</span>";
+  document.getElementById("j-tot").style.width = (n/tot*100).toFixed(1) + "%";
+
+  const boite = document.getElementById("minis");
+  if(boite && boite.children.length !== lignes.length){
+    boite.innerHTML = lignes.map(l=>'<div class="mini" data-mini="'+l.id+'"><small>'+l.nom+'</small>'
+      + '<b></b><div class="jauge"><i></i></div></div>').join("");
   }
+  lignes.forEach(l=>{
+    const el = boite && boite.querySelector('[data-mini="'+l.id+'"]');
+    if(!el) return;
+    el.querySelector("b").innerHTML = l.n + "<span>/" + l.tot + "</span>";
+    el.querySelector(".jauge > i").style.width = (l.n/l.tot*100).toFixed(1) + "%";
+  });
+
   document.querySelectorAll("[data-zone]").forEach(el=>{
     const z = el.dataset.zone, l = PAYS.filter(p=>p.z===z), g = l.filter(p=>flags.has(p.c)).length;
     el.querySelector(".cnt").textContent = g + " / " + l.length;
     el.querySelector(".jauge > i").style.width = (g/l.length*100).toFixed(1) + "%";
+  });
+  document.querySelectorAll("[data-serie][data-grp]").forEach(el=>{
+    const s = SERIES.find(x=>x.cle === el.dataset.serie); if(!s) return;
+    const g = s.donnees.find(x=>x.d === el.dataset.grp); if(!g) return;
+    const pris = g.r.filter(k=>COL[s.cle].has(k.i)).length;
+    el.querySelector(".cnt").textContent = pris + " / " + g.r.length;
+    el.querySelector(".jauge > i").style.width = (pris/g.r.length*100).toFixed(1) + "%";
   });
 }
 
@@ -1082,7 +1501,7 @@ function build(n, depth){
   row.innerHTML =
     '<button class="twist'+(kids.length?"":" leaf")+(open?" open":"")+'" aria-label="Déplier">▶</button>'+
     '<button class="chk" role="checkbox" aria-checked="'+got+'" aria-label="Marquer comme obtenu">'+TICK+'</button>'+
-    '<span class="av" data-id="'+n.i+'"><span>'+n.n.replace(/^(Les|Le|La|L[’\'])\s*/,"").charAt(0)+'</span></span>'+
+    '<span class="av" data-id="m:'+n.i+'"><span>'+n.n.replace(/^(Les|Le|La|L[’\'])\s*/,"").charAt(0)+'</span></span>'+
     '<button class="label"><span class="nm">'+n.n+'</span><span class="gk">'+n.g+'</span><span class="kd k-'+n.k+'">'+KINDS[n.k]+'</span></button>';
   frag.appendChild(row);
   if(kids.length){
@@ -1174,7 +1593,8 @@ function ouvrirFiche(el, pin){
 }
 function rendreFiche(n, el, pin, orig, ens){
   const dans = (ens || myth).has(n.i);
-  const img = (typeof vign === "object" && vign[n.i]) ? '<img class="vign" alt="" src="'+vign[n.i]+'">' : "";
+  const vid = n.vid || ("m:" + n.i);
+  const img = (typeof vign === "object" && vign[vid]) ? '<img class="vign" alt="" src="'+vign[vid]+'">' : "";
   ficheIn.innerHTML = img +
     '<h3>'+n.n+'</h3><p class="gk">'+n.g+'</p>'+
     '<span class="kd k-'+n.k+'">'+(n.kl || KINDS[n.k])+'</span>'+
@@ -1294,14 +1714,18 @@ Object.keys(ALIAS_P).forEach(c => ALIAS_P[c].forEach(a => ajout(a, "f", c)));
   (n.c||[]).forEach(bal);
 })(MYTH);
 Object.keys(ALIAS_M).forEach(id => { if(IDS.has(id)) ALIAS_M[id].forEach(a => ajout(a, "m", id)); });
-ROIS.forEach(d=>d.r.forEach(k=>{ NOMS["r:"+k.i] = k.n; ajout(k.n, "r", k.i); }));
+SERIES.forEach(s=>s.donnees.forEach(g=>g.r.forEach(k=>{
+  NOMS[s.cle+":"+k.i] = k.n; ajout(k.n, s.cle, k.i);
+})));
 Object.keys(ALIAS_R).forEach(id => ALIAS_R[id].forEach(a => ajout(a, "r", id)));
+Object.keys(ALIAS_S).forEach(cle =>
+  Object.keys(ALIAS_S[cle]).forEach(id => ALIAS_S[cle][id].forEach(a => ajout(a, cle, id))));
 LISTE.sort((a,b)=>b.length-a.length);
 
 function reconnaitre(txt){
   const t = " " + nk(txt) + " ";
   const pris = new Array(t.length).fill(false);
-  const res = {f:[], m:[], r:[]};
+  const res = {f:[], m:[], r:[], k:[], v:[], p:[], t:[]};
   for(const k of LISTE){
     let i = t.indexOf(" "+k+" ");
     while(i !== -1){
@@ -1333,8 +1757,9 @@ boite.addEventListener("click", e=>{ if(e.target===boite) fermerColler(); });
 
 document.getElementById("cv-go").addEventListener("click", ()=>{
   trouve = reconnaitre(champ.value);
-  const nf = trouve.f.filter(c=>!flags.has(c)).length, nm = trouve.m.filter(i=>!myth.has(i)).length,
-        nr = trouve.r.filter(i=>!rois.has(i)).length;
+  const neufs = t => trouve[t].filter(i=>!ENS(t).has(i)).length;
+  const nf = neufs("f"), nm = neufs("m");
+  const nser = SERIES.reduce((a,s)=>a+neufs(s.cle), 0);
   const bloc = (titre, ids, type, dejaSet) => {
     if(!ids.length) return "";
     const li = ids.map(id=>{
@@ -1343,16 +1768,17 @@ document.getElementById("cv-go").addEventListener("click", ()=>{
     }).join("");
     return '<h4>'+titre+' — '+ids.length+'</h4><ul>'+li+'</ul>';
   };
-  if(!trouve.f.length && !trouve.m.length && !trouve.r.length){
+  const rien = !Object.keys(trouve).some(t=>trouve[t].length);
+  if(rien){
     resu.innerHTML = '<p class="bilan">Aucun nom reconnu. Vérifie que le texte contient bien des noms de pays ou de divinités.</p>';
     btnApp.hidden = true;
   }else{
-    const tot = trouve.f.length + trouve.m.length + trouve.r.length;
+    const tot = Object.keys(trouve).reduce((a,t)=>a+trouve[t].length, 0);
     resu.innerHTML =
-      '<p class="bilan"><b>'+(nf+nm+nr)+' nouvelle(s) case(s)</b> à cocher · '+
-      (tot-nf-nm-nr)+' déjà dans la collection</p>' +
+      '<p class="bilan"><b>'+(nf+nm+nser)+' nouvelle(s) case(s)</b> à cocher · '+
+      (tot-nf-nm-nser)+' déjà dans la collection</p>' +
       bloc("Drapeaux", trouve.f, "f", flags) + bloc("Théogonie", trouve.m, "m", myth) +
-      bloc("Souverains", trouve.r, "r", rois);
+      SERIES.map(s=>bloc(s.titre, trouve[s.cle], s.cle, COL[s.cle])).join("");
     btnApp.hidden = false;
   }
   resu.hidden = false;
@@ -1360,95 +1786,117 @@ document.getElementById("cv-go").addEventListener("click", ()=>{
 
 btnApp.addEventListener("click", ()=>{
   if(!trouve) return;
-  const n = trouve.f.filter(c=>!flags.has(c)).length + trouve.m.filter(i=>!myth.has(i)).length
-          + trouve.r.filter(i=>!rois.has(i)).length;
-  trouve.f.forEach(c=>flags.add(c)); trouve.m.forEach(i=>myth.add(i)); trouve.r.forEach(i=>rois.add(i));
-  buildFlags(); buildTree(); buildRois(); sauver(); fermerColler();
+  let n = 0;
+  Object.keys(trouve).forEach(t=>{
+    trouve[t].forEach(i=>{ if(!ENS(t).has(i)) n++; ENS(t).add(i); });
+  });
+  buildFlags(); buildTree(); buildSeries(); sauver(); fermerColler();
   etat.textContent = n + " case(s) cochée(s)";
 });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !boite.hidden) fermerColler(); });
 
 
-/* ============ SOUVERAINS ============ */
-const TOTAL_R = ROIS.reduce((n,d)=>n+d.r.length, 0);
-let rFilter = "all", rQuery = "";
-const roiBox = document.getElementById("rois");
+/* ============ MOTEUR DES SÉRIES EN LISTE ============
+   Souverains, Kruger, Maroc, Pirates et Tintin partagent la même forme :
+   des groupes, et dans chaque groupe des fiches nom / sous-titre / date.
+   Un seul moteur les rend toutes. */
+const ETIQ = {r:"Souverain", k:"Animal", v:"Ville", p:"Fiche", t:"Album"};
 
-function buildRois(){
-  roiBox.innerHTML = "";
+SERIES.forEach(s=>{
+  s.filtre = "all"; s.query = "";
+  s.box = document.getElementById("b-" + s.id);
+  const intro = document.getElementById("i-" + s.id);
+  if(intro) intro.textContent = s.intro;
+});
+
+function itemParId(cle, id){
+  const s = SERIES.find(x=>x.cle === cle); if(!s) return null;
+  for(const g of s.donnees){ const k = g.r.find(x=>x.i === id); if(k) return k; }
+  return null;
+}
+
+function buildSerie(s){
+  if(!s.box) return;
+  s.box.innerHTML = "";
   let vus = 0;
-  ROIS.forEach(d=>{
+  s.donnees.forEach(g=>{
     const sec = document.createElement("section");
-    sec.className = "dyn"; sec.dataset.dyn = d.d;
-    sec.innerHTML = '<div class="dyn-head"><h2>'+d.d+'</h2><span class="cnt"></span>'
-      + '<p class="peri">'+d.p+'</p></div><div class="jauge"><i></i></div><div class="regnes"></div>';
+    sec.className = "dyn"; sec.dataset.serie = s.cle; sec.dataset.grp = g.d;
+    sec.innerHTML = '<div class="dyn-head"><h2>'+g.d+'</h2><span class="cnt"></span>'
+      + '<p class="peri">'+g.p+'</p></div><div class="jauge"><i></i></div><div class="regnes"></div>';
     const liste = sec.querySelector(".regnes");
     let n = 0;
-    d.r.forEach(k=>{
-      const got = rois.has(k.i);
-      if(rFilter==="got" && !got) return;
-      if(rFilter==="miss" && got) return;
-      if(rQuery && !norm(k.n+" "+k.e+" "+k.a+" "+k.t).includes(rQuery)) return;
+    g.r.forEach(k=>{
+      const got = COL[s.cle].has(k.i);
+      if(s.filtre === "got" && !got) return;
+      if(s.filtre === "miss" && got) return;
+      if(s.query && !norm(k.n+" "+k.e+" "+k.a+" "+k.t).includes(s.query)) return;
       n++; vus++;
       const el = document.createElement("div");
       el.className = "regne" + (got?" got":"");
-      el.dataset.id = k.i;
+      el.dataset.id = k.i; el.dataset.serie = s.cle;
       el.setAttribute("role","checkbox"); el.setAttribute("aria-checked", got); el.tabIndex = 0;
       el.innerHTML =
         '<span class="tick3"></span>'+
-        '<span class="por" data-id="'+k.i+'"><b>'+k.n.charAt(0)+'</b></span>'+
+        '<span class="por" data-id="'+s.cle+':'+k.i+'"><b>'+k.n.charAt(0)+'</b></span>'+
         '<span class="txt"><span class="nom">'+k.n+'</span><span class="ep">'+k.e+'</span>'+
         '<span class="an">'+k.a+'</span></span>'+
         '<button class="info" aria-label="Notice">i</button>';
       liste.appendChild(el);
     });
-    if(n) roiBox.appendChild(sec);
+    if(n) s.box.appendChild(sec);
   });
-  if(!vus) roiBox.innerHTML = '<p class="vide">'+(rFilter==="miss"?"Série complète. Aucun souverain ne manque.":"Aucun souverain ne correspond.")+'</p>';
+  if(!vus) s.box.innerHTML = '<p class="vide">'
+    + (s.filtre === "miss" ? "Série complète. Rien ne manque ici." : "Aucune fiche ne correspond.") + '</p>';
+}
+
+function buildSeries(){
+  SERIES.forEach(buildSerie);
   maj();
   if(typeof poserVignettes === "function") poserVignettes();
 }
 
-function roiParId(id){
-  for(const d of ROIS){ const k = d.r.find(x=>x.i===id); if(k) return k; }
-  return null;
+function ficheItem(s, k, el, pin){
+  rendreFiche({n:k.n, g:k.a, k:"mortel", kl:ETIQ[s.cle], d:k.t, i:k.i, vid:s.cle+":"+k.i},
+              el, pin, k.dyn + " · " + k.e, COL[s.cle]);
 }
 
-roiBox.addEventListener("click", e=>{
-  const el = e.target.closest(".regne"); if(!el) return;
-  const k = roiParId(el.dataset.id); if(!k) return;
-  if(e.target.closest(".info")){
-    rendreFiche({n:k.n, g:k.a, k:"mortel", kl:"Souverain", d:k.t, i:k.i}, el, true, k.dyn + " · " + k.e, rois);
-    return;
+SERIES.forEach(s=>{
+  if(!s.box) return;
+  s.box.addEventListener("click", e=>{
+    const el = e.target.closest(".regne"); if(!el) return;
+    const k = itemParId(s.cle, el.dataset.id); if(!k) return;
+    if(e.target.closest(".info")){ ficheItem(s, k, el, true); return; }
+    const ens = COL[s.cle];
+    if(ens.has(k.i)) ens.delete(k.i); else ens.add(k.i);
+    const got = ens.has(k.i);
+    el.classList.toggle("got", got); el.setAttribute("aria-checked", got);
+    sauver();
+    if(s.filtre !== "all") setTimeout(()=>{ buildSerie(s); maj(); poserVignettes(); }, 260); else maj();
+  });
+  s.box.addEventListener("keydown", e=>{
+    if(e.key !== " " && e.key !== "Enter") return;
+    const el = e.target.closest(".regne"); if(!el) return;
+    e.preventDefault(); el.click();
+  });
+  if(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches){
+    s.box.addEventListener("mouseover", e=>{
+      const el = e.target.closest(".regne"); if(!el || fiche.classList.contains("pin")) return;
+      const k = itemParId(s.cle, el.dataset.id); if(k) ficheItem(s, k, el, false);
+    });
+    s.box.addEventListener("mouseout", e=>{
+      if(e.target.closest(".regne") && !fiche.classList.contains("pin")) fermerFiche();
+    });
   }
-  if(rois.has(k.i)) rois.delete(k.i); else rois.add(k.i);
-  const got = rois.has(k.i);
-  el.classList.toggle("got", got); el.setAttribute("aria-checked", got);
-  sauver();
-  if(rFilter!=="all") setTimeout(buildRois, 260); else maj();
-});
-roiBox.addEventListener("keydown", e=>{
-  if(e.key !== " " && e.key !== "Enter") return;
-  const el = e.target.closest(".regne"); if(!el) return;
-  e.preventDefault(); el.click();
-});
-if(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches){
-  roiBox.addEventListener("mouseover", e=>{
-    const el = e.target.closest(".regne"); if(!el || fiche.classList.contains("pin")) return;
-    const k = roiParId(el.dataset.id); if(!k) return;
-    rendreFiche({n:k.n, g:k.a, k:"mortel", kl:"Souverain", d:k.t, i:k.i}, el, false, k.dyn + " · " + k.e, rois);
+  const q = document.getElementById("q-" + s.id);
+  if(q) q.addEventListener("input", e=>{ s.query = norm(e.target.value.trim()); buildSerie(s); maj(); poserVignettes(); });
+  const f = document.getElementById("f-" + s.id);
+  if(f) f.addEventListener("click", e=>{
+    const b = e.target.closest("button"); if(!b) return;
+    s.filtre = b.dataset.f;
+    [...f.children].forEach(x=>x.setAttribute("aria-pressed", x === b));
+    buildSerie(s); maj(); poserVignettes();
   });
-  roiBox.addEventListener("mouseout", e=>{
-    if(e.target.closest(".regne") && !fiche.classList.contains("pin")) fermerFiche();
-  });
-}
-
-document.getElementById("q-roi").addEventListener("input", e=>{ rQuery = norm(e.target.value.trim()); buildRois(); });
-document.getElementById("f-roi").addEventListener("click", e=>{
-  const b = e.target.closest("button"); if(!b) return;
-  rFilter = b.dataset.f;
-  [...e.currentTarget.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
-  buildRois();
 });
 
 
@@ -1471,20 +1919,19 @@ let membres = [], syncT = null, enCours = false;
 const grpBox = document.getElementById("grp");
 
 /* ---------- registre horodaté ---------- */
-let journal = {}, instantane = {f:new Set(), m:new Set(), r:new Set()};
+let journal = {}, instantane = {};
 
+const CLES = ["f","m","r","k","v","p","t"];
 function journaliser(){
   const t = Date.now();
-  const comparer = (p, actuel, ancien) => {
-    actuel.forEach(id=>{ if(!ancien.has(id)) journal[p+":"+id] = [1, t]; });
-    ancien.forEach(id=>{ if(!actuel.has(id)) journal[p+":"+id] = [0, t]; });
-  };
-  comparer("f", flags, instantane.f);
-  comparer("m", myth,  instantane.m);
-  comparer("r", rois,  instantane.r);
+  CLES.forEach(c=>{
+    const actuel = ENS(c), ancien = instantane[c] || new Set();
+    actuel.forEach(id=>{ if(!ancien.has(id)) journal[c+":"+id] = [1, t]; });
+    ancien.forEach(id=>{ if(!actuel.has(id)) journal[c+":"+id] = [0, t]; });
+  });
   figer();
 }
-function figer(){ instantane = {f:new Set(flags), m:new Set(myth), r:new Set(rois)}; }
+function figer(){ instantane = {}; CLES.forEach(c=>{ instantane[c] = new Set(ENS(c)); }); }
 
 function ensembleDe(etat, prefixe){
   const s = new Set();
@@ -1493,7 +1940,7 @@ function ensembleDe(etat, prefixe){
   });
   return s;
 }
-function ensembleCible(k){ return k[0] === "f" ? flags : k[0] === "m" ? myth : rois; }
+function ensembleCible(k){ return ENS(k[0]); }
 
 /* Fusion : pour chaque carte, l'inscription la plus récente l'emporte. */
 function fusionner(distant){
@@ -1510,24 +1957,27 @@ function fusionner(distant){
 /* Remplacement complet : quand on ouvre la collection de quelqu'un d'autre. */
 function appliquerEtat(etat){
   journal = Object.assign({}, etat || {});
-  flags.clear(); myth.clear(); rois.clear();
+  CLES.forEach(c=>ENS(c).clear());
   Object.keys(journal).forEach(k=>{ if(journal[k][0] === 1) ensembleCible(k).add(k.slice(2)); });
   redessiner();
 }
 function redessiner(){
-  figer(); buildFlags(); buildTree(); buildRois();
+  figer(); buildFlags(); buildTree(); buildSeries();
   if(typeof majEtatsGraphe === "function") majEtatsGraphe();
 }
 
 /* ---------- appels réseau ---------- */
 async function sbFetch(chemin, opts){
   opts = opts || {};
+  /* Les anciennes clés « anon » sont des JWT et attendent un en-tête
+     Authorization ; les nouvelles clés « sb_publishable_… » n'en sont pas
+     et se passent uniquement par apikey. On ne l'ajoute donc que si la
+     clé ressemble à un jeton. */
   const h = Object.assign({
     "apikey": CFG.cle,
-    "Authorization": "Bearer " + CFG.cle,
     "Content-Type": "application/json",
     "x-guilde": guilde || ""
-  }, opts.headers || {});
+  }, /^eyJ/.test(CFG.cle) ? {"Authorization": "Bearer " + CFG.cle} : {}, opts.headers || {});
   const rep = await fetch(CFG.url.replace(/\/$/,"") + chemin, Object.assign({}, opts, {headers:h}));
   if(!rep.ok){
     const txt = await rep.text().catch(()=>"" );
@@ -1660,12 +2110,13 @@ function rendreGroupe(){
     + '<p class="note">Tout le monde peut modifier tout le monde. Touchez un nom pour ouvrir '
     + 'sa collection et cocher à sa place.</p><div class="listem">';
   membres.forEach(m=>{
-    const s = {f:ensembleDe(m.etat,"f"), m:ensembleDe(m.etat,"m"), r:ensembleDe(m.etat,"r")};
+    const s = {}; CLES.forEach(c=>{ s[c] = ensembleDe(m.etat, c); });
+    const tot = CLES.reduce((a,c)=>a+s[c].size, 0);
     const actif = m.pseudo === pseudo;
     html += '<button class="mrow'+(actif?" actif":"")+'" data-p="'+m.pseudo+'">'
       + '<span class="mn">'+m.pseudo+(m.pseudo===monPseudo?' <i>· vous</i>':'')+'</span>'
-      + '<span class="mc">'+(s.f.size+s.m.size+s.r.size)+' cartes · '+s.f.size+' drapeaux, '
-      + s.m.size+' divinités, '+s.r.size+' souverains</span>'
+      + '<span class="mc">'+tot+' cartes · '+s.f.size+' drapeaux, '+s.m.size+' divinités, '
+      + s.r.size+' souverains, '+(s.k.size+s.v.size+s.p.size+s.t.size)+' autres</span>'
       + '<span class="ma">'+(actif?"ouverte":"ouvrir")+'</span></button>';
   });
   html += '</div><div class="champs" style="margin-top:12px">'
@@ -1673,15 +2124,15 @@ function rendreGroupe(){
     + '<button class="ghost" id="n-go">Créer</button></div>'
     + '<p class="note" id="msg"></p></div>';
 
-  const mien = {f:ensembleDe(journal,"f"), m:ensembleDe(journal,"m"), r:ensembleDe(journal,"r")};
+  const mien = {}; CLES.forEach(c=>{ mien[c] = ensembleDe(journal, c); });
   const autres = membres.filter(m=>m.pseudo !== pseudo);
   if(autres.length){
     html += '<div class="bloc membre"><h3>Comparaison</h3>'
       + '<p class="note">Accessoire, mais ça évite de chercher.</p>';
     autres.forEach(a=>{
-      const s = {f:ensembleDe(a.etat,"f"), m:ensembleDe(a.etat,"m"), r:ensembleDe(a.etat,"r")};
+      const s = {}; CLES.forEach(c=>{ s[c] = ensembleDe(a.etat, c); });
       const ilA = [], jAi = [];
-      ["f","m","r"].forEach(p=>{
+      CLES.forEach(p=>{
         s[p].forEach(id=>{ if(!mien[p].has(id)) ilA.push(p+":"+id); });
         mien[p].forEach(id=>{ if(!s[p].has(id)) jAi.push(p+":"+id); });
       });
@@ -1791,15 +2242,18 @@ let vign = {}, vignPret = false;
 
 const titreWiki = n => WIKI[n] || n.replace(/^(Les|Le|La)\s+/,"").replace(/^L['’]/,"");
 
+const CONTEXTE = {r:"", k:"animal", v:"ville Maroc", p:"Pirates des Caraïbes", t:"Hergé Tintin album"};
 function registreVignettes(){
   const reg = {};
   (function bal(n){
-    if(!n.u && !reg[n.i]) reg[n.i] = {t: titreWiki(n.n), q: n.n + " mythologie grecque"};
+    const c = "m:" + n.i;
+    if(!n.u && !reg[c]) reg[c] = {t: titreWiki(n.n), q: n.n + " mythologie grecque"};
     (n.c||[]).forEach(bal);
   })(MYTH);
-  ROIS.forEach(d=>d.r.forEach(k=>{
-    if(!reg[k.i]) reg[k.i] = {t: k.w || k.n, q: k.n + " " + k.e};
-  }));
+  SERIES.forEach(s=>s.donnees.forEach(g=>g.r.forEach(k=>{
+    const c = s.cle + ":" + k.i;
+    if(!reg[c]) reg[c] = {t: k.w || k.n, q: (k.n + " " + CONTEXTE[s.cle]).trim()};
+  })));
   return reg;
 }
 
@@ -2109,7 +2563,7 @@ document.getElementById("q-myth").addEventListener("input", e=>{
 document.getElementById("f-myth").addEventListener("click", ()=>{ setTimeout(filtrerGraphe, 0); });
 
 /* ---------- démarrage ---------- */
-(async ()=>{ await charger(); figer(); buildFlags(); buildTree(); buildRois(); chargerVignettes(); demarrerSync(); })();
+(async ()=>{ await charger(); figer(); buildFlags(); buildTree(); buildSeries(); chargerVignettes(); demarrerSync(); })();
 
 /* ---------- mode hors-ligne (ignoré en file:// et dans Claude) ---------- */
 if("serviceWorker" in navigator && location.protocol.indexOf("http") === 0){
