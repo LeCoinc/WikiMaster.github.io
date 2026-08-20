@@ -343,6 +343,19 @@ ul.ech li{font-size:12px;background:rgba(208,165,72,.12);border:1px solid rgba(2
 .tab{white-space:nowrap;flex:0 0 auto}
 .intro{color:var(--marbre-dim);font-size:13px;margin:2px 0 0;max-width:62ch}
 
+
+.label .bis,#fiche .bis{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:#8189B0;border:1px dashed rgba(234,228,214,.26);padding:1px 6px;border-radius:2px;white-space:nowrap}
+#fiche .bis{display:inline-block;margin-left:6px;vertical-align:2px}
+#graphe.plein{position:fixed;inset:0;width:100vw;height:100dvh;z-index:120;border-radius:0;margin:0;
+  background:radial-gradient(900px 500px at 30% 8%, rgba(255,255,255,.04), transparent 70%),var(--nuit)}
+body.fige{overflow:hidden}
+.gn.bis rect.bg{stroke-dasharray:4 3}
+.glegende{position:absolute;left:12px;top:10px;display:flex;flex-wrap:wrap;gap:5px 12px;z-index:5;pointer-events:none;
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6C749B;max-width:calc(100% - 120px)}
+.glegende span{display:inline-flex;align-items:center;gap:5px}
+.glegende s{width:6px;height:6px;border-radius:50%;display:inline-block;text-decoration:none}
+
 /* ---------- Divers ---------- */
 .vide{text-align:center;color:var(--marbre-dim);padding:50px 20px;font-family:var(--disp);font-size:22px}
 .panneau[hidden]{display:none}
@@ -434,12 +447,21 @@ footer .sp{flex:1}
   </div>
   <div class="tree" id="tree"></div>
   <div id="graphe" hidden>
-    <span class="gaide">Survolez une entité pour isoler sa lignée</span>
+    <div class="glegende">
+      <span><s style="background:#9AA7E8"></s>Primordial</span>
+      <span><s style="background:#D0A548"></s>Titan</span>
+      <span><s style="background:#F2D68B"></s>Olympien</span>
+      <span><s style="background:#7FC9B5"></s>Divinité</span>
+      <span><s style="background:#C97A6D"></s>Créature</span>
+      <span><s style="background:#C2BBA8"></s>Mortel</span>
+      <span>· survol : lignée · clic : verrouille</span>
+    </div>
     <svg id="gsvg"><g id="gcam"></g></svg>
     <div class="gctl">
       <button id="g-plus" aria-label="Zoom avant">+</button>
       <button id="g-moins" aria-label="Zoom arrière">−</button>
-      <button id="g-fit" aria-label="Tout afficher">⤢</button>
+      <button id="g-fit" aria-label="Recadrer">⌖</button>
+      <button id="g-plein" aria-label="Plein écran">⛶</button>
     </div>
   </div>
 </section>
@@ -596,7 +618,10 @@ c:[
       {n:"Doris", g:"Δωρίς", k:"div", d:"Océanide épouse de Nérée, mère des cinquante Néréides."},
       {n:"Clymène", g:"Κλυμένη", k:"div", d:"Océanide, épouse de Japet et mère de Prométhée."},
       {n:"Eurynomé", g:"Εὐρυνόμη", k:"div", d:"Océanide qui recueille Héphaïstos précipité de l'Olympe ; mère des Charites."},
-      {n:"Les fleuves", g:"Ποταμοί", k:"div", d:"Achéloos, Alphée, Scamandre, Inachos : les cours d'eau sont des dieux à part entière, capables de combattre."}
+      {n:"Les fleuves", g:"Ποταμοί", k:"div", d:"Achéloos, Alphée, Scamandre, Inachos : les cours d'eau sont des dieux à part entière, capables de combattre.",
+       c:[{u:"Le Céphise × Liriope", d:"", c:[
+        {n:"Narcisse", g:"Νάρκισσος", k:"mortel", d:"Il dédaigne la nymphe Écho, s'éprend de son reflet et se consume au bord de l'eau."}
+       ]}]}
      ]}]},
     {n:"Téthys", g:"Τηθύς", k:"titan", d:"Titanide des eaux douces nourricières, épouse d'Océan et mère de toutes les sources."},
     {n:"Hypérion", g:"Ὑπερίων", k:"titan", d:"« Celui qui va au-dessus », Titan de la lumière céleste, père des trois grands luminaires.",
@@ -605,7 +630,10 @@ c:[
        c:[
         {n:"Circé", g:"Κίρκη", k:"div", d:"Magicienne d'Aiaié, elle change les compagnons d'Ulysse en pourceaux."},
         {n:"Pasiphaé", g:"Πασιφάη", k:"div", d:"Épouse de Minos, mère du Minotaure après un amour contre nature envoyé comme châtiment."},
-        {n:"Aiétès", g:"Αἰήτης", k:"mortel", d:"Roi de Colchide, gardien de la Toison d'or, père de Médée."},
+        {n:"Aiétès", g:"Αἰήτης", k:"mortel", d:"Roi de Colchide, gardien de la Toison d'or.",
+         c:[{u:"Aiétès × Idyia", d:"", c:[
+          {n:"Médée", g:"Μήδεια", k:"mortel", d:"Magicienne petite-fille d'Hélios. Elle donne la Toison à Jason, le suit, puis se venge de son abandon sur leurs propres enfants."}
+         ]}]},
         {n:"Phaéton", g:"Φαέθων", k:"mortel", d:"Il obtient de conduire le char solaire un jour, embrase la terre et tombe foudroyé."}
        ]},
       {n:"Séléné", g:"Σελήνη", k:"titan", d:"La Lune. Elle obtient pour son aimé Endymion un sommeil éternel qui le garde jeune."},
@@ -641,8 +669,28 @@ c:[
      ]}]},
     {n:"Japet", g:"Ἰαπετός", k:"titan", d:"Ancêtre de l'humanité par ses fils. Sa descendance porte tout ce que l'homme a de meilleur et de pire.",
      c:[{u:"Japet × Clymène", d:"", c:[
-      {n:"Prométhée", g:"Προμηθεύς", k:"titan", d:"Le Prévoyant. Il façonne les hommes, leur vole le feu et paie d'un aigle qui lui dévore le foie chaque jour."},
-      {n:"Épiméthée", g:"Ἐπιμηθεύς", k:"titan", d:"Celui qui comprend trop tard. Il accepte Pandore et sa jarre malgré l'avertissement de son frère."},
+      {n:"Prométhée", g:"Προμηθεύς", k:"titan", d:"Le Prévoyant. Il façonne les hommes, leur vole le feu et paie d'un aigle qui lui dévore le foie chaque jour.",
+       c:[{u:"Prométhée × Hésione", d:"", c:[
+        {n:"Deucalion", g:"Δευκαλίων", k:"mortel", d:"Averti par son père, il construit un coffre et survit au déluge envoyé par Zeus. Le Noé grec.",
+         c:[{u:"Deucalion × Pyrrha", d:"Ils repeuplent la terre en jetant des pierres derrière eux.", c:[
+          {n:"Hellen", g:"Ἕλλην", k:"mortel", d:"Ancêtre éponyme des Hellènes. Ses fils donnent leur nom aux quatre peuples grecs.",
+           c:[{u:"Hellen × Orséis", d:"", c:[
+            {n:"Éole", g:"Αἴολος", k:"mortel", d:"Ancêtre des Éoliens, à ne pas confondre avec le gardien des vents de l'Odyssée.",
+             c:[
+              {u:"Éole × Énarété", d:"", c:[
+               {n:"Sisyphe", g:"Σίσυφος", k:"mortel", d:"Il enchaîne Thanatos puis berne Hadès. Condamné à rouler éternellement son rocher."}
+              ]},
+              {u:"Éole, par Créthée et Éson", d:"Deux générations plus bas.", c:[
+               {n:"Jason", g:"Ἰάσων", k:"mortel", d:"Chef des Argonautes, il ramène la Toison d'or de Colchide avec l'aide de Médée, puis la trahit."}
+              ]}
+             ]}
+           ]}]}
+         ]}]}
+       ]}]},
+      {n:"Épiméthée", g:"Ἐπιμηθεύς", k:"titan", d:"Celui qui comprend trop tard. Il accepte Pandore et sa jarre malgré l'avertissement de son frère.",
+       c:[{u:"Épiméthée × Pandore", d:"", c:[
+        {n:"Pyrrha", g:"Πύρρα", k:"mortel", d:"Fille de Pandore et femme de Deucalion, seule mortelle épargnée avec lui par le déluge."}
+       ]}]},
       {n:"Atlas", g:"Ἄτλας", k:"titan", d:"Condamné à porter la voûte du ciel sur ses épaules pour avoir mené les Titans au combat.",
        c:[
         {n:"Les Pléiades", g:"Πλειάδες", k:"div", d:"Sept sœurs, dont Maïa ; poursuivies par Orion, elles sont placées parmi les étoiles."},
@@ -666,10 +714,7 @@ c:[
       ]},
       {u:"Cronos × Rhéa", d:"Les six Cronides : la génération qui prend l'Olympe.", c:[
        {n:"Hestia", g:"Ἑστία", k:"olymp", d:"Aînée des Cronides, déesse du foyer. Elle refuse les prétendants et garde le feu qui ne doit jamais s'éteindre."},
-       {n:"Hadès", g:"Ἅιδης", k:"olymp", d:"Maître du monde souterrain après le partage du monde. Son casque rend invisible ; il ne siège pas sur l'Olympe.",
-        c:[{u:"Hadès × Perséphone", d:"Le couple des Enfers, sans descendance dans la version courante.", c:[
-         {n:"Cerbère", i:"cerbere", g:"Κέρβερος", k:"creature", d:"Chien à trois têtes qui laisse entrer tous les morts et n'en laisse ressortir aucun. Orphée l'endort, Héraclès l'emporte."}
-        ]}]},
+       {n:"Hadès", g:"Ἅιδης", k:"olymp", d:"Maître du monde souterrain après le partage du monde. Son casque rend invisible ; il ne siège pas sur l'Olympe. Son union avec Perséphone reste sans descendance dans la tradition courante."},
        {n:"Poséidon", g:"Ποσειδῶν", k:"olymp", d:"Dieu de la mer, des séismes et des chevaux. Son trident soulève les flots ; sa rancune poursuit Ulysse dix ans.",
         c:[
          {u:"Poséidon × Amphitrite", d:"", c:[
@@ -681,12 +726,24 @@ c:[
          ]},
          {u:"Poséidon × Thoosa", d:"", c:[
           {n:"Polyphème", g:"Πολύφημος", k:"creature", d:"Cyclope pasteur aveuglé par Ulysse ; sa prière à son père vaut au héros son long retour."}
+         ]},
+         {u:"Poséidon × Éthra", d:"Paternité partagée avec le roi Égée, la même nuit.", c:[
+          {n:"Thésée", g:"Θησεύς", k:"mortel", d:"Il tue le Minotaure au cœur du Labyrinthe et unifie l'Attique. Sa voile noire oubliée cause la mort de son père. Ariane, qui lui donne le fil du Labyrinthe, sera abandonnée à Naxos."}
+         ]},
+         {u:"Poséidon × Eurynomé", d:"Version où Bellérophon est fils du dieu plutôt que de Glaucos.", c:[
+          {n:"Bellérophon", g:"Βελλεροφῶν", k:"mortel", d:"Monté sur Pégase, il abat la Chimère. Puis il veut atteindre l'Olympe et Zeus le précipite au sol."}
+         ]},
+         {u:"Poséidon × Euryale", d:"", c:[
+          {n:"Orion", g:"Ὠρίων", k:"mortel", d:"Chasseur géant marchant sur les flots. Tué par Artémis ou par un scorpion, il devient constellation."}
          ]}
         ]},
        {n:"Déméter", g:"Δημήτηρ", k:"olymp", d:"Déesse des moissons. Son deuil pour Perséphone stérilise la terre : ainsi naît l'hiver, et avec lui les mystères d'Éleusis."},
        {n:"Héra", g:"Ἥρα", k:"olymp", d:"Reine de l'Olympe, garante du mariage. Sa jalousie envers les amours de Zeus alimente une grande part des mythes.",
         c:[{u:"Héra seule", d:"Par dépit d'avoir vu Zeus enfanter Athéna sans elle.", c:[
-         {n:"Héphaïstos", g:"Ἥφαιστος", k:"olymp", d:"Le forgeron boiteux, précipité de l'Olympe par sa mère. Il fabrique les armes des dieux, les automates d'or et le piège qui expose Aphrodite."}
+         {n:"Héphaïstos", g:"Ἥφαιστος", k:"olymp", d:"Le forgeron boiteux, précipité de l'Olympe par sa mère. Il fabrique les armes des dieux, les automates d'or et le piège qui expose Aphrodite.",
+          c:[{u:"Modelée par Héphaïstos", d:"Non pas engendrée, mais fabriquée sur ordre de Zeus.", c:[
+           {n:"Pandore", g:"Πανδώρα", k:"mortel", d:"Première femme, faite d'argile et dotée par chaque dieu. Elle ouvre la jarre et libère tous les maux, ne retenant que l'Espérance."}
+          ]}]}
         ]}]},
        {n:"Zeus", g:"Ζεύς", k:"olymp", d:"Le dernier-né devenu roi. Il libère ses frères, ses oncles Cyclopes lui donnent la foudre, et il fonde un ordre qui ne sera plus renversé.",
         c:[
@@ -708,7 +765,13 @@ c:[
          ]},
          {u:"Zeus × Maïa", d:"", c:[
           {n:"Hermès", g:"Ἑρμῆς", k:"olymp", d:"Né le matin, il vole les vaches d'Apollon le soir et invente la lyre pour se faire pardonner. Messager, guide des âmes, patron des voyageurs et des voleurs.",
-           c:[{u:"Hermès × Aphrodite", d:"", c:[
+           c:[{u:"Hermès, par Autolycos et Anticlée", d:"Deux générations plus bas : le dieu des voleurs est le bisaïeul du plus rusé des Grecs.", c:[
+            {n:"Ulysse", g:"Ὀδυσσεύς", k:"mortel", d:"Le roi d'Ithaque aux mille tours. Il invente le cheval de Troie, puis met dix ans à rentrer chez lui.",
+             c:[{u:"Ulysse × Pénélope", d:"Elle défait chaque nuit la toile tissée le jour pour éloigner les prétendants.", c:[
+              {n:"Télémaque", g:"Τηλέμαχος", k:"mortel", d:"Parti chercher des nouvelles de son père, il rentre à temps pour l'aider à massacrer les prétendants."}
+             ]}]}
+           ]},
+           {u:"Hermès × Aphrodite", d:"", c:[
             {n:"Hermaphrodite", g:"Ἑρμαφρόδιτος", k:"div", d:"Fondu en un seul corps avec la naïade Salmacis, il devient à la fois masculin et féminin."}
            ]}]}
          ]},
@@ -722,14 +785,62 @@ c:[
           {n:"Les Charites", g:"Χάριτες", k:"div", d:"Aglaé, Euphrosyne et Thalie : les Grâces, qui donnent aux fêtes et aux œuvres leur éclat aimable."}
          ]},
          {u:"Zeus × Dioné", d:"Version homérique de la naissance d'Aphrodite.", c:[
-          {n:"Aphrodite (variante)", i:"aphrodite", g:"Ἀφροδίτη", k:"olymp", d:"Chez Homère elle est fille de Zeus et de Dioné, non née de l'écume : les deux traditions coexistent."}
+          {n:"Aphrodite", i:"aphrodite", bis:"autre tradition", g:"Ἀφροδίτη", k:"olymp", d:"Chez Homère elle est fille de Zeus et de Dioné, et non née de l'écume. Les deux généalogies coexistent depuis l'Antiquité."}
          ]},
-         {u:"Zeus × mortelles", d:"Les héros nés d'un père divin.", c:[
-          {n:"Héraclès", g:"Ἡρακλῆς", k:"mortel", d:"Fils d'Alcmène. Douze travaux imposés par Héra ; seul héros admis chez les dieux après sa mort."},
-          {n:"Persée", g:"Περσεύς", k:"mortel", d:"Fils de Danaé fécondée par une pluie d'or. Il décapite Méduse avec le bouclier-miroir d'Athéna."},
-          {n:"Hélène", g:"Ἑλένη", k:"mortel", d:"Fille de Léda, née d'un œuf. Sa beauté déclenche la guerre de Troie."},
-          {n:"Les Dioscures", g:"Διόσκουροι", k:"mortel", d:"Castor et Pollux. L'un mortel, l'autre non : ils choisissent de partager l'immortalité en alternance, et deviennent les Gémeaux."},
-          {n:"Minos", g:"Μίνως", k:"mortel", d:"Fils d'Europe, roi de Crète, commanditaire du Labyrinthe ; juge des morts après sa mort."}
+         {u:"Zeus × Alcmène", d:"", c:[
+          {n:"Héraclès", g:"Ἡρακλῆς", k:"mortel", d:"Douze travaux imposés par Héra. Seul héros admis chez les dieux après sa mort, il y épouse Hébé."}
+         ]},
+         {u:"Zeus × Danaé", d:"Enfermée dans une chambre de bronze, atteinte par une pluie d'or.", c:[
+          {n:"Persée", g:"Περσεύς", k:"mortel", d:"Il décapite Méduse dans le reflet du bouclier d'Athéna, délivre Andromède et fonde Mycènes."}
+         ]},
+         {u:"Zeus × Europe", d:"Enlevée sur le dos d'un taureau blanc.", c:[
+          {n:"Minos", g:"Μίνως", k:"mortel", d:"Roi de Crète, commanditaire du Labyrinthe. Juge des morts après sa mort.",
+           c:[{u:"Minos × Pasiphaé", d:"", c:[
+            {n:"Ariane", g:"Ἀριάδνη", k:"mortel", d:"Elle donne à Thésée le fil qui le ramènera du Labyrinthe, et se voit abandonnée à Naxos."},
+            {n:"Phèdre", g:"Φαίδρα", k:"mortel", d:"Sœur d'Ariane et femme de Thésée, consumée d'un amour fatal pour son beau-fils Hippolyte."},
+            {n:"Le Minotaure", g:"Μινώταυρος", k:"creature", d:"Né de Pasiphaé et du taureau de Poséidon. Enfermé au Labyrinthe, nourri de jeunes Athéniens."}
+           ]}]}
+         ]},
+         {u:"Zeus × Léda", d:"Approchée sous la forme d'un cygne ; elle pond deux œufs.", c:[
+          {n:"Hélène", g:"Ἑλένη", k:"mortel", d:"La plus belle des mortelles. Son enlèvement par Pâris déclenche dix ans de guerre."},
+          {n:"Pollux", g:"Πολυδεύκης", k:"mortel", d:"Fils immortel de Zeus, boxeur. Il refuse l'Olympe sans son frère et partage avec lui l'éternité."},
+          {n:"Castor", g:"Κάστωρ", k:"mortel", d:"Fils mortel de Tyndare, dompteur de chevaux. Avec Pollux il forme les Dioscures, devenus les Gémeaux."},
+          {n:"Clytemnestre", g:"Κλυταιμνήστρα", k:"mortel", d:"Épouse d'Agamemnon. Elle l'assassine à son retour de Troie, pour venger leur fille Iphigénie."}
+         ]},
+         {u:"Zeus × Égine", d:"", c:[
+          {n:"Éaque", g:"Αἰακός", k:"mortel", d:"Roi si juste qu'il devint l'un des trois juges des Enfers. Grand-père d'Achille et d'Ajax.",
+           c:[{u:"Éaque × Endéis", d:"", c:[
+            {n:"Pélée", g:"Πηλεύς", k:"mortel", d:"Le seul mortel à avoir épousé une déesse. C'est à ses noces qu'Éris jette la pomme de discorde.",
+             c:[{u:"Pélée × Thétis", d:"Elle plonge l'enfant dans le Styx en le tenant par le talon.", c:[
+              {n:"Achille", g:"Ἀχιλλεύς", k:"mortel", d:"Le meilleur des Achéens. Sa colère ouvre l'Iliade ; une flèche de Pâris au talon la referme."}
+             ]}]},
+            {n:"Télamon", g:"Τελαμών", k:"mortel", d:"Frère de Pélée, compagnon d'Héraclès au premier sac de Troie.",
+             c:[{u:"Télamon × Ériboea", d:"", c:[
+              {n:"Ajax", g:"Αἴας", k:"mortel", d:"Ajax le Grand, rempart des Achéens. Privé des armes d'Achille au profit d'Ulysse, il en perd la raison."}
+             ]}]}
+           ]}]}
+         ]},
+         {u:"Zeus × Électre, puis Dardanos, Trôs, Ilos et Laomédon", d:"Quatre générations fondent Troie ; Trôs lui donne son nom, Ilos celui d'Ilion.", c:[
+          {n:"Priam", g:"Πρίαμος", k:"mortel", d:"Dernier roi de Troie, père de cinquante fils. Il vient supplier Achille de lui rendre le corps d'Hector.",
+           c:[{u:"Priam × Hécube", d:"", c:[
+            {n:"Hector", g:"Ἕκτωρ", k:"mortel", d:"Le meilleur des Troyens, tué par Achille qui traîne son corps autour des murs. Il défend une cause qu'il sait perdue."},
+            {n:"Pâris", g:"Πάρις", k:"mortel", d:"Arbitre du concours de beauté des trois déesses, il choisit Aphrodite et emporte Hélène. Sa flèche tuera Achille."},
+            {n:"Cassandre", g:"Κασσάνδρα", k:"mortel", d:"Apollon lui donne la prophétie, puis la condamne à n'être jamais crue. Elle annonce en vain la chute de Troie."}
+           ]}]}
+         ]},
+         {u:"Zeus × Plouto", d:"", c:[
+          {n:"Tantale", g:"Τάνταλος", k:"mortel", d:"Il sert son propre fils aux dieux pour les éprouver. Supplicié par une eau et des fruits qui se dérobent sans fin.",
+           c:[{u:"Tantale × Dioné", d:"La malédiction se transmet de génération en génération.", c:[
+            {n:"Pélops", g:"Πέλοψ", k:"mortel", d:"Ressuscité par les dieux, une épaule d'ivoire remplaçant celle qu'ils avaient mangée. Éponyme du Péloponnèse.",
+             c:[{u:"Pélops × Hippodamie", d:"", c:[
+              {n:"Atrée", g:"Ἀτρεύς", k:"mortel", d:"Il sert à son frère Thyeste la chair de ses propres enfants. Les Atrides porteront le crime.",
+               c:[{u:"Atrée × Érope", d:"", c:[
+                {n:"Agamemnon", g:"Ἀγαμέμνων", k:"mortel", d:"Chef de la coalition grecque devant Troie. Il sacrifie sa fille pour obtenir des vents, et sa femme l'en fait payer."},
+                {n:"Ménélas", g:"Μενέλαος", k:"mortel", d:"Roi de Sparte et mari d'Hélène. C'est pour la reprendre que mille navires appareillent."}
+               ]}]}
+             ]}]},
+            {n:"Niobé", g:"Νιόβη", k:"mortel", d:"Elle se vante d'avoir plus d'enfants que Léto : Apollon et Artémis les abattent tous, et elle se change en rocher qui pleure."}
+           ]}]}
          ]}
         ]}
       ]}
@@ -739,9 +850,23 @@ c:[
    ]},
    {u:"Du sang et de l'écume d'Ouranos", d:"Ce qui naît de la mutilation du Ciel.", c:[
     {n:"Aphrodite", g:"Ἀφροδίτη", k:"olymp", d:"Née de l'écume où tombent les parties d'Ouranos, elle aborde à Chypre. Désir, beauté, et le pouvoir de désorganiser tout ordre.",
-     c:[{u:"Aphrodite × Arès", d:"Les amants surpris dans le filet d'Héphaïstos.", c:[
-      {n:"Éros (Amour)", g:"Ἔρως", k:"div", d:"L'archer malicieux des versions tardives, fils d'Aphrodite : à distinguer de l'Éros primordial."},
-      {n:"Harmonie", g:"Ἁρμονία", k:"div", d:"L'Accord né de l'Amour et de la Guerre ; son collier maudit ruine la lignée de Thèbes."},
+     c:[{u:"Aphrodite × Anchise", d:"", c:[
+      {n:"Énée", g:"Αἰνείας", k:"mortel", d:"Troyen fuyant sa ville en flammes, son père sur le dos. Virgile fera de lui l'ancêtre de Rome."}
+     ]},
+     {u:"Aphrodite × Arès", d:"Les amants surpris dans le filet d'Héphaïstos.", c:[
+      {n:"Éros", i:"eros", bis:"autre tradition", g:"Ἔρως", k:"div", d:"L'archer malicieux des auteurs tardifs, fils d'Aphrodite. Hésiode en faisait une puissance primordiale née du Chaos : les deux Éros sont le même dieu vu à mille ans d'écart."},
+      {n:"Harmonie", g:"Ἁρμονία", k:"div", d:"L'Accord né de l'Amour et de la Guerre. Son collier de noces, œuvre d'Héphaïstos, portera malheur à toute la lignée de Thèbes.",
+       c:[{u:"Harmonie × Cadmos", d:"Les noces de Thèbes, dernières auxquelles les dieux assistèrent.", c:[
+        {n:"Sémélé", g:"Σεμέλη", k:"mortel", d:"Aimée de Zeus, elle exige de le voir dans sa gloire et en meurt foudroyée. Dionysos lui survit dans la cuisse de son père."},
+        {n:"Agavé", g:"Ἀγαυή", k:"mortel", d:"Prise du délire dionysiaque, elle démembre son fils Penthée en le prenant pour un lion."},
+        {n:"Laïos", g:"Λάϊος", k:"mortel", d:"Arrière-petit-fils de Cadmos par Polydore et Labdacos. Averti qu'il mourra de la main de son fils, il l'expose sur le Cithéron.",
+         c:[{u:"Laïos × Jocaste", d:"", c:[
+          {n:"Œdipe", g:"Οἰδίπους", k:"mortel", d:"Il résout l'énigme du Sphinx, tue son père et épouse sa mère sans le savoir, puis se crève les yeux.",
+           c:[{u:"Œdipe × Jocaste", d:"", c:[
+            {n:"Antigone", g:"Ἀντιγόνη", k:"mortel", d:"Elle enterre son frère Polynice contre l'interdit de Créon, et paie de sa vie ce devoir envers les morts."}
+           ]}]}
+         ]}]}
+       ]}]},
       {n:"Phobos", g:"Φόβος", k:"div", d:"La Peur panique, qui accompagne son père au combat."},
       {n:"Déimos", g:"Δεῖμος", k:"div", d:"La Terreur, jumeau de Phobos ; tous deux mènent le char d'Arès."}
      ]}]},
@@ -752,7 +877,9 @@ c:[
    {u:"Gaïa × Pontos", d:"Les vieilles divinités marines, antérieures à Poséidon.", c:[
     {n:"Nérée", g:"Νηρεύς", k:"div", d:"Le Vieillard de la mer, infaillible et véridique. Il change de forme pour échapper aux questions ; Héraclès le maîtrise.",
      c:[{u:"Nérée × Doris", d:"", c:[
-      {n:"Les Néréides", g:"Νηρηΐδες", k:"div", d:"Cinquante nymphes bienveillantes des flots, dont Amphitrite et Thétis, mère d'Achille."}
+      {n:"Les Néréides", g:"Νηρηΐδες", k:"div", d:"Cinquante nymphes bienveillantes des flots, filles de Nérée et de l'Océanide Doris."},
+      {n:"Thétis", g:"Θέτις", k:"div", d:"Néréide qu'un oracle disait devoir enfanter plus grand que son père : Zeus la maria donc à un mortel, Pélée."},
+      {n:"Amphitrite", g:"Ἀμφιτρίτη", k:"div", d:"Néréide devenue reine de la mer. Elle fuit d'abord Poséidon, qu'un dauphin persuade de l'épouser."}
      ]}]},
     {n:"Thaumas", g:"Θαύμας", k:"div", d:"La Merveille marine, père des prodiges du ciel.",
      c:[{u:"Thaumas × Électre", d:"", c:[
@@ -1502,7 +1629,8 @@ function build(n, depth){
     '<button class="twist'+(kids.length?"":" leaf")+(open?" open":"")+'" aria-label="Déplier">▶</button>'+
     '<button class="chk" role="checkbox" aria-checked="'+got+'" aria-label="Marquer comme obtenu">'+TICK+'</button>'+
     '<span class="av" data-id="m:'+n.i+'"><span>'+n.n.replace(/^(Les|Le|La|L[’\'])\s*/,"").charAt(0)+'</span></span>'+
-    '<button class="label"><span class="nm">'+n.n+'</span><span class="gk">'+n.g+'</span><span class="kd k-'+n.k+'">'+KINDS[n.k]+'</span></button>';
+    '<button class="label"><span class="nm">'+n.n+'</span><span class="gk">'+n.g+'</span><span class="kd k-'+n.k+'">'+KINDS[n.k]+'</span>'+
+    (n.bis ? '<span class="bis">'+n.bis+'</span>' : '')+'</button>';
   frag.appendChild(row);
   if(kids.length){
     const k = document.createElement("div");
@@ -1598,6 +1726,7 @@ function rendreFiche(n, el, pin, orig, ens){
   ficheIn.innerHTML = img +
     '<h3>'+n.n+'</h3><p class="gk">'+n.g+'</p>'+
     '<span class="kd k-'+n.k+'">'+(n.kl || KINDS[n.k])+'</span>'+
+    (n.bis ? '<span class="bis">'+n.bis+'</span>' : '')+
     '<p>'+n.d+'</p>'+
     (orig?'<p class="par">'+orig+'</p>':'')+
     '<p class="par" style="margin-top:6px">'+(dans?"✓ Dans votre collection":"Pas encore obtenu")+'</p>';
@@ -1684,14 +1813,15 @@ const ALIAS_P = {
 };
 const ALIAS_M = {
   "les-moires":["clotho","lachesis","atropos","moires"],
+  "ulysse":["odysseus","odyssee"], "achille":["achilles"], "oedipe":["oedipus"],
+  "le-minotaure":["minotaure"], "pollux":["polydeukes"], "castor":["dioscures","castor et pollux"],
   "les-muses":["calliope","clio","erato","euterpe","melpomene","polymnie","terpsichore","uranie","muses"],
   "les-charites":["graces","aglae","euphrosyne","charites"],
   "les-gorgones":["meduse","stheno","euryale","gorgones"],
   "les-cyclopes":["brontes","steropes","arges","cyclopes"],
   "les-hecatonchires":["cottos","briaree","gyges","hecatonchires"],
-  "les-dioscures":["castor","pollux","castor et pollux","dioscures"],
   "les-erinyes":["alecto","megere","tisiphone","furies","erinyes","euménides"],
-  "les-pleiades":["maia","pleiades"], "les-nereides":["amphitrite","thetis","nereides"],
+  "les-pleiades":["maia","pleiades"], "les-nereides":["nereides"],
   "les-heures":["eunomia","dike","irene","horai","heures"],
   "les-hesperides":["hesperides"], "les-grees":["grees","dino","enyo","pemphredo"],
   "les-keres":["keres"], "les-geants":["gigantomachie","geants"], "les-meliades":["meliades"],
@@ -2235,7 +2365,12 @@ const WIKI = {
 "Le Lion de Némée":"Lion de Némée","L'Aigle du Caucase":"Aigle du Caucase","Les Charites":"Charites",
 "Aphrodite (variante)":"Aphrodite","Éros (Amour)":"Éros","Hélène":"Hélène (mythologie)","Les Dioscures":"Dioscures",
 "Harmonie":"Harmonie (mythologie)","Phobos":"Phobos (mythologie)","Déimos":"Déimos (mythologie)",
-"Hermaphrodite":"Hermaphrodite (mythologie)","Cerbère":"Cerbère","Perséphone":"Perséphone","Pégase":"Pégase"
+"Hermaphrodite":"Hermaphrodite (mythologie)","Cerbère":"Cerbère","Perséphone":"Perséphone","Pégase":"Pégase",
+"Narcisse":"Narcisse (mythologie)","Orion":"Orion (mythologie)","Jason":"Jason (mythologie)",
+"Agavé":"Agavé (mythologie)","Antigone":"Antigone (mythologie)","Ariane":"Ariane (mythologie)",
+"Phèdre":"Phèdre (mythologie)","Pollux":"Pollux (mythologie)","Castor":"Castor (mythologie)",
+"Ajax":"Ajax fils de Télamon","Tantale":"Tantale (mythologie)","Éole":"Éole (fils d'Hellen)",
+"Hellen":"Hellen","Pyrrha":"Pyrrha","Deucalion":"Deucalion","Thétis":"Thétis","Amphitrite":"Amphitrite"
 };
 const CACHE_V = "wikimaster-vignettes";
 let vign = {}, vignPret = false;
@@ -2325,7 +2460,7 @@ function poserVignettes(){
 }
 
 /* ============ VUE GRAPHE ============ */
-const PY = 46, HB = 34, LB = 208;
+const PY = 52, HB = 38, LB = 216;
 let G = null, cam = {x:0, y:0, k:1}, gPret = false;
 
 function preparerGraphe(){
@@ -2365,7 +2500,7 @@ function preparerGraphe(){
   const parProf = [];
   noeuds.forEach(n=>{ (parProf[n.prof] = parProf[n.prof] || []).push(n); });
   const X = []; let x = 0;
-  parProf.forEach((arr, d)=>{ X[d] = x; x += arr.some(n=>n.t==="e") ? LB + 62 : 96; });
+  parProf.forEach((arr, d)=>{ X[d] = x; x += arr.some(n=>n.t==="e") ? LB + 74 : 104; });
   noeuds.forEach(n=>{ n.x = X[n.prof]; n.sortie = n.x + (n.t==="e" ? LB : 20); n.entree = n.x; });
 
   // voisinages pour le surlignage
@@ -2410,7 +2545,7 @@ function dessinerGraphe(){
         + '<circle class="ph" cx="'+(n.x+20)+'" cy="'+n.y+'" r="12" fill="none"/>'
       : '<circle class="ph" cx="'+(n.x+20)+'" cy="'+n.y+'" r="12"/>'
         + '<text class="mono" x="'+(n.x+20)+'" y="'+(n.y+1)+'">'+esc(r.n.replace(/^(Les|Le|La|L[’\'])\s*/,"").charAt(0))+'</text>';
-    return '<g class="gn'+(got?" got":"")+'" data-id="'+n.id+'" data-ent="'+r.i+'">'
+    return '<g class="gn'+(got?" got":"")+(r.bis?" bis":"")+'" data-id="'+n.id+'" data-ent="'+r.i+'">'
       + '<rect class="bg" x="'+n.x+'" y="'+y0+'" width="'+LB+'" height="'+HB+'"/>'
       + '<rect class="stripe" x="'+n.x+'" y="'+(y0+6)+'" width="3" height="'+(HB-12)+'" fill="'+coul(r.k)+'"/>'
       + image
@@ -2523,15 +2658,40 @@ document.getElementById("g-plus").addEventListener("click", ()=>zoom(1.25));
 document.getElementById("g-moins").addEventListener("click", ()=>zoom(1/1.25));
 document.getElementById("g-fit").addEventListener("click", ajusterCam);
 
+/* Plein écran. On bascule d'abord une classe CSS, qui fonctionne partout
+   y compris sur iOS où l'API Fullscreen ignore les éléments ordinaires ;
+   l'API n'est appelée qu'en complément, pour masquer la barre du navigateur. */
+let plein = false;
+function basculerPlein(){
+  plein = !plein;
+  gbox.classList.toggle("plein", plein);
+  document.body.classList.toggle("fige", plein);
+  document.getElementById("g-plein").textContent = plein ? "⤡" : "⛶";
+  try{
+    if(plein && gbox.requestFullscreen) gbox.requestFullscreen().catch(()=>{});
+    else if(!plein && document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+  }catch(e){}
+  setTimeout(()=>{ cadre(); ajusterCam(); }, 60);
+}
+document.getElementById("g-plein").addEventListener("click", basculerPlein);
+document.addEventListener("fullscreenchange", ()=>{
+  if(!document.fullscreenElement && plein && gbox.classList.contains("plein")) return;
+});
+document.addEventListener("keydown", e=>{ if(e.key === "Escape" && plein) basculerPlein(); });
+addEventListener("resize", ()=>{ if(gPret && !gbox.hidden){ cadre(); appliquerCam(); } });
+
+let verrou = null;
 gbox.addEventListener("mouseover", e=>{
+  if(verrou) return;
   const g = e.target.closest(".gn"); if(!g) return;
   surligner(g.dataset.id);
 });
-gbox.addEventListener("mouseleave", ()=>surligner(null));
+gbox.addEventListener("mouseleave", ()=>{ if(!verrou) surligner(null); });
 
 gbox.addEventListener("click", e=>{
   if(bouge) return;
-  const g = e.target.closest(".gn"); if(!g) return;
+  const g = e.target.closest(".gn");
+  if(!g){ verrou = null; surligner(null); return; }
   const id = g.dataset.ent;
   if(e.target.classList.contains("tick") || e.target.classList.contains("tk")){
     if(myth.has(id)) myth.delete(id); else myth.add(id);
@@ -2541,8 +2701,9 @@ gbox.addEventListener("click", e=>{
     });
     majEtatsGraphe(); filtrerGraphe(); maj(); sauver(); return;
   }
-  surligner(g.dataset.id);
-  ficheDepuisId(id, g.querySelector("rect.bg"));
+  verrou = verrou === g.dataset.id ? null : g.dataset.id;
+  surligner(verrou);
+  if(verrou) ficheDepuisId(id, g.querySelector("rect.bg"));
 });
 
 /* ---------- bascule liste / graphe ---------- */

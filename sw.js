@@ -1,7 +1,7 @@
 /* Service worker — mode hors-ligne du Cabinet de collection.
    Trois stratégies selon la nature de la ressource. */
 
-const VERSION = "wikimaster-v5";
+const VERSION = "wikimaster-v6";
 const IMAGES  = "wikimaster-images-v1";
 
 /* Les fichiers du site lui-même, mis en cache dès l'installation. */
